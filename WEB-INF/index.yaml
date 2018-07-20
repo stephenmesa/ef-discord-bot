@@ -1,0 +1,7 @@
+indexes:
+
+- kind: Progress
+  properties:
+  - name: username
+  - name: timestamp
+    direction: desc

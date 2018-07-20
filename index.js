@@ -3,6 +3,7 @@ require('dotenv').config();
 var Discord = require("discord.js");
 var client = new Discord.Client();
 var utils = require("./utils");
+var datastore = require("./datastore");
 
 var discordToken = process.env.DISCORD_TOKEN;
 
@@ -54,6 +55,31 @@ function calculate(msg, totalStr, rateStr, efficiencyStr) {
   msg.channel.send(messageToSend);
 }
 
+function generateProgressChangeSummary(currentKL, currentTotalMedals, latestProgress) {
+  var currentTotalMedalsNumber = utils.parseGoldString(currentTotalMedals);
+  var previousTotalMedalsNumber = utils.parseGoldString(latestProgress.totalMedals);
+  var medalsGained = currentTotalMedalsNumber - previousTotalMedalsNumber;
+  var medalsGainedPercentage = (medalsGained / previousTotalMedalsNumber) * 100;
+  var klGained = currentKL - latestProgress.kl;
+  var now = new Date();
+  var hoursDiff = (now.getTime() - latestProgress.timestamp.getTime())/(1000*60*60);
+  return 'Welcome back! You\'ve gained ' + klGained + ' KL and ' + medalsGainedPercentage.toFixed(2).toString() + '% total medals over the last ' + hoursDiff.toFixed(2).toString() + ' hour(s)';
+}
+
+function record(msg, kl, totalMedals) {
+  var timestamp = new Date();
+  var username = msg.member.displayName;
+  datastore.getLatestProgress(username).then(function(latestProgress) {
+    if (latestProgress) {
+      var progressMessage = generateProgressChangeSummary(kl, totalMedals, latestProgress);
+      msg.reply(progressMessage);
+    } else {
+      msg.reply('Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you\'re doing over time');
+    }
+  });
+  datastore.saveProgress(kl, totalMedals, username, timestamp);
+}
+
 client.on('ready', function() {
   console.log('Logged in as ' + client.user.tag + '!');
 });
@@ -63,6 +89,11 @@ client.on('message', function(msg) {
   var calculateArgsRegExp = new RegExp(/^!calc\s*([^ ]+)\s*([^ ]+)\s*([^ ]+)?/);
   var msgCalcMatches = msg.content.match(calculateRegExp);
   var msgCalcArgsMatches = msg.content.match(calculateArgsRegExp);
+
+  var recordRegExp = new RegExp(/^!record/);
+  var recordArgsRegExp = new RegExp(/^!record\s*([^ ]+)\s*([^ ]+)?/);
+  var msgRecordMatches = msg.content.match(recordRegExp);
+  var msgRecordArgsMatches = msg.content.match(recordArgsRegExp);
 
   // TODO: Make sure this is for a channel that the bot belongs to
 
@@ -74,6 +105,12 @@ client.on('message', function(msg) {
     } else {
       var srEfficiency = msgCalcArgsMatches[3] || 1.05;
       calculate(msg, msgCalcArgsMatches[1], msgCalcArgsMatches[2], srEfficiency);
+    }
+  } else if (msgRecordMatches) {
+    if (!msgRecordArgsMatches) {
+      msg.reply('Usage: `!record <knightLevel> <totalMedals>`');
+    } else {
+      record(msg, msgRecordArgsMatches[1], msgRecordArgsMatches[2]);
     }
   }
 });
