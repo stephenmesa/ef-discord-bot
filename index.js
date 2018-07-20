@@ -31,10 +31,9 @@ function calculate(msg, totalStr, rateStr, efficiencyStr) {
         },
         footer: {
             icon_url: "https://cdn.discordapp.com/avatars/294466905073516554/dcde95b6bfc77a0a7eb62827fd87af1a.png",
-            text: "NephBot create by @stephenmesa#1219"
+            text: "NephBot created by @stephenmesa#1219"
         },
         title: "Spirit Rest calulator",
-        description: 'User: ' + msg.author,
         color: 13720519,
         timestamp: new Date().toISOString(),
         fields: [
