@@ -1,0 +1,20 @@
+{
+  "name": "ef-discord-bots",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha __tests__/**/*.js",
+    "test-watch": "npm run test -- -w",
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^11.3.2"
+  },
+  "devDependencies": {
+    "expect": "^23.2.0",
+    "mocha": "^5.2.0"
+  }
+}
