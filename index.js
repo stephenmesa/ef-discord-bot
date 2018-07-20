@@ -1,6 +1,15 @@
+require('dotenv').config();
+
 var Discord = require("discord.js");
 var client = new Discord.Client();
 var utils = require("./utils");
+
+var discordToken = process.env.DISCORD_TOKEN;
+
+if (!discordToken) {
+  console.error('Must provide DISCORD_TOKEN environment variable!');
+  process.exit(1);
+}
 
 function calculate(msg, totalStr, rateStr, efficiencyStr) {
   var rate = utils.parseGoldString(rateStr);
@@ -44,4 +53,4 @@ client.on('message', function(msg) {
   }
 });
 
-client.login('MzMzMjcwODcxNjA5MTgwMTYy.DJWTJg.wuAtLXLBnWDaNIwd9PU4gDTB78s');
+client.login(discordToken);
