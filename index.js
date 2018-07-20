@@ -22,11 +22,11 @@ function calculate(msg, totalStr, rateStr, efficiencyStr) {
   var percentage = (medalsGained / total) * 100;
   var percentageWithDoubled = ((medalsGained * 2) / total) * 100;
 
-  msg.channel.send({
+  var messageToSend = {
     embed:
     {
         author: {
-            name: msg.author.name,
+            name: msg.member.displayName,
             icon_url: 'https://cdn.discordapp.com/avatars/' + msg.author.id + '/' + msg.author.avatar + '.png'
         },
         footer: {
@@ -50,7 +50,9 @@ function calculate(msg, totalStr, rateStr, efficiencyStr) {
             }
         ]
     }
-  });
+  }
+
+  msg.channel.send(messageToSend);
 }
 
 client.on('ready', function() {
@@ -59,7 +61,7 @@ client.on('ready', function() {
 
 client.on('message', function(msg) {
   var calculateRegExp = new RegExp(/^!calc/);
-  var calculateArgsRegExp = new RegExp(/^!calc ([^ ]+) ([^ ]+) ([^ ]+)/);
+  var calculateArgsRegExp = new RegExp(/^!calc\s*([^ ]+)\s*([^ ]+)\s*([^ ]+)?/);
   var msgCalcMatches = msg.content.match(calculateRegExp);
   var msgCalcArgsMatches = msg.content.match(calculateArgsRegExp);
 
@@ -69,9 +71,10 @@ client.on('message', function(msg) {
     msg.reply('Pong!');
   } else if (msgCalcMatches) {
     if (!msgCalcArgsMatches) {
-      msg.reply('Usage: `!calc <totalMedals> <srMedalsPerMinute> <srEfficiency>`');
+      msg.reply('Usage: `!calc <totalMedals> <srMedalsPerMinute> [<srEfficiency>]`');
     } else {
-      calculate(msg, msgCalcArgsMatches[1], msgCalcArgsMatches[2], msgCalcArgsMatches[3]);
+      var srEfficiency = msgCalcArgsMatches[3] || 1.05;
+      calculate(msg, msgCalcArgsMatches[1], msgCalcArgsMatches[2], srEfficiency);
     }
   }
 });
