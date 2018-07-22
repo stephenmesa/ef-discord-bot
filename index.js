@@ -12,7 +12,10 @@ if (!discordToken) {
   process.exit(1);
 }
 
-function calculate(msg, totalStr, rateStr, efficiencyStr) {
+function sr(msg, kl, totalStr, rateStr, efficiencyStr) {
+  var timestamp = new Date();
+  var username = msg.author.username;
+  var userId = msg.author.id;
   var rate = utils.parseGoldString(rateStr);
   var total = utils.parseGoldString(totalStr);
   var efficiency = utils.parseGoldString(efficiencyStr);
@@ -34,9 +37,9 @@ function calculate(msg, totalStr, rateStr, efficiencyStr) {
             icon_url: "https://cdn.discordapp.com/avatars/294466905073516554/dcde95b6bfc77a0a7eb62827fd87af1a.png",
             text: "NephBot created by @stephenmesa#1219"
         },
-        title: "Spirit Rest calulator",
+        title: "Spirit Rest calculator",
         color: 13720519,
-        timestamp: new Date().toISOString(),
+        timestamp: timestamp.toISOString(),
         fields: [
             {
                 name: "Spirit Rest",
@@ -52,7 +55,18 @@ function calculate(msg, totalStr, rateStr, efficiencyStr) {
     }
   }
 
-  msg.channel.send(messageToSend);
+  datastore.getLatestProgress(userId).then(function(latestProgress) {
+    if (latestProgress) {
+      var progressMessage = generateProgressChangeSummary(kl, totalStr, latestProgress);
+      messageToSend.embed.description = progressMessage;
+    } else {
+      messageToSend.embed.description = 'Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you\'re doing over time';
+    }
+
+    msg.channel.send(messageToSend);
+
+    datastore.saveProgress(kl, totalStr, rateStr, percentage, userId, username, timestamp);
+  });
 }
 
 function generateProgressChangeSummary(currentKL, currentTotalMedals, latestProgress) {
@@ -66,51 +80,36 @@ function generateProgressChangeSummary(currentKL, currentTotalMedals, latestProg
   return 'Welcome back! You\'ve gained ' + klGained + ' KL and ' + medalsGainedPercentage.toFixed(2).toString() + '% total medals over the last ' + hoursDiff.toFixed(2).toString() + ' hour(s)';
 }
 
-function record(msg, kl, totalMedals) {
-  var timestamp = new Date();
-  var username = msg.member.displayName;
-  datastore.getLatestProgress(username).then(function(latestProgress) {
-    if (latestProgress) {
-      var progressMessage = generateProgressChangeSummary(kl, totalMedals, latestProgress);
-      msg.reply(progressMessage);
-    } else {
-      msg.reply('Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you\'re doing over time');
-    }
-  });
-  datastore.saveProgress(kl, totalMedals, username, timestamp);
-}
-
 client.on('ready', function() {
   console.log('Logged in as ' + client.user.tag + '!');
 });
 
 client.on('message', function(msg) {
   var calculateRegExp = new RegExp(/^!calc/);
-  var calculateArgsRegExp = new RegExp(/^!calc\s*([^ ]+)\s*([^ ]+)\s*([^ ]+)?/);
   var msgCalcMatches = msg.content.match(calculateRegExp);
-  var msgCalcArgsMatches = msg.content.match(calculateArgsRegExp);
 
   var recordRegExp = new RegExp(/^!record/);
-  var recordArgsRegExp = new RegExp(/^!record\s*([^ ]+)\s*([^ ]+)?/);
   var msgRecordMatches = msg.content.match(recordRegExp);
-  var msgRecordArgsMatches = msg.content.match(recordArgsRegExp);
+
+  var srRegExp = new RegExp(/^!sr/);
+  var srArgsRegExp = new RegExp(/^!sr\s+(\S+)\s+(\S+)\s+(\S+)\s*(\S+)?/);
+  var msgSrMatches = msg.content.match(srRegExp);
+  var msgSrArgsMatches = msg.content.match(srArgsRegExp);
 
   // TODO: Make sure this is for a channel that the bot belongs to
 
   if (msg.content === 'ping') {
     msg.reply('Pong!');
   } else if (msgCalcMatches) {
-    if (!msgCalcArgsMatches) {
-      msg.reply('Usage: `!calc <totalMedals> <srMedalsPerMinute> [<srEfficiency>]`');
-    } else {
-      var srEfficiency = msgCalcArgsMatches[3] || 1.05;
-      calculate(msg, msgCalcArgsMatches[1], msgCalcArgsMatches[2], srEfficiency);
-    }
+    msg.reply('The `!calc` command has been deprecated. Please use the `!sr` command instead! Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
   } else if (msgRecordMatches) {
-    if (!msgRecordArgsMatches) {
-      msg.reply('Usage: `!record <knightLevel> <totalMedals>`');
+    msg.reply('The `!record` command has been deprecated. Please use the `!sr` command instead! Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
+  } else if (msgSrMatches) {
+    if (!msgSrArgsMatches) {
+      msg.reply('Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
     } else {
-      record(msg, msgRecordArgsMatches[1], msgRecordArgsMatches[2]);
+      var srEfficiency = msgSrArgsMatches[4] || 1.05;
+      sr(msg, msgSrArgsMatches[1], msgSrArgsMatches[2], msgSrArgsMatches[3], srEfficiency);
     }
   }
 });

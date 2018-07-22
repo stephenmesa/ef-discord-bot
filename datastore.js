@@ -13,7 +13,7 @@ var datastore = new Datastore({
 
 var kind = 'Progress';
 
-function saveProgress(kl, totalMedals, username, timestamp) {
+function saveProgress(kl, totalMedals, rate, percentage, userId, username, timestamp) {
     var progressKey = datastore.key(kind);
 
     var progress = {
@@ -21,6 +21,9 @@ function saveProgress(kl, totalMedals, username, timestamp) {
       data: {
         kl: kl,
         totalMedals: totalMedals,
+        rate: rate,
+        percentage: percentage,
+        userId: userId,
         username: username,
         timestamp: timestamp,
       },
@@ -36,9 +39,9 @@ function saveProgress(kl, totalMedals, username, timestamp) {
       });
 }
 
-function getLatestProgress(username) {
+function getLatestProgress(userId) {
     var query = datastore.createQuery(kind)
-      .filter('username', '=', username)
+      .filter('userId', '=', userId)
       .order('timestamp', { descending: true })
       .limit(1);
 

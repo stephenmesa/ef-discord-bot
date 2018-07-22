@@ -2,6 +2,6 @@ indexes:
 
 - kind: Progress
   properties:
-  - name: username
+  - name: userId
   - name: timestamp
     direction: desc
