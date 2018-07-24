@@ -1,9 +1,10 @@
 require('dotenv').config();
-
 var Discord = require("discord.js");
 var client = new Discord.Client();
+
 var utils = require("./utils");
 var datastore = require("./datastore");
+var messaging = require('./messaging');
 
 var discordToken = process.env.DISCORD_TOKEN;
 
@@ -26,42 +27,15 @@ function sr(msg, kl, totalStr, rateStr, efficiencyStr) {
   var percentage = (medalsGained / total) * 100;
   var percentageWithDoubled = ((medalsGained * 2) / total) * 100;
 
-  var messageToSend = {
-    embed:
-    {
-        author: {
-            name: msg.member.displayName,
-            icon_url: 'https://cdn.discordapp.com/avatars/' + msg.author.id + '/' + msg.author.avatar + '.png'
-        },
-        footer: {
-            icon_url: "https://cdn.discordapp.com/avatars/294466905073516554/dcde95b6bfc77a0a7eb62827fd87af1a.png",
-            text: "NephBot created by @stephenmesa#1219"
-        },
-        title: "Spirit Rest calculator",
-        color: 13720519,
-        timestamp: timestamp.toISOString(),
-        fields: [
-            {
-                name: "Spirit Rest",
-                value: percentage.toFixed(2).toString() + '% (' + utils.formatGoldString(medalsGained) + ')',
-                inline: true
-            },
-            {
-                name: "Spirit Rest Doubled",
-                value: percentageWithDoubled.toFixed(2).toString() + '% (' + utils.formatGoldString(medalsGained * 2) + ')',
-                inline: true
-            }
-        ]
-    }
-  }
-
   datastore.getLatestProgress(userId).then(function(latestProgress) {
+    var description;
     if (latestProgress) {
-      var progressMessage = generateProgressChangeSummary(kl, totalStr, latestProgress);
-      messageToSend.embed.description = progressMessage;
+      description = generateProgressChangeSummary(kl, totalStr, latestProgress);
     } else {
-      messageToSend.embed.description = 'Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you\'re doing over time';
+      description = 'Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you\'re doing over time';
     }
+
+    var messageToSend = messaging.generateSrMessage(msg, timestamp, percentage, medalsGained, percentageWithDoubled, description);
 
     msg.channel.send(messageToSend);
 
@@ -92,11 +66,9 @@ client.on('message', function(msg) {
   var msgRecordMatches = msg.content.match(recordRegExp);
 
   var srRegExp = new RegExp(/^!sr/);
-  var srArgsRegExp = new RegExp(/^!sr\s+(\S+)\s+(\S+)\s+(\S+)\s*(\S+)?/);
+  var srArgsRegExp = new RegExp(/^!sr\s+(\d+)\s+(\d+(\.\d+)?\w+)\s+(\d+(\.\d+)?\w+)\s*(\d+(\.\d+)?)?/);
   var msgSrMatches = msg.content.match(srRegExp);
   var msgSrArgsMatches = msg.content.match(srArgsRegExp);
-
-  // TODO: Make sure this is for a channel that the bot belongs to
 
   if (msg.content === 'ping') {
     msg.reply('Pong!');
@@ -106,10 +78,13 @@ client.on('message', function(msg) {
     msg.reply('The `!record` command has been deprecated. Please use the `!sr` command instead! Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
   } else if (msgSrMatches) {
     if (!msgSrArgsMatches) {
-      msg.reply('Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
+      msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`\n\nExample: `!sr 280 4.4h 337.5f`');
     } else {
-      var srEfficiency = msgSrArgsMatches[4] || 1.05;
-      sr(msg, msgSrArgsMatches[1], msgSrArgsMatches[2], msgSrArgsMatches[3], srEfficiency);
+      var kl = msgSrArgsMatches[1];
+      var totalStr = msgSrArgsMatches[2];
+      var rateStr = msgSrArgsMatches[4];
+      var srEfficiency = msgSrArgsMatches[6] || 1.05;
+      sr(msg, kl, totalStr, rateStr, srEfficiency);
     }
   }
 });
