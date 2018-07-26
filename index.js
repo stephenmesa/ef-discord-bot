@@ -54,6 +54,25 @@ function generateProgressChangeSummary(currentKL, currentTotalMedals, latestProg
   return 'Welcome back! You\'ve gained ' + klGained + ' KL and ' + medalsGainedPercentage.toFixed(2).toString() + '% total medals over the last ' + hoursDiff.toFixed(2).toString() + ' hour(s)';
 }
 
+function srUndo(msg) {
+  var userId = msg.author.id;
+  datastore.deleteLatestProgress(userId)
+    .then(function(result) {
+      var deletedProgress = result.deletedEntry;
+      var now = new Date();
+      var hoursDiff = (now.getTime() - deletedProgress.timestamp.getTime())/(1000*60*60);
+      msg.reply('deleted previous record of ' + deletedProgress.kl + ' KL and ' + deletedProgress.totalMedals + ' total medals, recorded ' + hoursDiff.toFixed(2).toString() + ' hours ago');
+    })
+    .catch(function(err) {
+      if (err.errorCode === 404) {
+        msg.reply('Sorry, I couldn\'t find your most recent SR progress, it doesn\'t appear that you have any.');
+      } else {
+        console.error(err);
+        msg.reply('Looks like stephenmesa has a terrible bug in his code. Go make fun of his programming abilities!');
+      }
+    });
+}
+
 client.on('ready', function() {
   console.log('Logged in as ' + client.user.tag + '!');
 });
@@ -70,12 +89,17 @@ client.on('message', function(msg) {
   var msgSrMatches = msg.content.match(srRegExp);
   var msgSrArgsMatches = msg.content.match(srArgsRegExp);
 
+  var srUndoExp = new RegExp(/^!sr undo$/);
+  var msgSrUndoMatches = msg.content.match(srUndoExp);
+
   if (msg.content === 'ping') {
     msg.reply('Pong!');
   } else if (msgCalcMatches) {
     msg.reply('The `!calc` command has been deprecated. Please use the `!sr` command instead! Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
   } else if (msgRecordMatches) {
     msg.reply('The `!record` command has been deprecated. Please use the `!sr` command instead! Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
+  } else if (msgSrUndoMatches) {
+    srUndo(msg);
   } else if (msgSrMatches) {
     if (!msgSrArgsMatches) {
       msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`\n\nExample: `!sr 280 4.4h 337.5f`');
