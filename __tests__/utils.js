@@ -1,5 +1,5 @@
 var expect = require("expect");
-var utils = require("../utils");
+var utils = require("../src/utils");
 
 describe("parseGoldString()", function() {
     it("should work properly", function() {
