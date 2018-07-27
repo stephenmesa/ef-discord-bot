@@ -1,12 +1,12 @@
 var datastore = require('../datastore');
+var utils = require('../utils');
 
 function srUndo(msg) {
     var userId = msg.author.id;
     datastore.deleteLatestProgress(userId)
       .then(function(result) {
         var deletedProgress = result.deletedEntry;
-        var now = new Date();
-        var hoursDiff = (now.getTime() - deletedProgress.timestamp.getTime())/(1000*60*60);
+        var hoursDiff = utils.getHoursSince(deletedProgress.timestamp);
         msg.reply('deleted previous record of ' + deletedProgress.kl + ' KL and ' + deletedProgress.totalMedals + ' total medals, recorded ' + hoursDiff.toFixed(2).toString() + ' hours ago');
       })
       .catch(function(err) {

@@ -84,9 +84,14 @@ function generateSrMessage(msg, timestamp, percentage, medalsGained, percentageW
   };
 }
 
+function getHoursSince(timestamp) {
+  (now.getTime() - timestamp.getTime())/(1000*60*60);
+}
+
 module.exports = {
   parseGoldString: parseGoldString,
   formatGoldString: formatGoldString,
   generateProgressChangeSummary: generateProgressChangeSummary,
   generateSrMessage: generateSrMessage,
+  getHoursSince: getHoursSince,
 };
