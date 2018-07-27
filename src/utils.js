@@ -1,60 +1,59 @@
-function parseGoldString(gold) {
+export const parseGoldString = (gold) => {
   if (isFinite(gold)) {
     return Number(gold);
   }
 
   // make sure the string follows the template of {number}{letters}
-  var efGoldFormatRegExp = new RegExp(/(^\d+\.?\d*)(\D?)$/);
+  const efGoldFormatRegExp = new RegExp(/(^\d+\.?\d*)(\D?)$/);
 
-  var matches = gold.match(efGoldFormatRegExp);
+  const matches = gold.match(efGoldFormatRegExp);
   if (!matches) {
     return null;
   }
 
-  var numPart = matches[1];
-  var multiplierPart = matches[2].toLowerCase();
-  var multiplier = 1;
+  const numPart = matches[1];
+  const multiplierPart = matches[2].toLowerCase();
+  let multiplier = 1;
 
   if (multiplierPart) {
-    var multiplierCharCode = multiplierPart.charCodeAt(0);
-    var aCharCode = 'a'.charCodeAt(0);
+    const multiplierCharCode = multiplierPart.charCodeAt(0);
+    const aCharCode = 'a'.charCodeAt(0);
     multiplier = Math.pow(10, (multiplierCharCode - (aCharCode - 1)) * 3);
   }
 
   return Number(numPart) * multiplier;
 }
 
-function formatGoldString(gold) {
+export const formatGoldString = (gold) => {
   if (!isFinite(gold)) {
     return 'Could not parse number: ' + gold.toString();
   }
 
-  var tempGold = gold;
-  var multiplier = 0;
+  let tempGold = gold;
+  let multiplier = 0;
 
   while (tempGold >= 1000) {
     tempGold = Math.floor(tempGold) / 1000;
     multiplier += 1;
   }
 
-  var multiplierCharCode = 'a'.charCodeAt(0) - 1 + multiplier;
-  var multiplerChar = multiplier ? String.fromCharCode(multiplierCharCode) : '';
+  const multiplierCharCode = 'a'.charCodeAt(0) - 1 + multiplier;
+  const multiplerChar = multiplier ? String.fromCharCode(multiplierCharCode) : '';
 
   return tempGold.toString() + multiplerChar;
 }
 
-function generateProgressChangeSummary(currentKL, currentTotalMedals, latestProgress) {
-  var currentTotalMedalsNumber = parseGoldString(currentTotalMedals);
-  var previousTotalMedalsNumber = parseGoldString(latestProgress.totalMedals);
-  var medalsGained = currentTotalMedalsNumber - previousTotalMedalsNumber;
-  var medalsGainedPercentage = (medalsGained / previousTotalMedalsNumber) * 100;
-  var klGained = currentKL - latestProgress.kl;
-  var now = new Date();
-  var hoursDiff = (now.getTime() - latestProgress.timestamp.getTime()) / (1000 * 60 * 60);
+export const generateProgressChangeSummary = (currentKL, currentTotalMedals, latestProgress) => {
+  const currentTotalMedalsNumber = parseGoldString(currentTotalMedals);
+  const previousTotalMedalsNumber = parseGoldString(latestProgress.totalMedals);
+  const medalsGained = currentTotalMedalsNumber - previousTotalMedalsNumber;
+  const medalsGainedPercentage = (medalsGained / previousTotalMedalsNumber) * 100;
+  const klGained = currentKL - latestProgress.kl;
+  const hoursDiff = getHoursSince(latestProgress.timestamp);
   return 'Welcome back! You\'ve gained ' + klGained + ' KL and ' + medalsGainedPercentage.toFixed(2).toString() + '% total medals over the last ' + hoursDiff.toFixed(2).toString() + ' hour(s)';
 }
 
-function generateSrMessage(msg, timestamp, percentage, medalsGained, percentageWithDoubled, description) {
+export const generateSrMessage = (msg, timestamp, percentage, medalsGained, percentageWithDoubled, description) => {
   return {
     embed: {
       description: description,
@@ -84,14 +83,7 @@ function generateSrMessage(msg, timestamp, percentage, medalsGained, percentageW
   };
 }
 
-function getHoursSince(timestamp) {
-  (now.getTime() - timestamp.getTime())/(1000*60*60);
+export const getHoursSince = (timestamp) => {
+  const now = new Date();
+  return (now.getTime() - timestamp.getTime())/(1000*60*60);
 }
-
-module.exports = {
-  parseGoldString: parseGoldString,
-  formatGoldString: formatGoldString,
-  generateProgressChangeSummary: generateProgressChangeSummary,
-  generateSrMessage: generateSrMessage,
-  getHoursSince: getHoursSince,
-};

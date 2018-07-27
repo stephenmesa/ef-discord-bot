@@ -1,22 +1,22 @@
-var Datastore = require('@google-cloud/datastore');
+import Datastore from '@google-cloud/datastore';
 
-var projectId = process.env.DATASTORE_PROJECTID;
+const projectId = process.env.DATASTORE_PROJECTID;
 
 if (!projectId) {
   console.error('Must provide DATASTORE_PROJECTID environment variable!');
   process.exit(1);
 }
 
-var datastore = new Datastore({
+const datastore = new Datastore({
   projectId: projectId,
 });
 
-var kind = 'Progress';
+const kind = 'Progress';
 
-function saveProgress(kl, totalMedals, rate, percentage, userId, username, timestamp) {
-  var progressKey = datastore.key(kind);
+export const saveProgress = (kl, totalMedals, rate, percentage, userId, username, timestamp) => {
+  const progressKey = datastore.key(kind);
 
-  var progress = {
+  const progress = {
     key: progressKey,
     data: {
       kl: kl,
@@ -31,16 +31,16 @@ function saveProgress(kl, totalMedals, rate, percentage, userId, username, times
 
   datastore
     .save(progress)
-    .then(function() {
+    .then(() => {
       console.log('Saved ' + progress.key.name + ': ' + progress.data.username);
     })
-    .catch(function(err) {
+    .catch((err) => {
       console.error('ERROR:', err);
     });
 }
 
-function getLatestProgressEntry(userId) {
-  var query = datastore.createQuery(kind)
+const getLatestProgressEntry = (userId) => {
+  const query = datastore.createQuery(kind)
       .filter('userId', '=', userId)
       .order('timestamp', { descending: true })
       .limit(1);
@@ -48,17 +48,17 @@ function getLatestProgressEntry(userId) {
   return datastore.runQuery(query);
 }
 
-function getLatestProgress(userId) {
-  return getLatestProgressEntry(userId).then(function(results) {
-    var latestProgress = results && results[0] && results[0][0];
+export const getLatestProgress = (userId) => {
+  return getLatestProgressEntry(userId).then((results) => {
+    const latestProgress = results && results[0] && results[0][0];
     return latestProgress;
   });
 }
 
-function deleteLatestProgress(userId) {
-  return getLatestProgressEntry(userId).then(function(results) {
-    var progressEntry = results && results[0] && results[0][0];
-    var itemKey = progressEntry && progressEntry[datastore.KEY];
+export const deleteLatestProgress = (userId) => {
+  return getLatestProgressEntry(userId).then((results) => {
+    const progressEntry = results && results[0] && results[0][0];
+    const itemKey = progressEntry && progressEntry[datastore.KEY];
     if (!itemKey) {
       throw {
         message: 'No latest progress item found for userId: ' + userId,
@@ -66,16 +66,10 @@ function deleteLatestProgress(userId) {
       };
     }
 
-    return datastore.delete(itemKey).then(function() {
+    return datastore.delete(itemKey).then(() => {
       return {
         deletedEntry: progressEntry,
       };
     });
   });
 }
-
-module.exports = {
-  saveProgress: saveProgress,
-  getLatestProgress: getLatestProgress,
-  deleteLatestProgress: deleteLatestProgress,
-};

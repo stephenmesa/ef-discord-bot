@@ -6,12 +6,16 @@
   "scripts": {
     "test": "mocha __tests__/**/*.js",
     "test-watch": "npm run test -- -w",
-    "start": "node src/index.js"
+    "start": "node --require dotenv/config lib/index.js",
+    "build": "babel src -d lib"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@google-cloud/datastore": "^1.4.1",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
     "discord.js": "^11.3.2",
     "dotenv": "^6.0.0"
   },
