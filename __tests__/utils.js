@@ -1,9 +1,10 @@
-var expect = require("expect");
-var utils = require("../src/utils");
+import expect from 'expect';
 
-describe("parseGoldString()", function() {
-    it("should work properly", function() {
-        var testHelper = function(inputString, expectedValue) {
+import * as utils from '../src/utils';
+
+describe("parseGoldString()", () => {
+    it("should work properly", () => {
+        var testHelper = (inputString, expectedValue) => {
             expect(utils.parseGoldString(inputString)).toEqual(expectedValue);
         };
 
@@ -18,9 +19,9 @@ describe("parseGoldString()", function() {
     })
 });
 
-describe("formatGoldString()", function() {
-    it("should work properly", function() {
-        var testHelper = function(inputValue, expectedValue) {
+describe("formatGoldString()", () => {
+    it("should work properly", () => {
+        var testHelper = (inputValue, expectedValue) => {
             expect(utils.formatGoldString(inputValue)).toEqual(expectedValue);
         };
 

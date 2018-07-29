@@ -5,4 +5,5 @@ WORKDIR /usr/src/ef-discord-bot
 ADD . /usr/src/ef-discord-bot
 RUN npm install --n
 RUN npm rebuild
+RUN npm run build
 CMD ["npm", "start"]

@@ -1,17 +1,18 @@
-require('dotenv').config();
-var Discord = require("discord.js");
-var client = new Discord.Client();
+require("babel-core").transform("code", {});
 
-var messaging = require('./messaging');
+import Discord from 'discord.js';
+const client = new Discord.Client();
 
-var discordToken = process.env.DISCORD_TOKEN;
+import * as messaging from './messaging';
+
+const discordToken = process.env.DISCORD_TOKEN;
 
 if (!discordToken) {
   console.error('Must provide DISCORD_TOKEN environment variable!');
   process.exit(1);
 }
 
-client.on('ready', function() {
+client.on('ready', () => {
   console.log('Logged in as ' + client.user.tag + '!');
 });
 

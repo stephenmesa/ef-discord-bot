@@ -1,20 +1,20 @@
-var srUndo = require('./commands/srUndo');
-var sr = require('./commands/sr');
+import srUndo from './commands/srUndo';
+import sr from './commands/sr';
 
-function processMessage(msg) {
-  var calculateRegExp = new RegExp(/^!calc/);
-  var msgCalcMatches = msg.content.match(calculateRegExp);
+export const processMessage = (msg) => {
+  const calculateRegExp = new RegExp(/^!calc/);
+  const msgCalcMatches = msg.content.match(calculateRegExp);
 
-  var recordRegExp = new RegExp(/^!record/);
-  var msgRecordMatches = msg.content.match(recordRegExp);
+  const recordRegExp = new RegExp(/^!record/);
+  const msgRecordMatches = msg.content.match(recordRegExp);
 
-  var srRegExp = new RegExp(/^!sr/);
-  var srArgsRegExp = new RegExp(/^!sr\s+(\d+)\s+(\d+(\.\d+)?\w+)\s+(\d+(\.\d+)?\w+)\s*(\d+(\.\d+)?)?/);
-  var msgSrMatches = msg.content.match(srRegExp);
-  var msgSrArgsMatches = msg.content.match(srArgsRegExp);
+  const srRegExp = new RegExp(/^!sr/);
+  const srArgsRegExp = new RegExp(/^!sr\s+(\d+)\s+(\d+(\.\d+)?\w+)\s+(\d+(\.\d+)?\w+)\s*(\d+(\.\d+)?)?/);
+  const msgSrMatches = msg.content.match(srRegExp);
+  const msgSrArgsMatches = msg.content.match(srArgsRegExp);
 
-  var srUndoExp = new RegExp(/^!sr undo$/);
-  var msgSrUndoMatches = msg.content.match(srUndoExp);
+  const srUndoExp = new RegExp(/^!sr undo$/);
+  const msgSrUndoMatches = msg.content.match(srUndoExp);
 
   if (msg.content === 'ping') {
     msg.reply('Pong!');
@@ -28,15 +28,11 @@ function processMessage(msg) {
     if (!msgSrArgsMatches) {
       msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`\n\nExample: `!sr 280 4.4h 337.5f`');
     } else {
-      var kl = msgSrArgsMatches[1];
-      var totalStr = msgSrArgsMatches[2];
-      var rateStr = msgSrArgsMatches[4];
-      var srEfficiency = msgSrArgsMatches[6] || 1.05;
+      const kl = msgSrArgsMatches[1];
+      const totalStr = msgSrArgsMatches[2];
+      const rateStr = msgSrArgsMatches[4];
+      const srEfficiency = msgSrArgsMatches[6] || 1.05;
       sr(msg, kl, totalStr, rateStr, srEfficiency);
     }
   }
 }
-
-module.exports = {
-  processMessage: processMessage,
-};
