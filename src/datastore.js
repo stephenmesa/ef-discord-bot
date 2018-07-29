@@ -1,5 +1,7 @@
 import Datastore from '@google-cloud/datastore';
 
+import CustomError from './classes/CustomError';
+
 const projectId = process.env.DATASTORE_PROJECTID;
 
 if (!projectId) {
@@ -8,7 +10,7 @@ if (!projectId) {
 }
 
 const datastore = new Datastore({
-  projectId: projectId,
+  projectId,
 });
 
 const kind = 'Progress';
@@ -19,57 +21,45 @@ export const saveProgress = (kl, totalMedals, rate, percentage, userId, username
   const progress = {
     key: progressKey,
     data: {
-      kl: kl,
-      totalMedals: totalMedals,
-      rate: rate,
-      percentage: percentage,
-      userId: userId,
-      username: username,
-      timestamp: timestamp,
+      kl,
+      totalMedals,
+      rate,
+      percentage,
+      userId,
+      username,
+      timestamp,
     },
   };
 
   datastore
     .save(progress)
-    .then(() => {
-      console.log('Saved ' + progress.key.name + ': ' + progress.data.username);
-    })
     .catch((err) => {
       console.error('ERROR:', err);
     });
-}
+};
 
 const getLatestProgressEntry = (userId) => {
   const query = datastore.createQuery(kind)
-      .filter('userId', '=', userId)
-      .order('timestamp', { descending: true })
-      .limit(1);
+    .filter('userId', '=', userId)
+    .order('timestamp', { descending: true })
+    .limit(1);
 
   return datastore.runQuery(query);
-}
+};
 
-export const getLatestProgress = (userId) => {
-  return getLatestProgressEntry(userId).then((results) => {
-    const latestProgress = results && results[0] && results[0][0];
-    return latestProgress;
-  });
-}
+export const getLatestProgress = userId => getLatestProgressEntry(userId).then((results) => {
+  const latestProgress = results && results[0] && results[0][0];
+  return latestProgress;
+});
 
-export const deleteLatestProgress = (userId) => {
-  return getLatestProgressEntry(userId).then((results) => {
-    const progressEntry = results && results[0] && results[0][0];
-    const itemKey = progressEntry && progressEntry[datastore.KEY];
-    if (!itemKey) {
-      throw {
-        message: 'No latest progress item found for userId: ' + userId,
-        errorCode: 404,
-      };
-    }
+export const deleteLatestProgress = userId => getLatestProgressEntry(userId).then((results) => {
+  const progressEntry = results && results[0] && results[0][0];
+  const itemKey = progressEntry && progressEntry[datastore.KEY];
+  if (!itemKey) {
+    throw new CustomError(`No latest progress item found for userId: ${userId}`, 404);
+  }
 
-    return datastore.delete(itemKey).then(() => {
-      return {
-        deletedEntry: progressEntry,
-      };
-    });
-  });
-}
+  return datastore.delete(itemKey).then(() => ({
+    deletedEntry: progressEntry,
+  }));
+});
