@@ -1,9 +1,10 @@
-require("babel-core").transform("code", {});
-
 import Discord from 'discord.js';
-const client = new Discord.Client();
 
-import * as messaging from './messaging';
+import processMessage from './processMessage';
+
+require('babel-core').transform('code', {});
+
+const client = new Discord.Client();
 
 const discordToken = process.env.DISCORD_TOKEN;
 
@@ -13,9 +14,9 @@ if (!discordToken) {
 }
 
 client.on('ready', () => {
-  console.log('Logged in as ' + client.user.tag + '!');
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.on('message', messaging.processMessage);
+client.on('message', processMessage);
 
 client.login(discordToken);

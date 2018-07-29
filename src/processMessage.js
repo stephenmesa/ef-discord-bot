@@ -1,7 +1,7 @@
 import srUndo from './commands/srUndo';
 import sr from './commands/sr';
 
-export const processMessage = (msg) => {
+const processMessage = (msg) => {
   const calculateRegExp = new RegExp(/^!calc/);
   const msgCalcMatches = msg.content.match(calculateRegExp);
 
@@ -35,4 +35,6 @@ export const processMessage = (msg) => {
       sr(msg, kl, totalStr, rateStr, srEfficiency);
     }
   }
-}
+};
+
+export default processMessage;

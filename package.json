@@ -7,7 +7,8 @@
     "test": "mocha __tests__/**/*.js",
     "test-watch": "npm run test -- -w",
     "start": "node --require dotenv/config lib/index.js",
-    "build": "babel src -d lib"
+    "build": "babel src -d lib",
+    "lint": "eslint src/**"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +21,9 @@
     "dotenv": "^6.0.0"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0",
     "expect": "^23.2.0",
     "mocha": "^5.2.0"
   }
