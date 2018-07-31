@@ -2,8 +2,6 @@ import Discord from 'discord.js';
 
 import processMessage from './processMessage';
 
-require('babel-core').transform('code', {});
-
 const client = new Discord.Client();
 
 const discordToken = process.env.DISCORD_TOKEN;
