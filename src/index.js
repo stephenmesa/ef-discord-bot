@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import Discord from 'discord.js';
 
 import processMessage from './processMessage';
@@ -17,4 +19,10 @@ client.on('ready', () => {
 
 client.on('message', processMessage);
 
-client.login(discordToken);
+(() => {
+  const gcpKey = Buffer.from(process.env.GCP_KEY, 'base64').toString('ascii');
+  const keyfilename = path.join(__dirname, 'gcp-key.json');
+  fs.writeFileSync(keyfilename, gcpKey);
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = keyfilename;
+  client.login(discordToken);
+})();
