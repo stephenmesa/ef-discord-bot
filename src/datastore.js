@@ -47,6 +47,15 @@ const getLatestProgressEntry = (userId) => {
   return datastore.runQuery(query);
 };
 
+export const getAllProgressEntries = (userId, limit = 25) => {
+  const query = datastore.createQuery(kind)
+    .filter('userId', '=', userId)
+    .order('timestamp', { descending: true })
+    .limit(limit);
+
+  return datastore.runQuery(query).then(results => results[0]);
+};
+
 export const getLatestProgress = userId => getLatestProgressEntry(userId).then((results) => {
   const latestProgress = results && results[0] && results[0][0];
   return latestProgress;
