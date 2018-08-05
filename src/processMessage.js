@@ -1,7 +1,7 @@
 import srUndo from './commands/srUndo';
 import sr from './commands/sr';
-import srGraph from './commands/srGraph';
-import medalsGraph from './commands/medalsGraph';
+import graphKL from './commands/graphKL';
+import graphMedals from './commands/graphMedals';
 
 const processMessage = (msg) => {
   const calculateRegExp = new RegExp(/^!calc/);
@@ -18,11 +18,11 @@ const processMessage = (msg) => {
   const srUndoExp = new RegExp(/^!sr undo$/);
   const msgSrUndoMatches = msg.content.match(srUndoExp);
 
-  const srGraphExp = new RegExp(/^!sr graph$/);
-  const msgSrGraphMatches = msg.content.match(srGraphExp);
+  const graphKlExp = new RegExp(/^!graph kl$/);
+  const msgGraphKlMatches = msg.content.match(graphKlExp);
 
-  const medalsGraphExp = new RegExp(/^!medals graph$/);
-  const msgMedalsGraphMatches = msg.content.match(medalsGraphExp);
+  const graphMedalsExp = new RegExp(/^!graph medals$/);
+  const msgGraphMedalsMatches = msg.content.match(graphMedalsExp);
 
   if (msg.content === 'ping') {
     msg.reply('Pong!');
@@ -32,13 +32,16 @@ const processMessage = (msg) => {
     msg.reply('The `!record` command has been deprecated. Please use the `!sr` command instead! Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
   } else if (msgSrUndoMatches) {
     srUndo(msg);
-  } else if (msgSrGraphMatches) {
-    srGraph(msg);
-  } else if (msgMedalsGraphMatches) {
-    medalsGraph(msg);
+  } else if (msgGraphKlMatches) {
+    graphKL(msg);
+  } else if (msgGraphMedalsMatches) {
+    graphMedals(msg);
   } else if (msgSrMatches) {
     if (!msgSrArgsMatches) {
-      msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`\n\nExample: `!sr 280 4.4h 337.5f`');
+      msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]` - Record your SR progress.\n(Example: `!sr 280 4.4h 337.5f`)'
+        + '\n\n`!sr undo` - Remove the last SR progress that you recorded.'
+        + '\n`!graph kl` - Generate a graph of your KL progress.'
+        + '\n`!graph medals` - Generate a graph of your total medals progress.');
     } else {
       const kl = msgSrArgsMatches[1];
       const totalStr = msgSrArgsMatches[2];

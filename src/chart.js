@@ -61,7 +61,7 @@ export const generateTotalMedalsSparklineChart = rawData => new Promise((resolve
   });
 });
 
-export const generateSrChart = rawData => new Promise((resolve, reject) => {
+export const generateKlChart = rawData => new Promise((resolve, reject) => {
   const sortedRawData = rawData.sort((a, b) => (a.timestamp > b.timestamp ? 1 : -1));
   const klData = sortedRawData.map(d => [d.timestamp, d.kl]);
   const stage = anychart.graphics.create('container');
@@ -81,7 +81,7 @@ export const generateSrChart = rawData => new Promise((resolve, reject) => {
   series.labels(true);
   chart.draw();
 
-  const filename = `${tempDir}/medals-${uuidv4()}.jpg`;
+  const filename = `${tempDir}/kl-${uuidv4()}.jpg`;
 
   anychartExport.exportTo(chart, 'jpg').then((image) => {
     fs.writeFile(filename, image, (fsWriteError) => {
