@@ -1,6 +1,7 @@
 import srUndo from './commands/srUndo';
 import sr from './commands/sr';
 import srGraph from './commands/srGraph';
+import medalsGraph from './commands/medalsGraph';
 
 const processMessage = (msg) => {
   const calculateRegExp = new RegExp(/^!calc/);
@@ -20,6 +21,9 @@ const processMessage = (msg) => {
   const srGraphExp = new RegExp(/^!sr graph$/);
   const msgSrGraphMatches = msg.content.match(srGraphExp);
 
+  const medalsGraphExp = new RegExp(/^!medals graph$/);
+  const msgMedalsGraphMatches = msg.content.match(medalsGraphExp);
+
   if (msg.content === 'ping') {
     msg.reply('Pong!');
   } else if (msgCalcMatches) {
@@ -30,6 +34,8 @@ const processMessage = (msg) => {
     srUndo(msg);
   } else if (msgSrGraphMatches) {
     srGraph(msg);
+  } else if (msgMedalsGraphMatches) {
+    medalsGraph(msg);
   } else if (msgSrMatches) {
     if (!msgSrArgsMatches) {
       msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`\n\nExample: `!sr 280 4.4h 337.5f`');
