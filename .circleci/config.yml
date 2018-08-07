@@ -38,6 +38,7 @@ jobs:
       - run: gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
       - run: gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
       - run: gcloud docker -- push us.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:$CIRCLE_SHA1
+      - run: gcloud docker -- push us.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:latest
 workflows:
   version: 2
   test-and-build-image:
