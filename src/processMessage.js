@@ -2,6 +2,7 @@ import srUndo from './commands/srUndo';
 import sr from './commands/sr';
 import graphKL from './commands/graphKL';
 import graphMedals from './commands/graphMedals';
+import graph from './commands/graph';
 
 const processMessage = (msg) => {
   const calculateRegExp = new RegExp(/^!calc/);
@@ -24,6 +25,9 @@ const processMessage = (msg) => {
   const graphMedalsExp = new RegExp(/^!graph medals$/);
   const msgGraphMedalsMatches = msg.content.match(graphMedalsExp);
 
+  const graphExp = new RegExp(/^!graph$/);
+  const msgGraphMatches = msg.content.match(graphExp);
+
   if (msg.content === 'ping') {
     msg.reply('Pong!');
   } else if (msgCalcMatches) {
@@ -32,6 +36,8 @@ const processMessage = (msg) => {
     msg.reply('The `!record` command has been deprecated. Please use the `!sr` command instead! Usage: `!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]`');
   } else if (msgSrUndoMatches) {
     srUndo(msg);
+  } else if (msgGraphMatches) {
+    graph(msg);
   } else if (msgGraphKlMatches) {
     graphKL(msg);
   } else if (msgGraphMedalsMatches) {
