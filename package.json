@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha __tests__/**/*.js",
+    "test": "mocha --require babel-register __tests__/**/*.js",
     "test-watch": "npm run test -- -w",
     "start": "node --require dotenv/config lib/index.js",
     "build": "babel src -d lib",
@@ -26,6 +26,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "babel-register": "^6.26.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
