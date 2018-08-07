@@ -4,6 +4,7 @@ import srHistory from './commands/srHistory';
 import graphKL from './commands/graphKL';
 import graphMedals from './commands/graphMedals';
 import graph from './commands/graph';
+import srDelete from './commands/srDelete';
 
 const processMessage = (msg) => {
   const calculateRegExp = new RegExp(/^!calc/);
@@ -32,6 +33,9 @@ const processMessage = (msg) => {
   const srHistoryExp = new RegExp(/^!sr history$/);
   const msgSrHistoryMatches = msg.content.match(srHistoryExp);
 
+  const srDeleteExp = new RegExp(/^!sr delete (\d+)$/);
+  const msgSrDeleteMatches = msg.content.match(srDeleteExp);
+
   if (msg.content === 'ping') {
     msg.reply('Pong!');
   } else if (msgCalcMatches) {
@@ -48,6 +52,9 @@ const processMessage = (msg) => {
     graphMedals(msg);
   } else if (msgSrHistoryMatches) {
     srHistory(msg);
+  } else if (msgSrDeleteMatches) {
+    const id = msgSrDeleteMatches[1];
+    srDelete(msg, id);
   } else if (msgSrMatches) {
     if (!msgSrArgsMatches) {
       msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]` - Record your SR progress.\n(Example: `!sr 280 4.4h 337.5f`)'
