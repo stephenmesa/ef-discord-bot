@@ -46,6 +46,7 @@ const processMessage = (msg) => {
     if (!msgSrArgsMatches) {
       msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]` - Record your SR progress.\n(Example: `!sr 280 4.4h 337.5f`)'
         + '\n\n`!sr undo` - Remove the last SR progress that you recorded.'
+        + '\n`!graph` - Generate a graph of your KL and medals progress.'
         + '\n`!graph kl` - Generate a graph of your KL progress.'
         + '\n`!graph medals` - Generate a graph of your total medals progress.');
     } else {
