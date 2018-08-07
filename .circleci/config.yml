@@ -34,7 +34,7 @@ jobs:
     steps:
       - checkout
       - run: echo ${GCLOUD_SERVICE_KEY} | base64 --decode > ${HOME}/gcp-key.json
-      - run: docker build --rm=false -t us.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:$CIRCLE_SHA1 us.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:latest .
+      - run: docker build --rm=false -t us.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:$CIRCLE_SHA1 -t us.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:latest .
       - run: gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
       - run: gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
       - run: gcloud docker -- push us.gcr.io/${GOOGLE_PROJECT_ID}/${IMAGE_NAME}:$CIRCLE_SHA1
