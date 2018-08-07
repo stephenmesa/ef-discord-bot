@@ -53,6 +53,7 @@ const processMessage = (msg) => {
       msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]` - Record your SR progress.\n(Example: `!sr 280 4.4h 337.5f`)'
         + '\n\n`!sr undo` - Remove the last SR progress that you recorded.'
         + '\n`!sr history` - Retrieve a list of all progress recorded up to now.'
+        + '\n`!sr delete <id>` - Delete a specific progress record from the past. (Retrieve the id via the `!sr history` command)'
         + '\n`!graph` - Generate a graph of your KL and medals progress.'
         + '\n`!graph kl` - Generate a graph of your KL progress.'
         + '\n`!graph medals` - Generate a graph of your total medals progress.');
