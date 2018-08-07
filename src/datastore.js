@@ -62,12 +62,12 @@ export const getAllProgressEntries = (userId, limit = 25) => {
 };
 
 export const getProgressEntry = (userId, id) => {
+  const key = datastore.key([kind, Number(id)]);
   const query = datastore.createQuery(kind)
-    .filter('userId', '=', userId)
-    .filter('id', '=', id);
+    .filter('__key__', key)
+    .filter('userId', '=', userId);
 
-  return datastore.runQuery(query)
-    .then(results => results[0][0]);
+  return datastore.runQuery(query);
 };
 
 export const getLatestProgress = userId => getLatestProgressEntry(userId).then((results) => {
@@ -87,12 +87,11 @@ export const deleteLatestProgress = userId => getLatestProgressEntry(userId).the
   }));
 });
 
-// deleteProgress
 export const deleteProgress = (userId, id) => getProgressEntry(userId, id).then((results) => {
   const progressEntry = results && results[0] && results[0][0];
   const itemKey = progressEntry && progressEntry[datastore.KEY];
   if (!itemKey) {
-    throw new CustomError(`No latest progress item found for userId: ${userId}`, 404);
+    throw new CustomError(`No progress item found for id: ${id}`, 404);
   }
 
   return datastore.delete(itemKey).then(() => ({

@@ -11,10 +11,10 @@ const srDelete = (msg, id) => {
     })
     .catch((err) => {
       if (err.errorCode === 404) {
-        msg.reply('Sorry, I couldn\'t find your most recent SR progress, it doesn\'t appear that you have any.');
+        msg.reply(`Sorry, I couldn't find a progress entry with the id of ${id}.`);
       } else {
         console.error(err);
-        msg.reply('Looks like stephenmesa has a terrible bug in his code. Go make fun of his programming abilities!');
+        msg.reply('Looks like stephenmesa has yet another terrible bug in his code. Go make fun of his programming abilities!');
       }
     });
 };
