@@ -30,9 +30,6 @@ jobs:
       # run tests!
       - run: npm test
   push-image:
-    branches:
-      only:
-        - master
     machine: true
     steps:
       - checkout
@@ -48,5 +45,8 @@ workflows:
     jobs:
       - test-locally
       - push-image:
+          filters:
+            branches:
+              only: master
           requires:
             - test-locally
