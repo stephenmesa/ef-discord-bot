@@ -1,5 +1,6 @@
 import srUndo from './commands/srUndo';
 import sr from './commands/sr';
+import srHistory from './commands/srHistory';
 import graphKL from './commands/graphKL';
 import graphMedals from './commands/graphMedals';
 import graph from './commands/graph';
@@ -28,6 +29,9 @@ const processMessage = (msg) => {
   const graphExp = new RegExp(/^!graph$/);
   const msgGraphMatches = msg.content.match(graphExp);
 
+  const srHistoryExp = new RegExp(/^!sr history$/);
+  const msgSrHistoryMatches = msg.content.match(srHistoryExp);
+
   if (msg.content === 'ping') {
     msg.reply('Pong!');
   } else if (msgCalcMatches) {
@@ -42,10 +46,13 @@ const processMessage = (msg) => {
     graphKL(msg);
   } else if (msgGraphMedalsMatches) {
     graphMedals(msg);
+  } else if (msgSrHistoryMatches) {
+    srHistory(msg);
   } else if (msgSrMatches) {
     if (!msgSrArgsMatches) {
       msg.reply('Usage:\n\n`!sr <knightLevel> <totalMedals> <srMedalsPerMinute> [srEfficiency]` - Record your SR progress.\n(Example: `!sr 280 4.4h 337.5f`)'
         + '\n\n`!sr undo` - Remove the last SR progress that you recorded.'
+        + '\n`!sr history` - Retrieve a list of all progress recorded up to now.'
         + '\n`!graph` - Generate a graph of your KL and medals progress.'
         + '\n`!graph kl` - Generate a graph of your KL progress.'
         + '\n`!graph medals` - Generate a graph of your total medals progress.');

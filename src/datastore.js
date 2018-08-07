@@ -1,4 +1,5 @@
 import Datastore from '@google-cloud/datastore';
+import _ from 'lodash';
 
 import CustomError from './classes/CustomError';
 
@@ -53,7 +54,11 @@ export const getAllProgressEntries = (userId, limit = 25) => {
     .order('timestamp', { descending: true })
     .limit(limit);
 
-  return datastore.runQuery(query).then(results => results[0]);
+  return datastore.runQuery(query)
+    .then(results => results[0].map((r) => {
+      const id = _.get(r[datastore.KEY], 'id');
+      return { ...r, id };
+    }));
 };
 
 export const getLatestProgress = userId => getLatestProgressEntry(userId).then((results) => {
