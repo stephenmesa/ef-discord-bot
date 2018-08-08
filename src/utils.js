@@ -92,12 +92,3 @@ export const generateSrMessage = (
     ],
   },
 });
-
-export const generateSrHistoryMessage = (progress, description) => {
-  const progressMessages = progress.map(p => [p.id, p.timestamp, p.kl, p.totalMedals].map(v => `"${v}"`).join(','));
-  return `${description}\n\n\`\`\`
-"id","timestamp","kl","totalMedals"\n
-${progressMessages.join('\n')}
-\`\`\`
-  `;
-};
