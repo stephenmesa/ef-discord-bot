@@ -8,7 +8,7 @@
     "test-watch": "npm run test -- -w",
     "start": "node --require dotenv/config lib/index.js",
     "build": "babel src -d lib",
-    "lint": "eslint src/**"
+    "lint": "eslint src/** __tests__/**"
   },
   "author": "",
   "license": "ISC",
