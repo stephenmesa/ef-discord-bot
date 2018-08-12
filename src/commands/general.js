@@ -32,11 +32,11 @@ module.exports = {
 					else if(command.role && message.member.roles.has(command.role)) able = true;
 					else if(command.permission && message.member.hasPermission(command.permission)) able = true;
 					else if(command.role || command.permission) able = false;
-					if(message.author.id === config.discord.owner) able = true;
+					if(message.author.id === Bot.owner) able = true;
 					return able;
 
 				}).map(command => command.name).join('`, `'));
-				data.push(`\`\nYou can send \`${config.discord.prefix}help [command name]\` to get info on a specific command!`);
+				data.push(`\`\nYou can send \`${Bot.prefix}help [command name]\` to get info on a specific command!`);
 			}
 			else
 			{
@@ -44,11 +44,11 @@ module.exports = {
 					return message.reply('that\'s not a valid command!');
 				}
 				const command = commands.get(args[0]);
-				data.push(`__Note on usage:__ <> indicates a required field, () indicates an optional one. Do not include these when you enter the command`);
+				data.push(`__Note on usage:__ <> indicates a required field, [] indicates an optional one. Do not include these when you enter the command`);
 				if (command.description) data.push(`**Name:** ${command.name}`);
 				if (command.description) data.push(`**Description:** ${command.description}`);
 				if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
-				if (command.usage) data.push(`**Usage:** ${config.discord.prefix}${command.name} ${command.usage}`);
+				if (command.usage) data.push(`**Usage:** ${Bot.prefix}${command.name} ${command.usage}`);
 				if (command.role) data.push(`**Needed Role:** ${command.role}`);
 				if (command.permission) data.push(`**Needed Permission:** ${command.permission}`);
 				data.push(`**Cooldown:** ${command.cooldown || 3} second(s)`);
