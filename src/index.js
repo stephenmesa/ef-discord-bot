@@ -3,14 +3,17 @@ import path from 'path';
 import Discord from 'discord.js';
 import _ from 'lodash';
 
-var Bot = {};
+var Bot = {
+	prefix: '!',
+	owner: '294466905073516554',
+	Discord: Discord
+};
 
 const client = new Discord.Client();
 const cooldowns = new Discord.Collection();
 
 const discordToken = process.env.DISCORD_TOKEN;
 
-Bot.Discord = Discord;
 Bot.replyDelete = function(message, reply, deleteCommand = false)
 {
 	return message.reply(reply)
@@ -42,9 +45,9 @@ client.on('ready', () => {
 });
 
 client.on('message', async message => {
-  if (!message.content.startsWith(config.discord.prefix) || message.author.bot) return;
+  if (!message.content.startsWith(Bot.prefix) || message.author.bot) return;
 
-	const args = message.content.slice(config.discord.prefix.length).trim().split(/ +/g);
+	const args = message.content.slice(Bot.prefix.length).trim().split(/ +/g);
 	const commandName = args.shift().toLowerCase();
 
 	const command = client.commands.get(commandName)
@@ -55,7 +58,7 @@ client.on('message', async message => {
 	if (command.guildOnly && message.channel.type !== 'text') {
 		return message.reply('I can\'t execute that command inside DMs!');
 	}
-	if(message.author.id !== config.discord.owner && ((command.role && !message.member.roles.has(command.role)) || command.permission && !message.member.hasPermission(command.permission)) )
+	if(message.author.id !== Bot.owner && ((command.role && !message.member.roles.has(command.role)) || command.permission && !message.member.hasPermission(command.permission)) )
 	{
 		return message.reply('You do not have access to this command!');
 	}
@@ -63,7 +66,7 @@ client.on('message', async message => {
 		let reply = `You didn't provide enough arguments, ${message.author}!`;
 
 		if (command.usage) {
-			reply += `\nThe proper usage would be: \`${config.discord.prefix}${command.name} ${command.usage}\``;
+			reply += `\nThe proper usage would be: \`${Bot.prefix}${command.name} ${command.usage}\``;
 		}
 
 		return message.channel.send(reply);
