@@ -2,7 +2,7 @@ import * as utils from '../utils';
 import * as datastore from '../datastore';
 import * as csv from '../csv';
 import * as chart from '../chart';
-var Bot = require('../app').Bot;
+var Bot = require('../index').Bot;
 var _ = require('lodash');
 
 module.exports = {
