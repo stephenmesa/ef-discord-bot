@@ -1,4 +1,4 @@
-var Bot = require('../app').Bot;
+var Bot = require('../index').Bot;
 var _ = require('lodash');
 module.exports = {
 	commands:
