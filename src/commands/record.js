@@ -68,7 +68,7 @@ module.exports = {
 						percentageWithDoubled,
 						description,
 					);
-					msg.channel.send(messageToSend);
+					message.channel.send(messageToSend);
 					
 					datastore.saveProgress(kl, totalMdl, srMpm, percentage, message.author.id, message.author, new Date());
 				});
