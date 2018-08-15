@@ -6,7 +6,7 @@ module.exports = {
       name: 'ping',
       description: 'See the bots current ping',
       cooldown: 5,
-      async execute(message, ignore) {
+      async execute(message) {
         const m = await message.channel.send('Ping?');
         m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(Bot.client.ping)}ms`);
       },
@@ -30,8 +30,7 @@ module.exports = {
             else if (command.role && message.member.roles.has(command.role)) able = true;
             else if (command.permission && message.member.hasPermission(command.permission)) {
               able = true;
-            }
-            else if (command.role || command.permission) able = false;
+            } else if (command.role || command.permission) able = false;
             if (message.author.id === Bot.owner) able = true;
             return able;
           }).map(command => command.name).join('`, `'));
@@ -39,7 +38,7 @@ module.exports = {
         } else {
           if (!commands.has(args[0])) {
             message.reply('that\'s not a valid command!');
-			return;
+            return;
           }
           const command = commands.get(args[0]);
           data.push('__Note on usage:__ <> indicates a required field, [] indicates an optional one. Do not include these when you enter the command');
