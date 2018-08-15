@@ -1,7 +1,8 @@
+import Discord from 'discord.js';
 import * as utils from '../utils';
 import * as datastore from '../datastore';
 import * as csv from '../csv';
-import Discord from 'discord.js';
+
 const { Bot } = require('../index').Bot;
 
 module.exports = {
@@ -33,10 +34,10 @@ module.exports = {
           return;
         }
 
-        let kl = args[0];
-        let totalMdl = utils.parseGoldString(args[1]);
-        let srMpm = utils.parseGoldString(args[2]);
-        let srEfficiency = args[3] || 1.05;
+        const kl = args[0];
+        const totalMdl = utils.parseGoldString(args[1]);
+        const srMpm = utils.parseGoldString(args[2]);
+        const srEfficiency = args[3] || 1.05;
         if (Number.isNaN(kl)) {
           message.reply('Invalid knight level provided, please ensure you only use numbers');
           return;
@@ -76,7 +77,7 @@ module.exports = {
           );
           message.channel.send(messageToSend);
 
-          datastore.saveProgress(kl, totalMdl, srMpm, percentage, 
+          datastore.saveProgress(kl, totalMdl, srMpm, percentage,
             message.author.id, message.author, new Date());
         });
       },
@@ -85,7 +86,7 @@ module.exports = {
       name: 'undo',
       description: 'Undo your last recorded progress',
       cooldown: 10,
-      async execute(message, ignore) {
+      async execute(message) {
         datastore.deleteLatestProgress(message.author.id)
           .then((result) => {
             const deletedProgress = result.deletedEntry;
@@ -106,11 +107,11 @@ module.exports = {
       name: 'history',
       description: 'View your progress history',
       cooldown: 10,
-      async execute(message, ignore) {
+      async execute(message) {
         datastore.getAllProgressEntries(message.author.id, 512).then((progress) => {
           if (!progress || progress.length === 0) {
             message.author.send(`Sorry, I don't have any progress recorded for you. Try using the '${Bot.prefix}record' command to record progress!`);
-			return;
+            return;
           }
           csv.generateProgressCSV(progress)
             .then((filename) => {
@@ -132,7 +133,7 @@ module.exports = {
       args: 1,
       cooldown: 5,
       async execute(message, args) {
-        let id = args[0];
+        const id = args[0];
         if (Number.isNaN(id)) {
           message.reply('Invalid ID supplied, please only use numbers');
           return;
