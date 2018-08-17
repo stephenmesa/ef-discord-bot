@@ -6,9 +6,10 @@ module.exports = {
       name: 'ping',
       description: 'See the bots current ping',
       cooldown: 5,
-      async execute(message) {
-        const m = await message.channel.send('Ping?');
-        m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(Bot.client.ping)}ms`);
+      execute(message) {
+        message.channel.send('Ping?').then((m) => {
+          m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(Bot.client.ping)}ms`);
+        });
       },
     },
     {
@@ -17,7 +18,7 @@ module.exports = {
       aliases: ['commands'],
       usage: '[command name]',
       cooldown: 5,
-      async execute(message, args) {
+      execute(message, args) {
         const { commands } = message.client;
         const data = [];
         if (!args.length) {
