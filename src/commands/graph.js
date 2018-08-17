@@ -11,7 +11,7 @@ module.exports = {
       usage: '[kl/medals] (blank for both)',
       cooldown: 10,
       guildOnly: true,
-      async execute(message, args) {
+      execute(message, args) {
         datastore.getAllProgressEntries(message.author.id)
           .then((results) => {
             let tempchart;
