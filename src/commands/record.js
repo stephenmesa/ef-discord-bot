@@ -14,7 +14,7 @@ module.exports = {
       args: 1,
       aliases: ['sr'],
       usage: '<knight level> <total medals> <SR mpm> [SR multiplier(assumed 1.05 if blank)]',
-      async execute(message, args) {
+      execute(message, args) {
         if (args[0].toLowerCase() === 'undo') {
           message.reply(`This command has been split, please use "${Bot.prefix}undo" instead`);
           return;
@@ -86,7 +86,7 @@ module.exports = {
       name: 'undo',
       description: 'Undo your last recorded progress',
       cooldown: 10,
-      async execute(message) {
+      execute(message) {
         datastore.deleteLatestProgress(message.author.id)
           .then((result) => {
             const deletedProgress = result.deletedEntry;
@@ -107,7 +107,7 @@ module.exports = {
       name: 'history',
       description: 'View your progress history',
       cooldown: 10,
-      async execute(message) {
+      execute(message) {
         datastore.getAllProgressEntries(message.author.id, 512).then((progress) => {
           if (!progress || progress.length === 0) {
             message.author.send(`Sorry, I don't have any progress recorded for you. Try using the '${Bot.prefix}record' command to record progress!`);
@@ -132,7 +132,7 @@ module.exports = {
       usage: `<ID (use ${Bot.prefix}history to see IDs)>`,
       args: 1,
       cooldown: 5,
-      async execute(message, args) {
+      execute(message, args) {
         const id = args[0];
         if (Number.isNaN(id)) {
           message.reply('Invalid ID supplied, please only use numbers');
