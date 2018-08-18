@@ -247,3 +247,4 @@ export const generateKLAndMedalsChart = rawData => new Promise((resolve, reject)
 export const deleteChart = (filename) => {
   fs.unlink(filename);
 };
+
