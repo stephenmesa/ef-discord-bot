@@ -8,8 +8,8 @@ if (!fs.existsSync(tempDir)) {
 
 export const generateProgressCSV = (progress) => {
   const filename = `${tempDir}/kl-medals-${uuidv4()}.jpg`;
-  const progressMessages = progress.map(p => [p.id, p.timestamp, p.kl, p.totalMedals].map(v => `"${v}"`).join(','));
-  const csvContents = `"id","timestamp","kl","totalMedals"
+  const progressMessages = progress.map(p => [p.id, p.timestamp, p.kl, p.totalMedals, p.rate, p.percentage].map(v => `"${v}"`).join(','));
+  const csvContents = `"id","timestamp","kl","totalMedals","srRate","srPercentage"
 ${progressMessages.join('\n')}`;
   return new Promise((resolve, reject) => {
     fs.writeFile(filename, csvContents, (err) => {
