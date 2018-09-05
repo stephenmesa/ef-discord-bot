@@ -17,6 +17,9 @@ if (!discordToken) {
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setActivity(`Sponsored by Celestial`, { type: 'WATCHING' })
+  .then(presence => console.log(`Activity set to ${presence.game ? presence.game.name : 'none'}`))
+  .catch(console.error);
 });
 
 client.on('message', message => processMessage(message, client));
