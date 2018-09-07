@@ -15,6 +15,8 @@ if (!discordToken) {
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  client.user.setActivity('Sponsored by Celestial', { type: 'WATCHING' })
+    .catch(console.error);
 });
 
 client.on('message', processMessage);
