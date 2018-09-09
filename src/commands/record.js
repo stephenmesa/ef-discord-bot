@@ -84,7 +84,7 @@ const deleteCommand = {
 const recordCommand = {
   name: 'record',
   description: 'Record your progress',
-  args: 3,
+  args: 1,
   aliases: ['sr'],
   usage: '<knight level> <total medals> <SR mpm> [SR multiplier(assumed 1.05 if blank)]',
   execute: (message, args) => {
@@ -101,6 +101,13 @@ const recordCommand = {
     }
     if (args[0].toLowerCase() === 'history') {
       message.reply(`This command has been deprecated, please use "${BOT_PREFIX}${historyCommand.name}" instead`);
+      return;
+    }
+
+    if (args.length < 3) {
+      let reply = `You didn't provide enough arguments, ${username}!`;
+      reply += `\nThe proper usage would be: \`${BOT_PREFIX}record <knight level> <total medals> <SR mpm> [SR multiplier(assumed 1.05 if blank)]\``;
+      message.channel.send(reply);
       return;
     }
 
