@@ -5,7 +5,7 @@ export default [
     name: 'ping',
     description: 'See the bots current ping',
     execute: (message) => {
-      message.channel.send('Pong!');
+      message.reply('Pong!');
     },
   },
   {
@@ -32,8 +32,7 @@ export default [
         if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
         if (command.usage) data.push(`**Usage:** ${BOT_PREFIX}${command.name} ${command.usage}`);
       }
-      message.author.send(data, { split: true })
-        .catch(() => message.reply('it seems like I can\'t DM you!'));
+      message.channel.send(data, { split: true });
     },
   },
 ];
