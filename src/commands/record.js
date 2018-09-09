@@ -17,15 +17,15 @@ export default [
       const userId = message.author.id;
 
       if (args[0].toLowerCase() === 'undo') {
-        message.reply(`This command has been split, please use "${BOT_PREFIX}undo" instead`);
+        message.reply(`This command has been deprecated, please use "${BOT_PREFIX}undo" instead`);
         return;
       }
       if (args[0].toLowerCase() === 'delete') {
-        message.reply(`This command has been split, please use "${BOT_PREFIX}delete" instead`);
+        message.reply(`This command has been deprecated, please use "${BOT_PREFIX}delete" instead`);
         return;
       }
       if (args[0].toLowerCase() === 'history') {
-        message.reply(`This command has been split, please use "${BOT_PREFIX}history" instead`);
+        message.reply(`This command has been deprecated, please use "${BOT_PREFIX}history" instead`);
         return;
       }
       if (args.length < 3) {
