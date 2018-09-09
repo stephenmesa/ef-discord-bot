@@ -9,7 +9,7 @@ const sendGraphMessage = ({
   chartType,
 }) => {
   const re = new Discord.RichEmbed()
-    .setAuthor(message.member.displayName, `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png`)
+    .setAuthor(message.member.displayName, message.author.avatar ? `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png` : undefined)
     .setColor(13720519)
     .setFooter('NephBot created by @stephenmesa#1219', 'https://cdn.discordapp.com/avatars/294466905073516554/dcde95b6bfc77a0a7eb62827fd87af1a.png')
     .setImage('attachment://chart.jpg')
