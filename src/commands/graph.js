@@ -20,49 +20,51 @@ const sendGraphMessage = ({
   });
 };
 
-export default [
-  {
-    name: 'graph',
-    description: 'Graphs your progress',
-    usage: '[kl/medals] (blank for both)',
-    execute: (message, args) => {
-      datastore.getAllProgressEntries(message.author.id)
-        .then((results) => {
-          const dataPoints = results.map(p => ({
-            kl: Number(p.kl),
-            totalMedals: utils.parseGoldString(p.totalMedals),
-            srRate: p.percentage,
-            timestamp: p.timestamp,
-          }));
+const graphCommand = {
+  name: 'graph',
+  description: 'Graphs your progress',
+  usage: '[kl/medals] (blank for both)',
+  execute: (message, args) => {
+    datastore.getAllProgressEntries(message.author.id)
+      .then((results) => {
+        const dataPoints = results.map(p => ({
+          kl: Number(p.kl),
+          totalMedals: utils.parseGoldString(p.totalMedals),
+          srRate: p.percentage,
+          timestamp: p.timestamp,
+        }));
 
-          const graphType = args[0] ? args[0].toLowerCase() : args[0];
+        const graphType = args[0] ? args[0].toLowerCase() : args[0];
 
-          if (graphType === 'kl') {
-            chart.generateKlChart(dataPoints).then((chartFilename) => {
-              sendGraphMessage({
-                message,
-                chartFilename,
-                chartType: 'KL',
-              });
+        if (graphType === 'kl') {
+          chart.generateKlChart(dataPoints).then((chartFilename) => {
+            sendGraphMessage({
+              message,
+              chartFilename,
+              chartType: 'KL',
             });
-          } else if (graphType === 'medals') {
-            chart.generateMedalsChart(dataPoints).then((chartFilename) => {
-              sendGraphMessage({
-                message,
-                chartFilename,
-                chartType: 'medal',
-              });
+          });
+        } else if (graphType === 'medals') {
+          chart.generateMedalsChart(dataPoints).then((chartFilename) => {
+            sendGraphMessage({
+              message,
+              chartFilename,
+              chartType: 'medal',
             });
-          } else {
-            chart.generateKLAndMedalsChart(dataPoints).then((chartFilename) => {
-              sendGraphMessage({
-                message,
-                chartFilename,
-                chartType: 'KL and medal',
-              });
+          });
+        } else {
+          chart.generateKLAndMedalsChart(dataPoints).then((chartFilename) => {
+            sendGraphMessage({
+              message,
+              chartFilename,
+              chartType: 'KL and medal',
             });
-          }
-        });
-    },
+          });
+        }
+      });
   },
+};
+
+export default [
+  graphCommand,
 ];
