@@ -35,7 +35,9 @@ export default [
             timestamp: p.timestamp,
           }));
 
-          if (args[0] && args[0].toLowerCase() === 'kl') {
+          const graphType = args[0] ? args[0].toLowerCase() : args[0];
+
+          if (graphType === 'kl') {
             chart.generateKlChart(dataPoints).then((chartFilename) => {
               sendGraphMessage({
                 message,
@@ -43,7 +45,7 @@ export default [
                 chartType: 'KL',
               });
             });
-          } else if (args[0] && args[0].toLowerCase() === 'medals') {
+          } else if (graphType === 'medals') {
             chart.generateMedalsChart(dataPoints).then((chartFilename) => {
               sendGraphMessage({
                 message,
