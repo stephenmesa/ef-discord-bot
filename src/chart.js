@@ -123,15 +123,15 @@ export const generateMedalsChart = rawData => new Promise((resolve, reject) => {
     .scale(yScale)
     .title('Medals')
     .labels()
-    .format(function formatting() {
-      const { value } = this;
+    .format((labelData) => {
+      const { value } = labelData;
       return utils.formatGoldString(value);
     });
 
   series.name('Medals');
   series.labels(true);
-  series.labels().format(function formatting() {
-    const { value } = this;
+  series.labels().format((labelData) => {
+    const { value } = labelData;
     return utils.formatGoldString(value);
   });
   series.yScale(yScale);
@@ -193,8 +193,8 @@ export const generateKLAndMedalsChart = rawData => new Promise((resolve, reject)
   yAxis2.scale(yScale2);
   yAxis2.title('Medals');
   yAxis2.labels(true);
-  yAxis2.labels().format(function formatting() {
-    const { value } = this;
+  yAxis2.labels().format((labelData) => {
+    const { value } = labelData;
     return utils.formatGoldString(value);
   });
   yAxis2.labels().fontColor(medalsTextColor);
@@ -206,8 +206,8 @@ export const generateKLAndMedalsChart = rawData => new Promise((resolve, reject)
 
   const series2 = chart.line(seriesData2);
   series2.name('Medals');
-  series2.labels().format(function formatting() {
-    const { value } = this;
+  series2.labels().format((labelData) => {
+    const { value } = labelData;
     return utils.formatGoldString(value);
   });
   series2.normal().stroke(medalsColor);
