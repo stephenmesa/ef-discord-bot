@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import Discord from 'discord.js';
+import _ from 'lodash';
 
+import commands from './commands';
 import processMessage from './processMessage';
 
 const client = new Discord.Client();
@@ -19,7 +21,13 @@ client.on('ready', () => {
     .catch(console.error);
 });
 
-client.on('message', processMessage);
+client.on('message', message => processMessage(message, client));
+
+client.commands = new Discord.Collection();
+
+_.each(commands, (command) => {
+  client.commands.set(command.name, command);
+});
 
 (() => {
   const gcpKey = Buffer.from(process.env.GCP_KEY, 'base64').toString('ascii');

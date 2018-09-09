@@ -20,5 +20,9 @@ ${progressMessages.join('\n')}`;
 };
 
 export const deleteCSV = (filename) => {
-  fs.unlink(filename);
+  fs.unlink(filename, (err) => {
+    if (err) {
+      console.error(`failed to delete csv: ${err}`);
+    }
+  });
 };
