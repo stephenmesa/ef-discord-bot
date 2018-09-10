@@ -1,10 +1,11 @@
 import fs from 'fs';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
-import svg2png from 'svg2png';
 
 import { anychart, anychartExport } from './bootstrapAnychart';
 import * as utils from './utils';
+
+const svgToImg = require('svg-to-img');
 
 const tempDir = './temp';
 if (!fs.existsSync(tempDir)) {
@@ -25,12 +26,11 @@ export const generateKLSparklineChart = rawData => new Promise((resolve, reject)
   const filename = `${tempDir}/kl-${uuidv4()}.png`;
 
   anychartExport.exportTo(chart, 'svg')
-    .then(svgBuffer => svg2png(svgBuffer))
-    .then(buffer => fs.writeFile(filename, buffer, (err) => {
-      if (err) throw err;
-    }))
-    .then(() => resolve(filename))
-    .catch(err => reject(err));
+    .then(async (svgBuffer) => {
+      await svgToImg.from(svgBuffer).toPng({ path: filename })
+        .then(() => resolve(filename))
+        .catch(err => reject(err));
+    });
 });
 
 export const generateTotalMedalsSparklineChart = rawData => new Promise((resolve, reject) => {
@@ -47,12 +47,11 @@ export const generateTotalMedalsSparklineChart = rawData => new Promise((resolve
   const filename = `${tempDir}/medals-${uuidv4()}.png`;
 
   anychartExport.exportTo(chart, 'svg')
-    .then(svgBuffer => svg2png(svgBuffer))
-    .then(buffer => fs.writeFile(filename, buffer, (err) => {
-      if (err) throw err;
-    }))
-    .then(() => resolve(filename))
-    .catch(err => reject(err));
+    .then(async (svgBuffer) => {
+      await svgToImg.from(svgBuffer).toPng({ path: filename })
+        .then(() => resolve(filename))
+        .catch(err => reject(err));
+    });
 });
 
 export const generateKlChart = rawData => new Promise((resolve, reject) => {
@@ -78,12 +77,11 @@ export const generateKlChart = rawData => new Promise((resolve, reject) => {
   const filename = `${tempDir}/kl-${uuidv4()}.png`;
 
   anychartExport.exportTo(chart, 'svg')
-    .then(svgBuffer => svg2png(svgBuffer))
-    .then(buffer => fs.writeFile(filename, buffer, (err) => {
-      if (err) throw err;
-    }))
-    .then(() => resolve(filename))
-    .catch(err => reject(err));
+    .then(async (svgBuffer) => {
+      await svgToImg.from(svgBuffer).toPng({ path: filename })
+        .then(() => resolve(filename))
+        .catch(err => reject(err));
+    });
 });
 
 export const generateMedalsChart = rawData => new Promise((resolve, reject) => {
@@ -129,12 +127,11 @@ export const generateMedalsChart = rawData => new Promise((resolve, reject) => {
   const filename = `${tempDir}/medals-${uuidv4()}.png`;
 
   anychartExport.exportTo(chart, 'svg')
-    .then(svgBuffer => svg2png(svgBuffer))
-    .then(buffer => fs.writeFile(filename, buffer, (err) => {
-      if (err) throw err;
-    }))
-    .then(() => resolve(filename))
-    .catch(err => reject(err));
+    .then(async (svgBuffer) => {
+      await svgToImg.from(svgBuffer).toPng({ path: filename })
+        .then(() => resolve(filename))
+        .catch(err => reject(err));
+    });
 });
 
 
@@ -217,12 +214,11 @@ export const generateKLAndMedalsChart = rawData => new Promise((resolve, reject)
   const filename = `${tempDir}/kl-medals-${uuidv4()}.png`;
 
   anychartExport.exportTo(chart, 'svg')
-    .then(svgBuffer => svg2png(svgBuffer))
-    .then(buffer => fs.writeFile(filename, buffer, (err) => {
-      if (err) throw err;
-    }))
-    .then(() => resolve(filename))
-    .catch(err => reject(err));
+    .then(async (svgBuffer) => {
+      await svgToImg.from(svgBuffer).toPng({ path: filename })
+        .then(() => resolve(filename))
+        .catch(err => reject(err));
+    });
 });
 
 export const deleteChart = (filename) => {
