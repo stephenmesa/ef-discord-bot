@@ -59,7 +59,7 @@ const graphCommand = {
               chartFilename,
               chartType: 'KL and medal',
             });
-          });
+          }).catch(console.error);
         }
       });
   },
