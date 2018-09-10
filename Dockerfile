@@ -1,4 +1,5 @@
-FROM node:8.4.0-alpine
+FROM buildkite/puppeteer
+
 LABEL maintainer="stephen.mesa@gmail.com"
 RUN mkdir -p /usr/src/ef-discord-bot
 WORKDIR /usr/src/ef-discord-bot
