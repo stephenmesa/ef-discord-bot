@@ -119,7 +119,7 @@ const recordCommand = {
     const srEfficiency = args[3] || 1.05;
     const timestamp = new Date();
 
-    if (Number.isNaN(kl) || !Number.isFinite(kl)) {
+    if (Number.isNaN(Number(kl))) {
       message.reply('Invalid knight level provided, please ensure you only use numbers');
       return;
     }
@@ -131,7 +131,7 @@ const recordCommand = {
       message.reply('Invalid SR MPM supplied, please try again');
       return;
     }
-    if (Number.isNaN(srEfficiency) || !Number.isFinite(srEfficiency)) {
+    if (Number.isNaN(Number(srEfficiency))) {
       message.reply('Invalid SR efficiency supplied, please try again. It should be a number like 1.05 (so no letters)');
       return;
     }
