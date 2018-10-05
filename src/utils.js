@@ -1,3 +1,5 @@
+import stats from 'stats-analysis';
+
 export const parseGoldString = (gold) => {
   if (Number.isFinite(gold)) {
     return Number(gold);
@@ -92,3 +94,28 @@ export const generateSrMessage = (
     ],
   },
 });
+
+const filterOutlierProgresses = (records) => {
+  const percentages = records.map(r => r.percentage);
+  const outlierIndices = stats.indexOfOutliers(percentages, stats.outlierMethod.MAD, 60);
+
+  return records.filter((val, index) => outlierIndices.indexOf(index) === -1);
+};
+
+export const assessProgress = (currentProgress, comparableProgresses) => {
+  const normalizedProgresses = filterOutlierProgresses(comparableProgresses);
+  const percentages = normalizedProgresses.map(e => e.percentage);
+  const percentageAverage = stats.mean(percentages);
+  const percentageIsGood = currentProgress.percentage >= percentageAverage;
+  const percentageMin = Math.min(...percentages);
+  const percentageMax = Math.max(...percentages);
+  const percentageRange = percentageMax - percentageMin;
+  const scoreDecimal = (currentProgress.percentage - percentageMin) / percentageRange;
+  const score = Math.round(scoreDecimal * 100);
+
+  return {
+    percentageIsGood,
+    percentageAverage,
+    score,
+  };
+};

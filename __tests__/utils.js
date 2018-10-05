@@ -2,6 +2,8 @@ import expect from 'expect';
 
 import * as utils from '../src/utils';
 
+import kl350Data from './data/kl350data.json';
+
 describe('parseGoldString()', () => {
   it('should work properly', () => {
     const testHelper = (inputString, expectedValue) => {
@@ -37,5 +39,43 @@ describe('formatGoldString()', () => {
     testHelper(123123123, '123.123b');
     testHelper(123123123123, '123.123c');
     testHelper(123123123123123, '123.123d');
+  });
+});
+
+describe('assessProgress()', () => {
+  it('should return a good assessment', () => {
+    const progress = {
+      totalMedals: '1.9j',
+      percentage: 5.439221052631579,
+      rate: '410.1h',
+      kl: '350',
+      userId: '328021654112436226',
+      username: 'Rougarou',
+      timestamp: '2018-09-26T13:13:25.548Z',
+    };
+
+    const target = utils.assessProgress(progress, kl350Data.entities);
+
+    console.log({ score: target.score });
+    expect(target.percentageIsGood).toEqual(true);
+    expect(target.percentageAverage).toBeDefined();
+  });
+
+  it('should return a bad assessment', () => {
+    const progress = {
+      timestamp: '2018-09-02T21:20:33.526Z',
+      totalMedals: '2.8j',
+      percentage: 2.7990000000000004,
+      rate: '311h',
+      kl: '350',
+      userId: '265640127806701595',
+      username: 'Zeustiak',
+    };
+
+    const target = utils.assessProgress(progress, kl350Data.entities);
+
+    console.log({ score: target.score });
+    expect(target.percentageIsGood).toEqual(false);
+    expect(target.percentageAverage).toBeDefined();
   });
 });

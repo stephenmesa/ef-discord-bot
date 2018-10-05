@@ -20,6 +20,7 @@
     "discord.js": "^11.3.2",
     "dotenv": "^6.0.0",
     "lodash": "^4.17.10",
+    "stats-analysis": "^2.0.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
