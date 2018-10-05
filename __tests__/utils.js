@@ -49,8 +49,8 @@ describe('assessProgress()', () => {
       percentage: 5.439221052631579,
       rate: '410.1h',
       kl: '350',
-      userId: '328021654112436226',
-      username: 'Rougarou',
+      userId: 'testId',
+      username: 'testdata',
       timestamp: '2018-09-26T13:13:25.548Z',
     };
 
@@ -67,8 +67,8 @@ describe('assessProgress()', () => {
       percentage: 2.7990000000000004,
       rate: '311h',
       kl: '350',
-      userId: '265640127806701595',
-      username: 'Zeustiak',
+      userId: 'testId',
+      username: 'testdata',
     };
 
     const target = utils.assessProgress(progress, kl350Data.entities);
