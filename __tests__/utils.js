@@ -56,7 +56,6 @@ describe('assessProgress()', () => {
 
     const target = utils.assessProgress(progress, kl350Data.entities);
 
-    console.log({ score: target.score });
     expect(target.percentageIsGood).toEqual(true);
     expect(target.percentageAverage).toBeDefined();
   });
@@ -74,7 +73,6 @@ describe('assessProgress()', () => {
 
     const target = utils.assessProgress(progress, kl350Data.entities);
 
-    console.log({ score: target.score });
     expect(target.percentageIsGood).toEqual(false);
     expect(target.percentageAverage).toBeDefined();
   });
