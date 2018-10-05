@@ -163,9 +163,35 @@ const recordCommand = {
   },
 };
 
+const gradeCommand = {
+  name: 'grade',
+  description: 'View your progress grade',
+  execute: (message) => {
+    const userId = message.author.id;
+    datastore.getLatestProgress(userId).then((latestProgress) => {
+      if (!latestProgress) {
+        message.reply(`Sorry, I don't have any progress recorded for you. Try using the '${BOT_PREFIX}record' command to record progress!`);
+        return;
+      }
+      const { kl, percentage } = latestProgress;
+      datastore.getAllProgressEntriesForKL(kl, MAX_HISTORY_COUNT).then((progress) => {
+        if (!progress || progress.length === 0) {
+          message.reply(`Sorry, I don't have any progress recorded for KL${kl}.`);
+          return;
+        }
+        const assessment = utils.assessProgress(latestProgress, progress);
+        const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% for KL${kl})`;
+
+        message.reply(messageText);
+      });
+    });
+  },
+};
+
 export default [
   recordCommand,
   undoCommand,
   historyCommand,
   deleteCommand,
+  gradeCommand,
 ];
