@@ -98,3 +98,16 @@ export const deleteProgress = (userId, id) => getProgressEntry(userId, id).then(
     deletedEntry: progressEntry,
   }));
 });
+
+export const getAllProgressEntriesForKL = (kl, limit = 25) => {
+  const query = datastore.createQuery(kind)
+    .filter('kl', '=', kl)
+    .order('timestamp', { descending: true })
+    .limit(limit);
+
+  return datastore.runQuery(query)
+    .then(results => results[0].map((r) => {
+      const id = _.get(r[datastore.KEY], 'id');
+      return { ...r, id };
+    }));
+};

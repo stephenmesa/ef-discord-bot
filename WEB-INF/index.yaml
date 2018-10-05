@@ -5,3 +5,9 @@ indexes:
   - name: userId
   - name: timestamp
     direction: desc
+
+- kind: Progress
+  properties:
+  - name: kl
+  - name: timestamp
+    direction: desc
