@@ -174,16 +174,20 @@ const gradeCommand = {
         return;
       }
       const { kl, percentage } = latestProgress;
-      datastore.getAllProgressEntriesForKL(kl, MAX_HISTORY_COUNT).then((progress) => {
-        if (!progress || progress.length === 0) {
-          message.reply(`Sorry, I don't have any progress recorded for KL${kl}.`);
-          return;
-        }
-        const assessment = utils.assessProgress(latestProgress, progress);
-        const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% for KL${kl}, based on ${assessment.n} records)`;
+      const nearbyRange = 1;
+      const minKL = kl - nearbyRange;
+      const maxKL = kl + nearbyRange;
+      datastore.getAllProgressEntriesForKLRange(minKL, maxKL, MAX_HISTORY_COUNT)
+        .then((progress) => {
+          if (!progress || progress.length === 0) {
+            message.reply(`Sorry, I don't have any progress recorded for KL${kl}.`);
+            return;
+          }
+          const assessment = utils.assessProgress(latestProgress, progress);
+          const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% between KL${minKL} and KL${maxKL}, based on ${assessment.n} records)`;
 
-        message.reply(messageText);
-      });
+          message.reply(messageText);
+        });
     });
   },
 };
