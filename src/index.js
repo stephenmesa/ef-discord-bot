@@ -17,7 +17,8 @@ if (!discordToken) {
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
-  client.user.setActivity('Sponsored by Celestial', { type: 'WATCHING' })
+  const version = process.env.npm_package_version;
+  client.user.setActivity(`Sponsored by Celestial (${version})`, { type: 'WATCHING' })
     .catch(console.error);
 });
 
