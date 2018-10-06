@@ -112,10 +112,12 @@ export const assessProgress = (currentProgress, comparableProgresses) => {
   const percentageRange = percentageMax - percentageMin;
   const scoreDecimal = (currentProgress.percentage - percentageMin) / percentageRange;
   const score = Math.round(scoreDecimal * 100);
+  const n = normalizedProgresses.length;
 
   return {
     percentageIsGood,
     percentageAverage,
     score,
+    n,
   };
 };

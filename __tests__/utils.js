@@ -75,5 +75,6 @@ describe('assessProgress()', () => {
 
     expect(target.percentageIsGood).toEqual(false);
     expect(target.percentageAverage).toBeDefined();
+    expect(target.n).toBeDefined();
   });
 });

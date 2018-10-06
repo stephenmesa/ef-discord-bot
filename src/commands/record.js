@@ -180,7 +180,7 @@ const gradeCommand = {
           return;
         }
         const assessment = utils.assessProgress(latestProgress, progress);
-        const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% for KL${kl})`;
+        const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% for KL${kl}, based on ${assessment.n} records)`;
 
         message.reply(messageText);
       });
