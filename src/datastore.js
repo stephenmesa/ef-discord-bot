@@ -99,10 +99,10 @@ export const deleteProgress = (userId, id) => getProgressEntry(userId, id).then(
   }));
 });
 
-export const getAllProgressEntriesForKL = (kl, limit = 25) => {
+export const getAllProgressEntriesForKLRange = (minKL, maxKL, limit = 25) => {
   const query = datastore.createQuery(kind)
-    .filter('kl', '=', kl)
-    .order('timestamp', { descending: true })
+    .filter('kl', '>=', minKL)
+    .filter('kl', '<=', maxKL)
     .limit(limit);
 
   return datastore.runQuery(query)
