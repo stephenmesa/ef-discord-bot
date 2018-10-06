@@ -111,7 +111,7 @@ const recordCommand = {
       return;
     }
 
-    const kl = args[0];
+    const kl = Number(args[0]);
     const totalStr = args[1];
     const totalMdl = utils.parseGoldString(totalStr);
     const rateStr = args[2];
@@ -119,7 +119,7 @@ const recordCommand = {
     const srEfficiency = args[3] || 1.05;
     const timestamp = new Date();
 
-    if (Number.isNaN(Number(kl))) {
+    if (Number.isNaN(kl)) {
       message.reply('Invalid knight level provided, please ensure you only use numbers');
       return;
     }
