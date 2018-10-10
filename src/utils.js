@@ -96,10 +96,11 @@ export const generateSrMessage = (
 });
 
 const filterOutlierProgresses = (records) => {
-  const percentages = records.map(r => r.percentage);
+  const filteredRecords = records.filter(record => !!record.percentage);
+  const percentages = filteredRecords.map(r => r.percentage);
   const outlierIndices = stats.indexOfOutliers(percentages, stats.outlierMethod.MAD, 60);
 
-  return records.filter((val, index) => outlierIndices.indexOf(index) === -1);
+  return filteredRecords.filter((val, index) => outlierIndices.indexOf(index) === -1);
 };
 
 export const assessProgress = (currentProgress, comparableProgresses) => {
