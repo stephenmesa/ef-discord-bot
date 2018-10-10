@@ -77,4 +77,100 @@ describe('assessProgress()', () => {
     expect(target.percentageAverage).toBeDefined();
     expect(target.n).toBeDefined();
   });
+
+  it('should toss out null percentages', () => {
+    const progress = {
+      timestamp: '2018-09-02T21:20:33.526Z',
+      totalMedals: '2.8j',
+      percentage: 2.7990000000000004,
+      rate: '311h',
+      kl: '350',
+      userId: 'testId',
+      username: 'testdata',
+    };
+
+    const entities = [
+      {
+        rate: '193i',
+        kl: 382,
+        userId: 'testId',
+        username: 'testdata',
+        timestamp: '2018-09-23T21:45:59.985Z',
+        totalMedals: '1.4k',
+        percentage: 3.4740000000000006,
+        id: '5630425133219840',
+      }, {
+        userId: 'testId',
+        username: 'testdata',
+        timestamp: '2018-09-24T16:49:58.605Z',
+        totalMedals: '1.3k',
+        percentage: null,
+        rate: '226.8i',
+        kl: 382,
+        id: '5631458978824192',
+      }, {
+        timestamp: '2018-10-01T16:40:54.870Z',
+        totalMedals: '1.2k',
+        percentage: 3.2613000000000003,
+        rate: '155.3i',
+        kl: 382,
+        userId: 'testId',
+        username: 'testdata',
+        id: '5634022537428992',
+      },
+    ];
+
+    const target = utils.assessProgress(progress, entities);
+
+    expect(target.percentageAverage).toBeTruthy();
+    expect(target.n).toEqual(2);
+  });
+
+  it('should toss out NaN percentages', () => {
+    const progress = {
+      userId: 'testId',
+      username: 'testdata',
+      timestamp: '2018-10-09T14:25:28.119Z',
+      totalMedals: '5.3j',
+      percentage: 3.455728301886793,
+      rate: '726.8h',
+      kl: 355,
+    };
+
+    const entities = [
+      {
+        rate: '193i',
+        kl: 382,
+        userId: 'testId',
+        username: 'testdata',
+        timestamp: '2018-09-23T21:45:59.985Z',
+        totalMedals: '1.4k',
+        percentage: 3.4740000000000006,
+        id: '5630425133219840',
+      }, {
+        userId: 'testId',
+        username: 'testdata',
+        timestamp: '2018-09-24T16:49:58.605Z',
+        totalMedals: '1.3k',
+        percentage: NaN,
+        rate: '226.8i',
+        kl: 382,
+        id: '5631458978824192',
+      }, {
+        timestamp: '2018-10-01T16:40:54.870Z',
+        totalMedals: '1.2k',
+        percentage: 3.2613000000000003,
+        rate: '155.3i',
+        kl: 382,
+        userId: 'testId',
+        username: 'testdata',
+        id: '5634022537428992',
+      },
+    ];
+
+    const target = utils.assessProgress(progress, entities);
+
+    expect(target.percentageAverage).toBeTruthy();
+    expect(target.n).toEqual(2);
+  });
 });
