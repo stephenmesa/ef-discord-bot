@@ -184,7 +184,9 @@ const gradeCommand = {
             return;
           }
           const assessment = utils.assessProgress(latestProgress, progress);
-          const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% between KL${minKL} and KL${maxKL}, based on ${assessment.n} records)`;
+          const recordPluralization = assessment.n > 1 ? 's' : '';
+          const recordCountDescription = `${assessment.n} record${recordPluralization}`;
+          const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% between KL${minKL} and KL${maxKL}, based on ${recordCountDescription})`;
 
           message.reply(messageText);
         });
