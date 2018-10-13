@@ -1,4 +1,6 @@
 import Discord from 'discord.js';
+import _ from 'lodash';
+
 import * as utils from '../utils';
 import * as datastore from '../datastore';
 import * as csv from '../csv';
@@ -184,6 +186,9 @@ const gradeCommand = {
             return;
           }
           const assessment = utils.assessProgress(latestProgress, progress);
+          const klSummaries = _.mapValues(assessment.kls, (klAssessment) => {
+            
+          });
           const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% between KL${minKL} and KL${maxKL}, based on ${assessment.n} records)`;
 
           message.reply(messageText);

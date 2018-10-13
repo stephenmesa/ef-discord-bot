@@ -1,4 +1,5 @@
 import stats from 'stats-analysis';
+import _ from 'lodash';
 
 export const parseGoldString = (gold) => {
   if (Number.isFinite(gold)) {
@@ -105,20 +106,36 @@ const filterOutlierProgresses = (records) => {
 
 export const assessProgress = (currentProgress, comparableProgresses) => {
   const normalizedProgresses = filterOutlierProgresses(comparableProgresses);
-  const percentages = normalizedProgresses.map(e => e.percentage);
-  const percentageAverage = stats.mean(percentages);
-  const percentageIsGood = currentProgress.percentage >= percentageAverage;
-  const percentageMin = Math.min(...percentages);
-  const percentageMax = Math.max(...percentages);
-  const percentageRange = percentageMax - percentageMin;
-  const scoreDecimal = (currentProgress.percentage - percentageMin) / percentageRange;
+
+  const klProgresses = _.groupBy(normalizedProgresses, 'kl');
+
+  const kls = _.mapValues(klProgresses, (progresses) => {
+    const percentages = progresses.map(e => e.percentage);
+    const percentageAverage = stats.mean(percentages);
+    const percentageMin = Math.min(...percentages);
+    const percentageMax = Math.max(...percentages);
+    const n = progresses.length;
+
+    return {
+      percentageAverage,
+      n,
+      percentageMin,
+      percentageMax,
+    };
+  });
+
+  const allPercentageMins = _.map(_.values(kls), data => _.get(data, 'percentageMin'));
+  const overallPercentageMin = Math.min(...allPercentageMins);
+
+  const allPercentageMaxs = _.map(_.values(kls), data => _.get(data, 'percentageMax'));
+  const overallPercentageMax = Math.max(...allPercentageMaxs);
+
+  const overallPercentageRange = overallPercentageMax - overallPercentageMin;
+  const scoreDecimal = (currentProgress.percentage - overallPercentageMin) / overallPercentageRange;
   const score = Math.round(scoreDecimal * 100);
-  const n = normalizedProgresses.length;
 
   return {
-    percentageIsGood,
-    percentageAverage,
+    kls,
     score,
-    n,
   };
 };
