@@ -1,4 +1,5 @@
 import stats from 'stats-analysis';
+import _ from 'lodash';
 
 export const parseGoldString = (gold) => {
   if (Number.isFinite(gold)) {
@@ -105,20 +106,74 @@ const filterOutlierProgresses = (records) => {
 
 export const assessProgress = (currentProgress, comparableProgresses) => {
   const normalizedProgresses = filterOutlierProgresses(comparableProgresses);
-  const percentages = normalizedProgresses.map(e => e.percentage);
-  const percentageAverage = stats.mean(percentages);
-  const percentageIsGood = currentProgress.percentage >= percentageAverage;
-  const percentageMin = Math.min(...percentages);
-  const percentageMax = Math.max(...percentages);
-  const percentageRange = percentageMax - percentageMin;
-  const scoreDecimal = (currentProgress.percentage - percentageMin) / percentageRange;
+
+  const klProgresses = _.groupBy(normalizedProgresses, 'kl');
+
+  const kls = _.mapValues(klProgresses, (progresses) => {
+    const percentages = progresses.map(e => e.percentage);
+    const percentageAverage = stats.mean(percentages);
+    const percentageMin = Math.min(...percentages);
+    const percentageMax = Math.max(...percentages);
+    const n = progresses.length;
+
+    return {
+      percentageAverage: Number(percentageAverage.toFixed(2)),
+      n,
+      percentageMin: Number(percentageMin.toFixed(2)),
+      percentageMax: Number(percentageMax.toFixed(2)),
+    };
+  });
+
+  const allPercentageMins = _.map(_.values(kls), data => _.get(data, 'percentageMin'));
+  const overallPercentageMin = Math.min(...allPercentageMins);
+
+  const allPercentageMaxs = _.map(_.values(kls), data => _.get(data, 'percentageMax'));
+  const overallPercentageMax = Math.max(...allPercentageMaxs);
+
+  const allPercentageAverages = _.map(_.values(kls), data => _.get(data, 'percentageAverage'));
+  const overallPercentageAverage = stats.mean(allPercentageAverages);
+
+  const overallPercentageRange = overallPercentageMax - overallPercentageMin;
+  const scoreDecimal = (currentProgress.percentage - overallPercentageMin) / overallPercentageRange;
   const score = Math.round(scoreDecimal * 100);
-  const n = normalizedProgresses.length;
 
   return {
-    percentageIsGood,
-    percentageAverage,
+    kls,
+    percentageAverage: Number(overallPercentageAverage.toFixed(2)),
     score,
-    n,
+  };
+};
+
+export const generateSrGradeMessage = (
+  message,
+  timestamp,
+  assessment,
+  kl,
+  percentage,
+) => {
+  const klFields = _.values(_.mapValues(assessment.kls, (klAssessment, groupKL) => ({
+    name: `KL${groupKL} (${klAssessment.n} records)`,
+    value: `${klAssessment.percentageMin}%-${klAssessment.percentageMax}%`,
+    inline: true,
+  })));
+
+  const description = `Your SR grade is **${assessment.score}/100**. (Based on an average percentage of ${assessment.percentageAverage}%)`;
+
+  return {
+    embed: {
+      description,
+      author: {
+        name: `${message.member.displayName} (KL${kl} ${percentage.toFixed(2)}%)`,
+        icon_url: message.author.avatar ? `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png` : undefined,
+      },
+      footer: {
+        icon_url: 'https://cdn.discordapp.com/avatars/294466905073516554/dcde95b6bfc77a0a7eb62827fd87af1a.png',
+        text: 'NephBot created by @stephenmesa#1219',
+      },
+      title: 'SR Grade',
+      color: 13720519,
+      timestamp: timestamp.toISOString(),
+      fields: klFields,
+    },
   };
 };

@@ -2,8 +2,6 @@ import expect from 'expect';
 
 import * as utils from '../src/utils';
 
-import kl350Data from './data/kl350data.json';
-
 describe('parseGoldString()', () => {
   it('should work properly', () => {
     const testHelper = (inputString, expectedValue) => {
@@ -43,134 +41,163 @@ describe('formatGoldString()', () => {
 });
 
 describe('assessProgress()', () => {
-  it('should return a good assessment', () => {
-    const progress = {
-      totalMedals: '1.9j',
-      percentage: 5.439221052631579,
-      rate: '410.1h',
-      kl: '350',
-      userId: 'testId',
-      username: 'testdata',
-      timestamp: '2018-09-26T13:13:25.548Z',
-    };
-
-    const target = utils.assessProgress(progress, kl350Data.entities);
-
-    expect(target.percentageIsGood).toEqual(true);
-    expect(target.percentageAverage).toBeDefined();
-  });
-
-  it('should return a bad assessment', () => {
-    const progress = {
-      timestamp: '2018-09-02T21:20:33.526Z',
-      totalMedals: '2.8j',
-      percentage: 2.7990000000000004,
-      rate: '311h',
-      kl: '350',
-      userId: 'testId',
-      username: 'testdata',
-    };
-
-    const target = utils.assessProgress(progress, kl350Data.entities);
-
-    expect(target.percentageIsGood).toEqual(false);
-    expect(target.percentageAverage).toBeDefined();
-    expect(target.n).toBeDefined();
-  });
-
-  it('should toss out null percentages', () => {
-    const progress = {
-      timestamp: '2018-09-02T21:20:33.526Z',
-      totalMedals: '2.8j',
-      percentage: 2.7990000000000004,
-      rate: '311h',
-      kl: '350',
-      userId: 'testId',
-      username: 'testdata',
-    };
-
-    const entities = [
+  describe('when given a single KL', () => {
+    const testKL = 350;
+    const testEntities = [
       {
-        rate: '193i',
-        kl: 382,
-        userId: 'testId',
-        username: 'testdata',
-        timestamp: '2018-09-23T21:45:59.985Z',
-        totalMedals: '1.4k',
-        percentage: 3.4740000000000006,
-        id: '5630425133219840',
+        percentage: 1.1,
+        kl: testKL,
       }, {
-        userId: 'testId',
-        username: 'testdata',
-        timestamp: '2018-09-24T16:49:58.605Z',
-        totalMedals: '1.3k',
-        percentage: null,
-        rate: '226.8i',
-        kl: 382,
-        id: '5631458978824192',
+        percentage: 1.2,
+        kl: testKL,
       }, {
-        timestamp: '2018-10-01T16:40:54.870Z',
-        totalMedals: '1.2k',
-        percentage: 3.2613000000000003,
-        rate: '155.3i',
-        kl: 382,
-        userId: 'testId',
-        username: 'testdata',
-        id: '5634022537428992',
+        percentage: 2.1,
+        kl: testKL,
+      }, {
+        percentage: 5.2,
+        kl: testKL,
+      }, {
+        percentage: 6.7,
+        kl: testKL,
       },
     ];
 
-    const target = utils.assessProgress(progress, entities);
+    it('should calculate average', () => {
+      const progress = {
+        percentage: 5.4,
+        kl: testKL,
+      };
 
-    expect(target.percentageAverage).toBeTruthy();
-    expect(target.n).toEqual(2);
+      const target = utils.assessProgress(progress, testEntities);
+
+      expect(target.kls).toBeDefined();
+      expect(Object.keys(target.kls).length).toBe(1);
+
+      const klSummary = target.kls[testKL];
+      expect(klSummary).toBeDefined();
+      expect(klSummary.n).toBe(5);
+      expect(klSummary.percentageAverage).toBeDefined();
+      expect(klSummary.percentageMin).toBe(1.1);
+      expect(klSummary.percentageMax).toBe(6.7);
+
+      expect(target.score).toBeDefined();
+    });
+
+    it('should toss out null percentages', () => {
+      const progress = {
+        percentage: 2.8,
+        kl: testKL,
+      };
+
+      const entities = [
+        {
+          kl: testKL,
+          percentage: 3.4,
+        }, {
+          percentage: null,
+          kl: testKL,
+        }, {
+          percentage: 3.2,
+          kl: testKL,
+        },
+      ];
+
+      const target = utils.assessProgress(progress, entities);
+
+      const klSummary = target.kls[testKL];
+      expect(klSummary).toBeDefined();
+      expect(klSummary.n).toBe(2);
+      expect(klSummary.percentageAverage).toBeDefined();
+      expect(klSummary.percentageMin).toBe(3.2);
+      expect(klSummary.percentageMax).toBe(3.4);
+
+      expect(target.score).toBeDefined();
+    });
+
+    it('should toss out NaN percentages', () => {
+      const progress = {
+        percentage: 2.8,
+        kl: testKL,
+      };
+
+      const entities = [
+        {
+          kl: testKL,
+          percentage: 3.4,
+        }, {
+          percentage: NaN,
+          kl: testKL,
+        }, {
+          percentage: 3.2,
+          kl: testKL,
+        },
+      ];
+
+      const target = utils.assessProgress(progress, entities);
+
+      const klSummary = target.kls[testKL];
+      expect(klSummary).toBeDefined();
+      expect(klSummary.n).toBe(2);
+      expect(klSummary.percentageAverage).toBeDefined();
+      expect(klSummary.percentageMin).toBe(3.2);
+      expect(klSummary.percentageMax).toBe(3.4);
+
+      expect(target.score).toBeDefined();
+    });
   });
 
-  it('should toss out NaN percentages', () => {
-    const progress = {
-      userId: 'testId',
-      username: 'testdata',
-      timestamp: '2018-10-09T14:25:28.119Z',
-      totalMedals: '5.3j',
-      percentage: 3.455728301886793,
-      rate: '726.8h',
-      kl: 355,
-    };
-
-    const entities = [
+  describe('when given multiple KL', () => {
+    const testKL = 350;
+    const testEntities = [
       {
-        rate: '193i',
-        kl: 382,
-        userId: 'testId',
-        username: 'testdata',
-        timestamp: '2018-09-23T21:45:59.985Z',
-        totalMedals: '1.4k',
-        percentage: 3.4740000000000006,
-        id: '5630425133219840',
+        percentage: 1.1,
+        kl: testKL - 1,
       }, {
-        userId: 'testId',
-        username: 'testdata',
-        timestamp: '2018-09-24T16:49:58.605Z',
-        totalMedals: '1.3k',
-        percentage: NaN,
-        rate: '226.8i',
-        kl: 382,
-        id: '5631458978824192',
+        percentage: 1.2,
+        kl: testKL - 1,
       }, {
-        timestamp: '2018-10-01T16:40:54.870Z',
-        totalMedals: '1.2k',
-        percentage: 3.2613000000000003,
-        rate: '155.3i',
-        kl: 382,
-        userId: 'testId',
-        username: 'testdata',
-        id: '5634022537428992',
+        percentage: 2.1,
+        kl: testKL,
+      }, {
+        percentage: 5.2,
+        kl: testKL,
+      }, {
+        percentage: 6.7,
+        kl: testKL + 1,
+      }, {
+        percentage: 2.7,
+        kl: testKL + 1,
       },
     ];
 
-    const target = utils.assessProgress(progress, entities);
+    it('should calculate average', () => {
+      const progress = {
+        percentage: 5.4,
+        kl: testKL,
+      };
 
-    expect(target.percentageAverage).toBeTruthy();
-    expect(target.n).toEqual(2);
+      const target = utils.assessProgress(progress, testEntities);
+
+      expect(target.kls).toBeDefined();
+      expect(Object.keys(target.kls).length).toBe(3);
+
+      expect(target.kls[testKL - 1].n).toBe(2);
+      expect(target.kls[testKL].n).toBe(2);
+      expect(target.kls[testKL + 1].n).toBe(2);
+
+      expect(target.kls[testKL - 1].percentageAverage).toBeDefined();
+      expect(target.kls[testKL - 1].percentageMin).toBe(1.1);
+      expect(target.kls[testKL - 1].percentageMax).toBe(1.2);
+
+      expect(target.kls[testKL].percentageAverage).toBeDefined();
+      expect(target.kls[testKL].percentageMin).toBe(2.1);
+      expect(target.kls[testKL].percentageMax).toBe(5.2);
+
+      expect(target.kls[testKL + 1].percentageAverage).toBeDefined();
+      expect(target.kls[testKL + 1].percentageMin).toBe(2.7);
+      expect(target.kls[testKL + 1].percentageMax).toBe(6.7);
+
+      expect(target.score).toBeDefined();
+    });
   });
 });
