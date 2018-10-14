@@ -1,5 +1,4 @@
 import Discord from 'discord.js';
-import _ from 'lodash';
 
 import * as utils from '../utils';
 import * as datastore from '../datastore';
