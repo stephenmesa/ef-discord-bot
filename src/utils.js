@@ -117,10 +117,10 @@ export const assessProgress = (currentProgress, comparableProgresses) => {
     const n = progresses.length;
 
     return {
-      percentageAverage,
+      percentageAverage: Number(percentageAverage.toFixed(2)),
       n,
-      percentageMin,
-      percentageMax,
+      percentageMin: Number(percentageMin.toFixed(2)),
+      percentageMax: Number(percentageMax.toFixed(2)),
     };
   });
 
@@ -130,12 +130,50 @@ export const assessProgress = (currentProgress, comparableProgresses) => {
   const allPercentageMaxs = _.map(_.values(kls), data => _.get(data, 'percentageMax'));
   const overallPercentageMax = Math.max(...allPercentageMaxs);
 
+  const allPercentageAverages = _.map(_.values(kls), data => _.get(data, 'percentageAverage'));
+  const overallPercentageAverage = stats.mean(allPercentageAverages);
+
   const overallPercentageRange = overallPercentageMax - overallPercentageMin;
   const scoreDecimal = (currentProgress.percentage - overallPercentageMin) / overallPercentageRange;
   const score = Math.round(scoreDecimal * 100);
 
   return {
     kls,
+    percentageAverage: Number(overallPercentageAverage.toFixed(2)),
     score,
+  };
+};
+
+export const generateSrGradeMessage = (
+  message,
+  timestamp,
+  assessment,
+  kl,
+  percentage,
+) => {
+  const klFields = _.values(_.mapValues(assessment.kls, (klAssessment, groupKL) => ({
+    name: `KL${groupKL} (${klAssessment.n} records)`,
+    value: `${klAssessment.percentageMin}%-${klAssessment.percentageMax}%`,
+    inline: true,
+  })));
+
+  const description = `Your SR grade is **${assessment.score}/100**. (Based on an average percentage of ${assessment.percentageAverage}%)`;
+
+  return {
+    embed: {
+      description,
+      author: {
+        name: `${message.member.displayName} (KL${kl} ${percentage.toFixed(2)}%)`,
+        icon_url: message.author.avatar ? `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png` : undefined,
+      },
+      footer: {
+        icon_url: 'https://cdn.discordapp.com/avatars/294466905073516554/dcde95b6bfc77a0a7eb62827fd87af1a.png',
+        text: 'NephBot created by @stephenmesa#1219',
+      },
+      title: 'SR Grade',
+      color: 13720519,
+      timestamp: timestamp.toISOString(),
+      fields: klFields,
+    },
   };
 };

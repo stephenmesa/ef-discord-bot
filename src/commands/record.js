@@ -179,6 +179,8 @@ const gradeCommand = {
       const nearbyRange = 1;
       const minKL = kl - nearbyRange;
       const maxKL = kl + nearbyRange;
+      const timestamp = new Date();
+
       datastore.getAllProgressEntriesForKLRange(minKL, maxKL, MAX_HISTORY_COUNT)
         .then((progress) => {
           if (!progress || progress.length === 0) {
@@ -186,12 +188,16 @@ const gradeCommand = {
             return;
           }
           const assessment = utils.assessProgress(latestProgress, progress);
-          const klSummaries = _.mapValues(assessment.kls, (klAssessment) => {
-            
-          });
-          const messageText = `Your SR grade is ${assessment.score}/100. (Your percentage is ${percentage.toFixed(2).toString()}% with an average percentage of ${assessment.percentageAverage.toFixed(2).toString()}% between KL${minKL} and KL${maxKL}, based on ${assessment.n} records)`;
 
-          message.reply(messageText);
+          const messageToSend = utils.generateSrGradeMessage(
+            message,
+            timestamp,
+            assessment,
+            kl,
+            percentage,
+          );
+
+          message.channel.send(messageToSend);
         });
     });
   },
