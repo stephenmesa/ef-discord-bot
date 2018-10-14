@@ -2,8 +2,6 @@ import expect from 'expect';
 
 import * as utils from '../src/utils';
 
-import kl350Data from './data/kl350data.json';
-
 describe('parseGoldString()', () => {
   it('should work properly', () => {
     const testHelper = (inputString, expectedValue) => {

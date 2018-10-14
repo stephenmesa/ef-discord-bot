@@ -164,7 +164,7 @@ export const generateSrGradeMessage = (
       description,
       author: {
         name: `${message.member.displayName} (KL${kl} ${percentage.toFixed(2)}%)`,
-        icon_url: message.author.avatar ? `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png` : undefined,
+        icon_url: message.author.avatar ? `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png` : undefined,
       },
       footer: {
         icon_url: 'https://cdn.discordapp.com/avatars/294466905073516554/dcde95b6bfc77a0a7eb62827fd87af1a.png',
