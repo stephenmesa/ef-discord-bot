@@ -155,7 +155,7 @@ export const generateSrGradeMessage = (
   percentage,
 ) => {
   const klFields = _.values(_.mapValues(assessment.kls, (klAssessment, groupKL) => ({
-    name: `KL${groupKL} (${klAssessment.n} records)`,
+    name: `KL${groupKL} (${klAssessment.n} record${klAssessment.n > 1 ? 's' : ''})`,
     value: `${klAssessment.percentageMin}%-${klAssessment.percentageMax}%`,
     inline: true,
   })));
