@@ -200,4 +200,19 @@ describe('assessProgress()', () => {
       expect(target.score).toBeDefined();
     });
   });
+
+  describe('when given a single record', () => {
+    it('returns null', () => {
+      const testKL = 201;
+      const progress = {
+        percentage: 5.74,
+        kl: testKL,
+      };
+      const testEntities = [progress];
+
+      const target = utils.assessProgress(progress, testEntities);
+
+      expect(target.score).toBeNull();
+    });
+  });
 });

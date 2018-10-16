@@ -133,9 +133,12 @@ export const assessProgress = (currentProgress, comparableProgresses) => {
   const allPercentageAverages = _.map(_.values(kls), data => _.get(data, 'percentageAverage'));
   const overallPercentageAverage = stats.mean(allPercentageAverages);
 
-  const overallPercentageRange = overallPercentageMax - overallPercentageMin;
-  const scoreDecimal = (currentProgress.percentage - overallPercentageMin) / overallPercentageRange;
-  const score = Math.round(scoreDecimal * 100);
+  const range = overallPercentageMax - overallPercentageMin;
+  let score = null;
+  if (range !== 0) {
+    const scoreDecimal = (currentProgress.percentage - overallPercentageMin) / range;
+    score = Math.round(scoreDecimal * 100);
+  }
 
   return {
     kls,
@@ -152,12 +155,15 @@ export const generateSrGradeMessage = (
   percentage,
 ) => {
   const klFields = _.values(_.mapValues(assessment.kls, (klAssessment, groupKL) => ({
-    name: `KL${groupKL} (${klAssessment.n} records)`,
+    name: `KL${groupKL} (${klAssessment.n} record${klAssessment.n > 1 ? 's' : ''})`,
     value: `${klAssessment.percentageMin}%-${klAssessment.percentageMax}%`,
     inline: true,
   })));
 
-  const description = `Your SR grade is **${assessment.score}/100**. (Based on an average percentage of ${assessment.percentageAverage}%)`;
+  const description = assessment.score
+    ? `Your SR grade is **${assessment.score}/100**. (Based on an average percentage of ${assessment.percentageAverage}%)`
+    : 'Sorry, but your grade could not be calculated based on lack of data';
+
 
   return {
     embed: {
