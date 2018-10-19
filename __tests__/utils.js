@@ -76,7 +76,6 @@ describe('assessProgress()', () => {
       const klSummary = target.kls[testKL];
       expect(klSummary).toBeDefined();
       expect(klSummary.n).toBe(5);
-      expect(klSummary.percentageAverage).toBeDefined();
       expect(klSummary.percentageMin).toBe(1.1);
       expect(klSummary.percentageMax).toBe(6.7);
 
@@ -107,7 +106,6 @@ describe('assessProgress()', () => {
       const klSummary = target.kls[testKL];
       expect(klSummary).toBeDefined();
       expect(klSummary.n).toBe(2);
-      expect(klSummary.percentageAverage).toBeDefined();
       expect(klSummary.percentageMin).toBe(3.2);
       expect(klSummary.percentageMax).toBe(3.4);
 
@@ -138,7 +136,6 @@ describe('assessProgress()', () => {
       const klSummary = target.kls[testKL];
       expect(klSummary).toBeDefined();
       expect(klSummary.n).toBe(2);
-      expect(klSummary.percentageAverage).toBeDefined();
       expect(klSummary.percentageMin).toBe(3.2);
       expect(klSummary.percentageMax).toBe(3.4);
 
@@ -185,15 +182,12 @@ describe('assessProgress()', () => {
       expect(target.kls[testKL].n).toBe(2);
       expect(target.kls[testKL + 1].n).toBe(2);
 
-      expect(target.kls[testKL - 1].percentageAverage).toBeDefined();
       expect(target.kls[testKL - 1].percentageMin).toBe(1.1);
       expect(target.kls[testKL - 1].percentageMax).toBe(1.2);
 
-      expect(target.kls[testKL].percentageAverage).toBeDefined();
       expect(target.kls[testKL].percentageMin).toBe(2.1);
       expect(target.kls[testKL].percentageMax).toBe(5.2);
 
-      expect(target.kls[testKL + 1].percentageAverage).toBeDefined();
       expect(target.kls[testKL + 1].percentageMin).toBe(2.7);
       expect(target.kls[testKL + 1].percentageMax).toBe(6.7);
 
@@ -202,7 +196,7 @@ describe('assessProgress()', () => {
   });
 
   describe('when given a single record', () => {
-    it('returns null', () => {
+    it('returns top score', () => {
       const testKL = 201;
       const progress = {
         percentage: 5.74,
@@ -212,7 +206,15 @@ describe('assessProgress()', () => {
 
       const target = utils.assessProgress(progress, testEntities);
 
-      expect(target.score).toBeNull();
+      expect(target.kls).toBeDefined();
+      expect(Object.keys(target.kls).length).toBe(1);
+
+      expect(target.kls[testKL].n).toBe(1);
+
+      expect(target.kls[testKL].percentageMin).toBe(5.74);
+      expect(target.kls[testKL].percentageMax).toBe(5.74);
+
+      expect(target.score).toBeDefined();
     });
   });
 });
