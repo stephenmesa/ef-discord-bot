@@ -1,5 +1,6 @@
 import stats from 'stats-analysis';
 import _ from 'lodash';
+import { quantileRank } from 'simple-statistics';
 
 export const parseGoldString = (gold) => {
   if (Number.isFinite(gold)) {
@@ -106,43 +107,31 @@ const filterOutlierProgresses = (records) => {
 
 export const assessProgress = (currentProgress, comparableProgresses) => {
   const normalizedProgresses = filterOutlierProgresses(comparableProgresses);
+  const allPercentages = normalizedProgresses.map(p => p.percentage);
 
   const klProgresses = _.groupBy(normalizedProgresses, 'kl');
 
   const kls = _.mapValues(klProgresses, (progresses) => {
     const percentages = progresses.map(e => e.percentage);
-    const percentageAverage = stats.mean(percentages);
     const percentageMin = Math.min(...percentages);
     const percentageMax = Math.max(...percentages);
     const n = progresses.length;
 
     return {
-      percentageAverage: Number(percentageAverage.toFixed(2)),
       n,
       percentageMin: Number(percentageMin.toFixed(2)),
       percentageMax: Number(percentageMax.toFixed(2)),
     };
   });
 
-  const allPercentageMins = _.map(_.values(kls), data => _.get(data, 'percentageMin'));
-  const overallPercentageMin = Math.min(...allPercentageMins);
-
-  const allPercentageMaxs = _.map(_.values(kls), data => _.get(data, 'percentageMax'));
-  const overallPercentageMax = Math.max(...allPercentageMaxs);
-
-  const allPercentageAverages = _.map(_.values(kls), data => _.get(data, 'percentageAverage'));
-  const overallPercentageAverage = stats.mean(allPercentageAverages);
-
-  const range = overallPercentageMax - overallPercentageMin;
   let score = null;
-  if (range !== 0) {
-    const scoreDecimal = (currentProgress.percentage - overallPercentageMin) / range;
+  if (normalizedProgresses.length > 0) {
+    const scoreDecimal = quantileRank(allPercentages, currentProgress.percentage);
     score = Math.round(scoreDecimal * 100);
   }
 
   return {
     kls,
-    percentageAverage: Number(overallPercentageAverage.toFixed(2)),
     score,
   };
 };
@@ -161,7 +150,7 @@ export const generateSrGradeMessage = (
   })));
 
   const description = assessment.score
-    ? `Your SR grade is **${assessment.score}/100**. (Based on an average percentage of ${assessment.percentageAverage}%)`
+    ? `Your SR grade is **${assessment.score}/100**`
     : 'Sorry, but your grade could not be calculated based on lack of data';
 
 
