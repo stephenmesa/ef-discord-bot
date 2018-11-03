@@ -61,6 +61,25 @@ export const getAllProgressEntries = (userId, limit = 25) => {
     }));
 };
 
+export const getRecentRecordCounts = () => {
+  const yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
+  const lastWeek = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+
+  const lastDayQuery = datastore.runQuery(
+    datastore.createQuery(kind)
+      .filter('timestamp', '>', yesterday)
+      .select('__key__'),
+  ).then(results => results[0].length);
+
+  const lastWeekQuery = datastore.runQuery(
+    datastore.createQuery(kind)
+      .filter('timestamp', '>', lastWeek)
+      .select('__key__'),
+  ).then(results => results[0].length);
+
+  return Promise.all([lastDayQuery, lastWeekQuery]);
+};
+
 export const getProgressEntry = (userId, id) => {
   const key = datastore.key([kind, Number(id)]);
   const query = datastore.createQuery(kind)
