@@ -38,7 +38,7 @@ const helpCommand = {
   },
 };
 
-const adminStatsCommand = {
+const statsCommand = {
   name: 'stats',
   description: 'List stats about the bot usage',
   requireAdmin: true,
@@ -79,5 +79,5 @@ Joined to ${channelNames.length} ${channelsTerm}: ${channelNamesString}
 export default [
   pingCommand,
   helpCommand,
-  adminStatsCommand,
+  statsCommand,
 ];
