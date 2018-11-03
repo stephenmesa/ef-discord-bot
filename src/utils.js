@@ -2,6 +2,8 @@ import stats from 'stats-analysis';
 import _ from 'lodash';
 import { quantileRank } from 'simple-statistics';
 
+const { BOT_PREFIX } = process.env;
+
 export const parseGoldString = (gold) => {
   if (Number.isFinite(gold)) {
     return Number(gold);
@@ -59,7 +61,8 @@ export const generateProgressChangeSummary = (currentKL, currentTotalMedals, lat
   const medalsGainedPercentage = (medalsGained / previousTotalMedalsNumber) * 100;
   const klGained = currentKL - latestProgress.kl;
   const hoursDiff = getHoursSince(latestProgress.timestamp);
-  return `Welcome back! You've gained ${klGained} KL and ${medalsGainedPercentage.toFixed(2).toString()}% total medals over the last ${hoursDiff.toFixed(2).toString()} hour(s)`;
+  return `Welcome back! You've gained ${klGained} KL and ${medalsGainedPercentage.toFixed(2).toString()}% total medals over the last ${hoursDiff.toFixed(2).toString()} hour(s).
+You can now use the \`${BOT_PREFIX}grade\` and \`${BOT_PREFIX}graph\` commands to see metrics about your progress. Use \`${BOT_PREFIX}help\` to find out more information about those commands`;
 };
 
 export const generateSrMessage = (
