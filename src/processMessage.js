@@ -1,4 +1,7 @@
-const { BOT_PREFIX } = process.env;
+const { BOT_PREFIX, ADMIN_USERIDS } = process.env;
+
+const adminUserIds = ADMIN_USERIDS ? ADMIN_USERIDS.split(',') : [];
+const hasAdminAccess = userId => adminUserIds.some(id => id === userId);
 
 export default (message, client) => {
   if (!message.content.startsWith(BOT_PREFIX) || message.author.bot) return;
@@ -10,6 +13,11 @@ export default (message, client) => {
     || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
   if (!command) return;
+
+  if (command.requireAdmin && !hasAdminAccess(message.author.id)) {
+    message.reply('This command requires admin access');
+    return;
+  }
 
   if (command.args && args.length < command.args) {
     let reply = `You didn't provide enough arguments, ${message.author}!`;
