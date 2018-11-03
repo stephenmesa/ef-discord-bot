@@ -1,4 +1,7 @@
+import Discord from 'discord.js';
+
 import { getRecentRecordCounts } from '../datastore';
+import * as txt from '../txt';
 
 const { BOT_PREFIX } = process.env;
 
@@ -71,7 +74,17 @@ ${weekCount} ${weekRecordsTerm} recorded over the last week
 Joined to ${guildNames.length} ${guildsTerm}: ${guildNamesString}
 Joined to ${channelNames.length} ${channelsTerm}: ${channelNamesString}
         `;
-        message.author.send(messageText);
+
+        txt.generateTxt(messageText)
+          .then((filename) => {
+            const re = new Discord.RichEmbed()
+              .attachFile(new Discord.Attachment(filename, 'stats.txt'))
+              .setDescription('Here are the stats');
+
+            message.author.send(re).then(() => {
+              txt.deleteTxt(filename);
+            });
+          });
       });
   },
 };
