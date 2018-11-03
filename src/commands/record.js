@@ -147,7 +147,8 @@ const recordCommand = {
       if (latestProgress) {
         description = utils.generateProgressChangeSummary(kl, totalMdl, latestProgress);
       } else {
-        description = 'Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you\'re doing over time';
+        description = `Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you're doing over time.
+You can now use the \`${BOT_PREFIX}grade\` and \`${BOT_PREFIX}graph\` commands to see metrics about your progress. Use \`${BOT_PREFIX}help\` to find out more information about those commands`;
       }
 
       const messageToSend = utils.generateSrMessage(
