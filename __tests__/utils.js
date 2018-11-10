@@ -218,3 +218,215 @@ describe('assessProgress()', () => {
     });
   });
 });
+
+describe('filterOutlierProgresses()', () => {
+  const generateRecords = percentages => percentages.map(percentage => ({ percentage }));
+
+  describe('when given 1 record', () => {
+    it('should not remove the record', () => {
+      // ARRANGE
+      const testRecords = generateRecords([5]);
+
+      // ACT
+      const target = utils.filterOutlierProgresses(testRecords);
+
+      // ASSERT
+      expect(target.length).toBe(1);
+    });
+  });
+
+  describe('when given 2 records', () => {
+    it('should not remove any records that are close', () => {
+      // ARRANGE
+      const testRecords = generateRecords([5, 6]);
+
+      // ACT
+      const target = utils.filterOutlierProgresses(testRecords);
+
+      // ASSERT
+      expect(target.length).toBe(2);
+    });
+
+    it('should not remove any records that are not close', () => {
+      // ARRANGE
+      const testRecords = generateRecords([5, 96]);
+
+      // ACT
+      const target = utils.filterOutlierProgresses(testRecords);
+
+      // ASSERT
+      expect(target.length).toBe(2);
+    });
+  });
+
+  describe('when given 3 records', () => {
+    it('should not remove any records that are close', () => {
+      // ARRANGE
+      const testRecords = generateRecords([5, 6, 7]);
+
+      // ACT
+      const target = utils.filterOutlierProgresses(testRecords);
+
+      // ASSERT
+      expect(target.length).toBe(3);
+    });
+
+    it('should not remove any records that are somewhat close', () => {
+      // ARRANGE
+      const testRecords = generateRecords([0.71, 0.77, 12.08]);
+
+      // ACT
+      const target = utils.filterOutlierProgresses(testRecords);
+
+      // ASSERT
+      expect(target.length).toBe(3);
+    });
+
+    it('should remove a record that is not close', () => {
+      // ARRANGE
+      const testRecords = generateRecords([5, 6, 106]);
+
+      // ACT
+      const target = utils.filterOutlierProgresses(testRecords);
+
+      // ASSERT
+      expect(target.length).toBe(2);
+    });
+  });
+});
+
+describe('validatePercentage()', () => {
+  describe('should not allow', () => {
+    it('negative numbers', () => {
+      // ARRANGE
+      const testPercentage = -12;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('null', () => {
+      // ARRANGE
+      const testPercentage = null;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('undefined', () => {
+      // ARRANGE
+
+      // ACT
+      const target = utils.validatePercentage();
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('NaN', () => {
+      // ARRANGE
+      const testPercentage = NaN;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('a very high number', () => {
+      // ARRANGE
+      const testPercentage = 9001;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('a high number', () => {
+      // ARRANGE
+      const testPercentage = 101;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('0', () => {
+      // ARRANGE
+      const testPercentage = 0;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('a string', () => {
+      // ARRANGE
+      const testPercentage = 'blah';
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('an object', () => {
+      // ARRANGE
+      const testPercentage = 'blah';
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+    it('a function', () => {
+      // ARRANGE
+      const testPercentage = () => {};
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(false);
+    });
+  });
+  describe('should allow', () => {
+    it('a reasonably low number', () => {
+      // ARRANGE
+      const testPercentage = 0.02;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(true);
+    });
+    it('a reasonably high number', () => {
+      // ARRANGE
+      const testPercentage = 12.01;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(true);
+    });
+    it('a reasonably very high number', () => {
+      // ARRANGE
+      const testPercentage = 58.99;
+
+      // ACT
+      const target = utils.validatePercentage(testPercentage);
+
+      // ASSERT
+      expect(target).toBe(true);
+    });
+  });
+});

@@ -1,8 +1,11 @@
-import stats from 'stats-analysis';
 import _ from 'lodash';
 import { quantileRank } from 'simple-statistics';
 
 const { BOT_PREFIX } = process.env;
+
+// Let's assume that it's impossible to achieve an SR rate above 100%
+// (usually it's below 10%, so this should be fairly conservative)
+export const validatePercentage = p => !!p && p > 0 && p < 100;
 
 export const parseGoldString = (gold) => {
   if (Number.isFinite(gold)) {
@@ -100,13 +103,8 @@ export const generateSrMessage = (
   },
 });
 
-const filterOutlierProgresses = (records) => {
-  const filteredRecords = records.filter(record => !!record.percentage);
-  const percentages = filteredRecords.map(r => r.percentage);
-  const outlierIndices = stats.indexOfOutliers(percentages, stats.outlierMethod.MAD, 60);
-
-  return filteredRecords.filter((val, index) => outlierIndices.indexOf(index) === -1);
-};
+export const filterOutlierProgresses = records => records
+  .filter(record => validatePercentage(record.percentage));
 
 export const assessProgress = (currentProgress, comparableProgresses) => {
   const normalizedProgresses = filterOutlierProgresses(comparableProgresses);
