@@ -142,6 +142,11 @@ const recordCommand = {
     const percentage = (medalsGained / totalMdl) * 100;
     const percentageWithDoubled = ((medalsGained * 2) / totalMdl) * 100;
 
+    if (!utils.validatePercentage(percentage)) {
+      message.reply(`Invalid percentage calculated of ${percentage}, please try again`);
+      return;
+    }
+
     datastore.getLatestProgress(userId).then((latestProgress) => {
       let description;
       if (latestProgress) {
