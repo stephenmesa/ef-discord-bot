@@ -147,25 +147,41 @@ const recordCommand = {
       return;
     }
 
+    // First grab previous progress to compare against
     datastore.getLatestProgress(userId).then((latestProgress) => {
-      let description;
-      if (latestProgress) {
-        description = utils.generateProgressChangeSummary(kl, totalMdl, latestProgress);
-      } else {
-        description = `Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you're doing over time.
-You can now use the \`${BOT_PREFIX}grade\` and \`${BOT_PREFIX}graph\` commands to see metrics about your progress. Use \`${BOT_PREFIX}help\` to find out more information about those commands`;
-      }
+      // then save this current progress
+      datastore.saveProgress(kl, totalStr, rateStr, percentage, userId, username, timestamp)
+        .then(() => {
+          let description;
+          if (latestProgress) {
+            description = utils.generateProgressChangeSummary(kl, totalMdl, latestProgress);
+          } else {
+            description = `Hello! Thanks for recording your progress. I will keep track of your progress and let you know how you're doing over time.
+    You can now use the \`${BOT_PREFIX}grade\` and \`${BOT_PREFIX}graph\` commands to see metrics about your progress. Use \`${BOT_PREFIX}help\` to find out more information about those commands`;
+          }
 
-      const messageToSend = utils.generateSrMessage(
-        message,
-        timestamp,
-        percentage,
-        medalsGained,
-        percentageWithDoubled,
-        description,
-      );
-      message.channel.send(messageToSend);
-      datastore.saveProgress(kl, totalStr, rateStr, percentage, userId, username, timestamp);
+          const nearbyRange = 1;
+          const minKL = kl - nearbyRange;
+          const maxKL = kl + nearbyRange;
+
+          // now grab all of the progresses for this KL range
+          // (which should include the just-saved progress)
+          datastore.getAllProgressEntriesForKLRange(minKL, maxKL, MAX_HISTORY_COUNT)
+            .then((progress) => {
+              const assessment = progress ? utils.assessProgress(percentage, progress) : null;
+
+              const messageToSend = utils.generateSrMessage(
+                message,
+                timestamp,
+                percentage,
+                medalsGained,
+                percentageWithDoubled,
+                description,
+                assessment,
+              );
+              message.channel.send(messageToSend);
+            });
+        });
     });
   },
 };
@@ -192,7 +208,7 @@ const gradeCommand = {
             message.reply(`Sorry, I don't have any progress recorded for KL${kl}.`);
             return;
           }
-          const assessment = utils.assessProgress(latestProgress, progress);
+          const assessment = utils.assessProgress(latestProgress.percentage, progress);
 
           const messageToSend = utils.generateSrGradeMessage(
             message,

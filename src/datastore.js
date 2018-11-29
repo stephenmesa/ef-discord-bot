@@ -32,7 +32,7 @@ export const saveProgress = (kl, totalMedals, rate, percentage, userId, username
     },
   };
 
-  datastore
+  return datastore
     .save(progress)
     .catch((err) => {
       console.error('ERROR:', err);

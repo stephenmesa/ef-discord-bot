@@ -63,12 +63,7 @@ describe('assessProgress()', () => {
     ];
 
     it('should calculate average', () => {
-      const progress = {
-        percentage: 5.4,
-        kl: testKL,
-      };
-
-      const target = utils.assessProgress(progress, testEntities);
+      const target = utils.assessProgress(5.4, testEntities);
 
       expect(target.kls).toBeDefined();
       expect(Object.keys(target.kls).length).toBe(1);
@@ -83,11 +78,6 @@ describe('assessProgress()', () => {
     });
 
     it('should toss out null percentages', () => {
-      const progress = {
-        percentage: 2.8,
-        kl: testKL,
-      };
-
       const entities = [
         {
           kl: testKL,
@@ -101,7 +91,7 @@ describe('assessProgress()', () => {
         },
       ];
 
-      const target = utils.assessProgress(progress, entities);
+      const target = utils.assessProgress(2.8, entities);
 
       const klSummary = target.kls[testKL];
       expect(klSummary).toBeDefined();
@@ -168,12 +158,7 @@ describe('assessProgress()', () => {
     ];
 
     it('should calculate average', () => {
-      const progress = {
-        percentage: 5.4,
-        kl: testKL,
-      };
-
-      const target = utils.assessProgress(progress, testEntities);
+      const target = utils.assessProgress(5.4, testEntities);
 
       expect(target.kls).toBeDefined();
       expect(Object.keys(target.kls).length).toBe(3);
@@ -204,7 +189,7 @@ describe('assessProgress()', () => {
       };
       const testEntities = [progress];
 
-      const target = utils.assessProgress(progress, testEntities);
+      const target = utils.assessProgress(5.74, testEntities);
 
       expect(target.kls).toBeDefined();
       expect(Object.keys(target.kls).length).toBe(1);
