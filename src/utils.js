@@ -64,8 +64,7 @@ export const generateProgressChangeSummary = (currentKL, currentTotalMedals, lat
   const medalsGainedPercentage = (medalsGained / previousTotalMedalsNumber) * 100;
   const klGained = currentKL - latestProgress.kl;
   const hoursDiff = getHoursSince(latestProgress.timestamp);
-  return `Welcome back! You've gained ${klGained} KL and ${medalsGainedPercentage.toFixed(2).toString()}% total medals over the last ${hoursDiff.toFixed(2).toString()} hour(s).
-You can now use the \`${BOT_PREFIX}grade\` and \`${BOT_PREFIX}graph\` commands to see metrics about your progress. Use \`${BOT_PREFIX}help\` to find out more information about those commands`;
+  return `Welcome back! You've gained ${klGained} KL and ${medalsGainedPercentage.toFixed(2).toString()}% total medals over the last ${hoursDiff.toFixed(2).toString()} hour(s).`;
 };
 
 export const generateSrMessage = (
@@ -75,21 +74,10 @@ export const generateSrMessage = (
   medalsGained,
   percentageWithDoubled,
   description,
-) => ({
-  embed: {
-    description,
-    author: {
-      name: msg.member.displayName,
-      icon_url: msg.author.avatar ? `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png` : undefined,
-    },
-    footer: {
-      icon_url: 'https://cdn.discordapp.com/avatars/294466905073516554/07714791affb9af210756ce2565e6488.png',
-      text: 'NephBot created by @stephenmesa#1219',
-    },
-    title: 'Spirit Rest Calculator',
-    color: 13720519,
-    timestamp: timestamp.toISOString(),
-    fields: [{
+  assessment,
+) => {
+  const srFields = [
+    {
       name: 'Spirit Rest',
       value: `${percentage.toFixed(2).toString()}% (${formatGoldString(medalsGained)})`,
       inline: true,
@@ -99,14 +87,43 @@ export const generateSrMessage = (
       value: `${percentageWithDoubled.toFixed(2).toString()}% (${formatGoldString(medalsGained * 2)})`,
       inline: true,
     },
-    ],
-  },
-});
+  ];
+  const gradeField = [
+    {
+      name: 'SR Grade',
+      value: assessment && assessment.score ? `${assessment.score}/100` : 'Sorry, but your grade could not be calculated based on lack of data',
+      inline: true,
+    },
+  ];
+  const gradeKLFields = _.values(_.mapValues(assessment.kls, (klAssessment, groupKL) => ({
+    name: `KL${groupKL} (${klAssessment.n} record${klAssessment.n > 1 ? 's' : ''})`,
+    value: `${klAssessment.percentageMin}%-${klAssessment.percentageMax}%`,
+    inline: true,
+  })));
+
+  return {
+    embed: {
+      description,
+      author: {
+        name: msg.member.displayName,
+        icon_url: msg.author.avatar ? `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.png` : undefined,
+      },
+      footer: {
+        icon_url: 'https://cdn.discordapp.com/avatars/294466905073516554/07714791affb9af210756ce2565e6488.png',
+        text: 'NephBot created by @stephenmesa#1219',
+      },
+      title: 'Spirit Rest Calculator',
+      color: 13720519,
+      timestamp: timestamp.toISOString(),
+      fields: _.union(srFields, gradeField, gradeKLFields),
+    },
+  };
+};
 
 export const filterOutlierProgresses = records => records
   .filter(record => validatePercentage(record.percentage));
 
-export const assessProgress = (currentProgress, comparableProgresses) => {
+export const assessProgress = (currentPercentage, comparableProgresses) => {
   const normalizedProgresses = filterOutlierProgresses(comparableProgresses);
   const allPercentages = normalizedProgresses.map(p => p.percentage);
 
@@ -127,7 +144,7 @@ export const assessProgress = (currentProgress, comparableProgresses) => {
 
   let score = null;
   if (normalizedProgresses.length > 0) {
-    const scoreDecimal = quantileRank(allPercentages, currentProgress.percentage);
+    const scoreDecimal = quantileRank(allPercentages, currentPercentage);
     score = Math.round(scoreDecimal * 100);
   }
 
