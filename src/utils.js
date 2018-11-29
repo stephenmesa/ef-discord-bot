@@ -1,8 +1,6 @@
 import _ from 'lodash';
 import { quantileRank } from 'simple-statistics';
 
-const { BOT_PREFIX } = process.env;
-
 // Let's assume that it's impossible to achieve an SR rate above 100%
 // (usually it's below 10%, so this should be fairly conservative)
 export const validatePercentage = p => !!p && p > 0 && p < 100;
