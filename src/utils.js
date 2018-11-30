@@ -13,7 +13,7 @@ export const parseGoldString = (gold) => {
   // make sure the string follows the template of {number}{letters}
   const efGoldFormatRegExp = new RegExp(/(^\d+\.?\d*)(\D?)$/);
 
-  const matches = gold.match(efGoldFormatRegExp);
+  const matches = gold.replace(',', '.').match(efGoldFormatRegExp);
   if (!matches) {
     return null;
   }

@@ -16,6 +16,7 @@ describe('parseGoldString()', () => {
     testHelper('12.3a', 12300);
     testHelper('123.1a', 123100);
     testHelper('123.123a', 123123);
+    testHelper('1,2a', 1200);
   });
 });
 
