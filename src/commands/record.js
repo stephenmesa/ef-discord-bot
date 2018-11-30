@@ -149,9 +149,14 @@ const recordCommand = {
 
     // First grab previous progress to compare against
     datastore.getLatestProgress(userId).then((latestProgress) => {
-      // then save this current progress
-      datastore.saveProgress(kl, totalStr, rateStr, percentage, userId, username, timestamp)
-        .then(() => {
+      const nearbyRange = 1;
+      const minKL = kl - nearbyRange;
+      const maxKL = kl + nearbyRange;
+
+      // now grab all of the progresses for this KL range
+      // (which should not include the new progress)
+      datastore.getAllProgressEntriesForKLRange(minKL, maxKL, MAX_HISTORY_COUNT)
+        .then((progress) => {
           let description;
           if (latestProgress) {
             description = utils.generateProgressChangeSummary(kl, totalMdl, latestProgress);
@@ -160,27 +165,33 @@ const recordCommand = {
     You can now use the \`${BOT_PREFIX}grade\` and \`${BOT_PREFIX}graph\` commands to see metrics about your progress. Use \`${BOT_PREFIX}help\` to find out more information about those commands`;
           }
 
-          const nearbyRange = 1;
-          const minKL = kl - nearbyRange;
-          const maxKL = kl + nearbyRange;
+          const currentProgress = {
+            kl,
+            totalMedals: medalsGained,
+            rate: rateStr,
+            percentage,
+            userId,
+            username,
+            timestamp,
+          };
 
-          // now grab all of the progresses for this KL range
-          // (which should include the just-saved progress)
-          datastore.getAllProgressEntriesForKLRange(minKL, maxKL, MAX_HISTORY_COUNT)
-            .then((progress) => {
-              const assessment = progress ? utils.assessProgress(percentage, progress) : null;
+          // Use a combination of the existing progresses and this current progress
+          const assessableProgress = progress.concat([currentProgress]);
 
-              const messageToSend = utils.generateSrMessage(
-                message,
-                timestamp,
-                percentage,
-                medalsGained,
-                percentageWithDoubled,
-                description,
-                assessment,
-              );
-              message.channel.send(messageToSend);
-            });
+          const assessment = utils.assessProgress(percentage, assessableProgress);
+
+          const messageToSend = utils.generateSrMessage(
+            message,
+            timestamp,
+            percentage,
+            medalsGained,
+            percentageWithDoubled,
+            description,
+            assessment,
+          );
+          message.channel.send(messageToSend);
+
+          datastore.saveProgress(kl, totalStr, rateStr, percentage, userId, username, timestamp);
         });
     });
   },

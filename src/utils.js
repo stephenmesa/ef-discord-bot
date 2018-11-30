@@ -89,7 +89,7 @@ export const generateSrMessage = (
   const gradeField = [
     {
       name: 'SR Grade',
-      value: assessment && assessment.score ? `${assessment.score}/100` : 'Sorry, but your grade could not be calculated based on lack of data',
+      value: assessment && assessment.score !== null ? `${assessment.score}/100` : 'Sorry, but your grade could not be calculated based on lack of data',
       inline: true,
     },
   ];
