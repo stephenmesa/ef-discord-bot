@@ -107,7 +107,7 @@ To learn about donating, use the \`${BOT_PREFIX}donate\` command`;
 const donateCommand = {
   name: 'donate',
   description: 'Learn about how to donate to the maker and maintainer of this bot!',
-  aliases: ['donation'],
+  aliases: ['donation', 'donations'],
   execute: (message) => {
     const messages = [
       'The maker of this crappy bot would really love some money to help support maintaining this trash heap!',
