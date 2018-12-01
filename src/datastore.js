@@ -134,6 +134,6 @@ export const getAllProgressEntriesForKLRange = (minKL, maxKL, limit = 25) => {
 
 export const getSponsors = () => {
   const sponsorKind = 'Sponsor';
-  const key = datastore.key([sponsorKind, SPONSOR_ENTITY_ID]);
+  const key = datastore.key([sponsorKind, Number(SPONSOR_ENTITY_ID)]);
   return datastore.get(key).then(data => data[0].Names);
 };
