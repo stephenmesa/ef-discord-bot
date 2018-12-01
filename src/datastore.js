@@ -4,6 +4,7 @@ import _ from 'lodash';
 import CustomError from './classes/CustomError';
 
 const projectId = process.env.DATASTORE_PROJECTID;
+const { SPONSOR_ENTITY_ID } = process.env;
 
 if (!projectId) {
   console.error('Must provide DATASTORE_PROJECTID environment variable!');
@@ -129,4 +130,10 @@ export const getAllProgressEntriesForKLRange = (minKL, maxKL, limit = 25) => {
       const id = _.get(r[datastore.KEY], 'id');
       return { ...r, id };
     }));
+};
+
+export const getSponsors = () => {
+  const sponsorKind = 'Sponsor';
+  const key = datastore.key([sponsorKind, Number(SPONSOR_ENTITY_ID)]);
+  return datastore.get(key).then(data => data[0].Names);
 };
