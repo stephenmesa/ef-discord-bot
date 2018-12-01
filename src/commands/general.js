@@ -1,9 +1,10 @@
 import Discord from 'discord.js';
+import _ from 'lodash';
 
-import { getRecentRecordCounts } from '../datastore';
+import { getRecentRecordCounts, getSponsors } from '../datastore';
 import * as txt from '../txt';
 
-const { BOT_PREFIX } = process.env;
+const { BOT_PREFIX, DONATION_URL } = process.env;
 
 const pingCommand = {
   name: 'ping',
@@ -89,8 +90,42 @@ Joined to ${channelNames.length} ${channelsTerm}: ${channelNamesString}
   },
 };
 
+const sponsorsCommand = {
+  name: 'sponsors',
+  description: 'List the awesome sponsors of this bot!',
+  aliases: ['sponsor'],
+  execute: (message) => {
+    getSponsors().then((names) => {
+      const messageToSend = `This bot is supported by donations from the following _awesome_ sponsors:
+${names}
+To learn about donating, use the \`${BOT_PREFIX}donate\` command`;
+      message.channel.send(messageToSend);
+    });
+  },
+};
+
+const donateCommand = {
+  name: 'donate',
+  description: 'Learn about how to donate to the maker and maintainer of this bot!',
+  aliases: ['donation'],
+  execute: (message) => {
+    const messages = [
+      'The maker of this crappy bot would really love some money to help support maintaining this trash heap!',
+      'Got a wad of cash you wanna get rid of? Consider donating it to the jerk that works on this bot!',
+      'Have you gotten some marginal value out of this bot? If so, donate to show you like it!',
+    ];
+    const randomMessage = _.sample(messages);
+    const messageToSend = `${randomMessage}
+If you would like to send a donation, please use ${DONATION_URL}
+(Donating will get you onto the sponsors list, seen with the \`${BOT_PREFIX}sponsors\` command)`;
+    message.channel.send(messageToSend);
+  },
+};
+
 export default [
   pingCommand,
   helpCommand,
   statsCommand,
+  sponsorsCommand,
+  donateCommand,
 ];
