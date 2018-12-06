@@ -1,3 +1,5 @@
+import { publishChartMessage } from '../pubsub';
+
 const graphCommand = {
   name: 'graph',
   description: 'Work In Progress',
@@ -8,6 +10,17 @@ const graphCommand = {
   },
 };
 
+const graphBetaCommand = {
+  name: 'graphbeta',
+  description: 'Work In Progress',
+  execute: (message) => {
+    const channelId = message.channel.id;
+    const userId = message.author.id;
+    publishChartMessage(channelId, userId);
+  },
+};
+
 export default [
   graphCommand,
+  graphBetaCommand,
 ];
