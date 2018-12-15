@@ -1,22 +1,22 @@
 import { publishChartMessage } from '../pubsub';
 
+const { BOT_PREFIX } = process.env;
+
 const graphCommand = {
   name: 'graph',
-  description: 'Work In Progress',
+  description: 'Generate a graph of your progress over time',
   execute: (message) => {
+    const channelId = message.channel.id;
     const userId = message.author.id;
-    const graphUrl = `https://ef-discord-bot.appspot.com/graph/${userId}`;
-    message.reply(`That command has been removed for now, since it seems to bloat the bot and cause it to crash! Here's a beta version of the graphing site: ${graphUrl}`);
+    publishChartMessage(channelId, userId);
   },
 };
 
 const graphBetaCommand = {
   name: 'graphbeta',
-  description: 'Work In Progress',
+  description: 'This command has been removed',
   execute: (message) => {
-    const channelId = message.channel.id;
-    const userId = message.author.id;
-    publishChartMessage(channelId, userId);
+    message.reply(`This command has been removed. Please use the \`${BOT_PREFIX}graph\` command instead.`);
   },
 };
 
