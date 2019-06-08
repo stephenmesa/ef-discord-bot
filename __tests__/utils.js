@@ -1,9 +1,7 @@
-import expect from 'expect';
-
 import * as utils from '../src/utils';
 
 describe('parseGoldString()', () => {
-  it('should work properly', () => {
+  test('should work properly', () => {
     const testHelper = (inputString, expectedValue) => {
       expect(utils.parseGoldString(inputString)).toEqual(expectedValue);
     };
@@ -21,7 +19,7 @@ describe('parseGoldString()', () => {
 });
 
 describe('formatGoldString()', () => {
-  it('should work properly', () => {
+  test('should work properly', () => {
     const testHelper = (inputValue, expectedValue) => {
       expect(utils.formatGoldString(inputValue)).toEqual(expectedValue);
     };
@@ -63,7 +61,7 @@ describe('assessProgress()', () => {
       },
     ];
 
-    it('should calculate average', () => {
+    test('should calculate average', () => {
       const target = utils.assessProgress(5.4, testEntities);
 
       expect(target.kls).toBeDefined();
@@ -78,7 +76,7 @@ describe('assessProgress()', () => {
       expect(target.score).toBeDefined();
     });
 
-    it('should toss out null percentages', () => {
+    test('should toss out null percentages', () => {
       const entities = [
         {
           kl: testKL,
@@ -103,7 +101,7 @@ describe('assessProgress()', () => {
       expect(target.score).toBeDefined();
     });
 
-    it('should toss out NaN percentages', () => {
+    test('should toss out NaN percentages', () => {
       const progress = {
         percentage: 2.8,
         kl: testKL,
@@ -158,7 +156,7 @@ describe('assessProgress()', () => {
       },
     ];
 
-    it('should calculate average', () => {
+    test('should calculate average', () => {
       const target = utils.assessProgress(5.4, testEntities);
 
       expect(target.kls).toBeDefined();
@@ -182,7 +180,7 @@ describe('assessProgress()', () => {
   });
 
   describe('when given a single record', () => {
-    it('returns top score', () => {
+    test('returns top score', () => {
       const testKL = 201;
       const progress = {
         percentage: 5.74,
@@ -209,7 +207,7 @@ describe('filterOutlierProgresses()', () => {
   const generateRecords = percentages => percentages.map(percentage => ({ percentage }));
 
   describe('when given 1 record', () => {
-    it('should not remove the record', () => {
+    test('should not remove the record', () => {
       // ARRANGE
       const testRecords = generateRecords([5]);
 
@@ -222,7 +220,7 @@ describe('filterOutlierProgresses()', () => {
   });
 
   describe('when given 2 records', () => {
-    it('should not remove any records that are close', () => {
+    test('should not remove any records that are close', () => {
       // ARRANGE
       const testRecords = generateRecords([5, 6]);
 
@@ -233,7 +231,7 @@ describe('filterOutlierProgresses()', () => {
       expect(target.length).toBe(2);
     });
 
-    it('should not remove any records that are not close', () => {
+    test('should not remove any records that are not close', () => {
       // ARRANGE
       const testRecords = generateRecords([5, 96]);
 
@@ -246,7 +244,7 @@ describe('filterOutlierProgresses()', () => {
   });
 
   describe('when given 3 records', () => {
-    it('should not remove any records that are close', () => {
+    test('should not remove any records that are close', () => {
       // ARRANGE
       const testRecords = generateRecords([5, 6, 7]);
 
@@ -257,7 +255,7 @@ describe('filterOutlierProgresses()', () => {
       expect(target.length).toBe(3);
     });
 
-    it('should not remove any records that are somewhat close', () => {
+    test('should not remove any records that are somewhat close', () => {
       // ARRANGE
       const testRecords = generateRecords([0.71, 0.77, 12.08]);
 
@@ -268,7 +266,7 @@ describe('filterOutlierProgresses()', () => {
       expect(target.length).toBe(3);
     });
 
-    it('should remove a record that is not close', () => {
+    test('should remove a record that is not close', () => {
       // ARRANGE
       const testRecords = generateRecords([5, 6, 106]);
 
@@ -283,7 +281,7 @@ describe('filterOutlierProgresses()', () => {
 
 describe('validatePercentage()', () => {
   describe('should not allow', () => {
-    it('negative numbers', () => {
+    test('negative numbers', () => {
       // ARRANGE
       const testPercentage = -12;
 
@@ -293,7 +291,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('null', () => {
+    test('null', () => {
       // ARRANGE
       const testPercentage = null;
 
@@ -303,7 +301,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('undefined', () => {
+    test('undefined', () => {
       // ARRANGE
 
       // ACT
@@ -312,7 +310,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('NaN', () => {
+    test('NaN', () => {
       // ARRANGE
       const testPercentage = NaN;
 
@@ -322,7 +320,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('a very high number', () => {
+    test('a very high number', () => {
       // ARRANGE
       const testPercentage = 9001;
 
@@ -332,7 +330,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('a high number', () => {
+    test('a high number', () => {
       // ARRANGE
       const testPercentage = 101;
 
@@ -342,7 +340,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('0', () => {
+    test('0', () => {
       // ARRANGE
       const testPercentage = 0;
 
@@ -352,7 +350,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('a string', () => {
+    test('a string', () => {
       // ARRANGE
       const testPercentage = 'blah';
 
@@ -362,7 +360,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('an object', () => {
+    test('an object', () => {
       // ARRANGE
       const testPercentage = 'blah';
 
@@ -372,7 +370,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(false);
     });
-    it('a function', () => {
+    test('a function', () => {
       // ARRANGE
       const testPercentage = () => {};
 
@@ -384,7 +382,7 @@ describe('validatePercentage()', () => {
     });
   });
   describe('should allow', () => {
-    it('a reasonably low number', () => {
+    test('a reasonably low number', () => {
       // ARRANGE
       const testPercentage = 0.02;
 
@@ -394,7 +392,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(true);
     });
-    it('a reasonably high number', () => {
+    test('a reasonably high number', () => {
       // ARRANGE
       const testPercentage = 12.01;
 
@@ -404,7 +402,7 @@ describe('validatePercentage()', () => {
       // ASSERT
       expect(target).toBe(true);
     });
-    it('a reasonably very high number', () => {
+    test('a reasonably very high number', () => {
       // ARRANGE
       const testPercentage = 58.99;
 
