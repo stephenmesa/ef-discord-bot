@@ -71,6 +71,7 @@ export default (message, client) => {
   try {
     command.execute(message, args);
   } catch (error) {
+    console.error('error while executing command.', error);
     message.reply('there was an error trying to execute that command!');
   }
 };
