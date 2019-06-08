@@ -1,4 +1,4 @@
-import Datastore from '@google-cloud/datastore';
+import { Datastore } from '@google-cloud/datastore';
 import _ from 'lodash';
 
 import CustomError from './classes/CustomError';
