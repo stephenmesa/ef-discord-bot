@@ -11,15 +11,14 @@ const pubsubClient = new PubSub({
   projectId,
 });
 
-export const publishChartMessage = (channelId, userId) => {
+export const publishChartMessage = async (channelId, userId) => {
   const topicName = 'process-discord-message';
 
   const data = JSON.stringify({ channelId, userId });
 
   const dataBuffer = Buffer.from(data);
 
-  return pubsubClient
+  return await pubsubClient
     .topic(topicName)
-    .publisher()
     .publish(dataBuffer);
 };
