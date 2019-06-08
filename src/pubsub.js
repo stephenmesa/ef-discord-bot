@@ -20,6 +20,5 @@ export const publishChartMessage = (channelId, userId) => {
 
   return pubsubClient
     .topic(topicName)
-    .publisher()
     .publish(dataBuffer);
 };
