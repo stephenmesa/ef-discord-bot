@@ -1,4 +1,4 @@
-FROM node:6.10.0-alpine
+FROM node:10.16.0-alpine
 
 LABEL maintainer="stephen.mesa@gmail.com"
 
