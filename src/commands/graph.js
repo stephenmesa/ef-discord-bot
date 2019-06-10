@@ -5,10 +5,12 @@ const { BOT_PREFIX } = process.env;
 const graphCommand = {
   name: 'graph',
   description: 'Generate a graph of your progress over time',
-  execute: (message) => {
+  execute: (message, args) => {
     const channelId = message.channel.id;
     const userId = message.author.id;
-    publishChartMessage(channelId, userId);
+    const daysOfHistory = Number(args[0]) || null;
+
+    publishChartMessage(channelId, userId, daysOfHistory);
   },
 };
 

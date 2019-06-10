@@ -11,10 +11,10 @@ const pubsubClient = new PubSub({
   projectId,
 });
 
-export const publishChartMessage = (channelId, userId) => {
-  const topicName = 'process-discord-message';
+export const publishChartMessage = (channelId, userId, daysOfHistory) => {
+  const topicName = 'generate-discord-chart';
 
-  const data = JSON.stringify({ channelId, userId });
+  const data = JSON.stringify({ channelId, userId, daysOfHistory });
 
   const dataBuffer = Buffer.from(data);
 
