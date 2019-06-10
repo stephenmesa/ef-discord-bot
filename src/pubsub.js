@@ -12,7 +12,7 @@ const pubsubClient = new PubSub({
 });
 
 export const publishChartMessage = (channelId, userId, daysOfHistory) => {
-  const topicName = 'process-discord-message';
+  const topicName = 'generate-discord-chart';
 
   const data = JSON.stringify({ channelId, userId, daysOfHistory });
 
