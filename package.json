@@ -17,7 +17,7 @@
     "@google-cloud/pubsub": "^0.29.1",
     "discord.js": "^11.3.2",
     "dotenv": "^6.0.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "simple-statistics": "^6.1.1",
     "uuid": "^3.3.2"
   },
