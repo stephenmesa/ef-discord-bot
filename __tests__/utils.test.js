@@ -415,9 +415,9 @@ describe('validatePercentage()', () => {
   });
 });
 
-describe('parseRaidStage', () => {
+describe('parseRaidString', () => {
   const testHelper = (inputString, expectedValue) => {
-    expect(utils.parseRaidStage(inputString)).toEqual(expectedValue);
+    expect(utils.parseRaidString(inputString)).toEqual(expectedValue);
   };
 
   test('should return null when given invalid inputs', () => {
