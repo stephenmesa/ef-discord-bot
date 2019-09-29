@@ -472,7 +472,6 @@ export const getRaidColor = (raidStage) => {
 
     if (raid) {
       const raidLookup = raids[raid];
-      // eslint-disable-next-line prefer-destructuring
       color = raidLookup.color;
     }
   }
