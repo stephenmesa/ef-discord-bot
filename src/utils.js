@@ -188,3 +188,31 @@ export const generateSrGradeMessage = (
     },
   };
 };
+
+export const getUserDataFromMessage = message => ({
+  username: message.author.username,
+  userId: message.author.id,
+});
+
+export const parseRaidString = (raidString) => {
+  if (!raidString) {
+    return null;
+  }
+
+  if (typeof raidString !== 'string') {
+    return null;
+  }
+
+  const raidRegexp = /^(\d+)\.(\d+)\.(\d+)$/g;
+  const match = raidRegexp.exec(raidString);
+
+  if (!match) {
+    return null;
+  }
+
+  return {
+    raid: Number(match[1]),
+    stage: Number(match[2]),
+    boss: Number(match[3]),
+  };
+};
