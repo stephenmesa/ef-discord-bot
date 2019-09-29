@@ -1,5 +1,6 @@
 import * as utils from '../utils';
 import * as datastore from '../datastore';
+import * as bossRepository from '../bossRepository';
 
 export const validateAndGetRaidCommandArgs = (args) => {
   const kl = Number(args[0]);
@@ -31,6 +32,14 @@ export const validateAndGetRaidCommandArgs = (args) => {
     return {
       code: 4,
       error: 'Invalid resist supplied, please ensure you only use numbers',
+    };
+  }
+
+  const bossName = bossRepository.getRaidBossName(raidStage);
+  if (!bossName) {
+    return {
+      code: 5,
+      error: 'Invalid raid stage supplied, please ensure the stage exists',
     };
   }
 
