@@ -362,7 +362,7 @@ export const generateRaidProgressMessage = ({
   const bossImageFilename = getBossImageFilename(raidStage);
 
   if (bossImageFilename) {
-    messageData.embed.image = {
+    messageData.embed.thumbnail = {
       url: 'attachment://boss.png',
     };
 
