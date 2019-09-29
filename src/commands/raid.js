@@ -74,9 +74,17 @@ const raidCommand = {
 
     // TODO: grab user's previous damage on same stage to compare against
     // TODO: grab damage for similar KL on same stage
-    const description = 'Hello! Thanks for recording your raid damage. I will keep track of your performance and let you know how you\'re doing over time (eventually).';
 
-    message.channel.send(description);
+    const messageToSend = utils.generateRaidProgressMessage({
+      message,
+      timestamp,
+      kl,
+      raidStage,
+      damage,
+      resist,
+    });
+
+    message.channel.send(messageToSend);
 
     datastore.saveRaidDamage({
       kl,
