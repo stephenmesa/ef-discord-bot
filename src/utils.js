@@ -250,12 +250,16 @@ export const generateRaidProgressMessage = ({
           value: bossRepository.getRaidBossName(raidStage),
           inline: true,
         }, {
+          name: 'Resistance',
+          value: resist,
+          inline: true,
+        }, {
           name: 'Damage',
           value: `${damage} (${damagePercentage}%)`,
           inline: true,
         }, {
-          name: 'Resistance',
-          value: resist,
+          name: 'Health',
+          value: bossHealth,
           inline: true,
         },
       ],
