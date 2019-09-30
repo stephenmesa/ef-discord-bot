@@ -253,69 +253,69 @@ const raids = {
       name: 'Stage 9',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 565100000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 819400000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 1189000000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 1723000000000,
       },
       5: {
         boss: bosses.ancientDragonKnight,
-        health: 100000000000000,
+        health: 2499000000000,
       },
     },
     10: {
       name: 'Stage 10',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 2499000000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 3623000000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 5253000000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 7616000000000,
       },
       5: {
         boss: bosses.ancientDragonKnight,
-        health: 100000000000000,
+        health: 11050000000000,
       },
     },
     11: {
       name: 'Stage 11',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 11050000000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 16020000000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 23220000000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 33670000000000,
       },
       5: {
         boss: bosses.ancientDragonKnight,
-        health: 100000000000000,
+        health: 48820000000000,
       },
     },
   },
