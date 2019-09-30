@@ -326,152 +326,152 @@ const raids = {
       name: 'Stage 1',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 390000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 520000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 650000000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 780000000,
       },
     },
     2: {
       name: 'Stage 2',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 1800000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 2100000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 2500000000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 3000000000,
       },
     },
     3: {
       name: 'Stage 3',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 7560000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 11040000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 14400000000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 21600000000,
       },
     },
     4: {
       name: 'Stage 4',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 63000000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 100800000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 136747500000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 183750000000,
       },
     },
     5: {
       name: 'Stage 5',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 319000000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 358640000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 400000000000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 500000000000,
       },
     },
     6: {
       name: 'Stage 6',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 840000000000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 1100000000000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 1200000000000000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 1400000000000000,
       },
     },
     7: {
       name: 'Stage 7',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 3400000000000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 5900000000000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 10000000000000000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 12000000000000000,
       },
     },
     8: {
       name: 'Stage 8',
       1: {
         boss: bosses.basilisk,
-        health: 100000000000000,
+        health: 120000000000000000,
       },
       2: {
         boss: bosses.salim,
-        health: 100000000000000,
+        health: 245000000000000000,
       },
       3: {
         boss: bosses.ignis,
-        health: 100000000000000,
+        health: 372000000000000000,
       },
       4: {
         boss: bosses.bahamut,
-        health: 100000000000000,
+        health: 400000000000000000,
       },
     },
   },
