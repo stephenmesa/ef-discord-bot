@@ -228,6 +228,8 @@ export const generateRaidProgressMessage = ({
   damage,
   resist,
 }) => {
+  const bossHealth = bossRepository.getBossHealth(raidStage);
+  const damagePercentage = Number((damage / bossHealth) * 100).toFixed(2);
   const messageData = {
     embed: {
       description: 'Thanks for recording your raid damage! This is the data I\'ve recorded',
@@ -249,7 +251,7 @@ export const generateRaidProgressMessage = ({
           inline: true,
         }, {
           name: 'Damage',
-          value: damage,
+          value: `${damage} (${damagePercentage}%)`,
           inline: true,
         }, {
           name: 'Resistance',
