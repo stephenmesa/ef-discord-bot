@@ -638,184 +638,184 @@ const raids = {
       name: 'Stage 1',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 509000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 560000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 672000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 873000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 2790000000,
       },
     },
     2: {
       name: 'Stage 2',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 2790000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 3074000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 3690000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 4790000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 62500000000,
       },
     },
     3: {
       name: 'Stage 3',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 62500000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 68800000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 82500000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 107000000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 333000000000,
       },
     },
     4: {
       name: 'Stage 4',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 333000000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 366000000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 439000000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 571000000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 4110000000000,
       },
     },
     5: {
       name: 'Stage 5',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 4110000000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 4520000000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 5430000000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 7060000000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 9200000000000,
       },
     },
     6: {
       name: 'Stage 6',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 125200000000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 187900000000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 281900000000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 422800000000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 634200000000000,
       },
     },
     7: {
       name: 'Stage 7',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 951400000000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 1427000000000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 2140000000000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 3211000000000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 7224000000000000,
       },
     },
     8: {
       name: 'Stage 8',
       1: {
         boss: bosses.griffin,
-        health: 100000000000000,
+        health: 7224000000000000,
       },
       2: {
         boss: bosses.boar,
-        health: 100000000000000,
+        health: 10837000000000000,
       },
       3: {
         boss: bosses.wyvern,
-        health: 100000000000000,
+        health: 16256000000000000,
       },
       4: {
         boss: bosses.deathDragon,
-        health: 100000000000000,
+        health: 24384000000000000,
       },
       5: {
         boss: bosses.amaimon,
-        health: 100000000000000,
+        health: 36576000000000000,
       },
     },
   },
