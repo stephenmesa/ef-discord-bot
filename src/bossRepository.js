@@ -101,152 +101,152 @@ const raids = {
       name: 'Stage 1',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 390000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 390000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 650000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 780000000,
       },
     },
     2: {
       name: 'Stage 2',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 1800000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 1395000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 1785000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 1500000000,
       },
     },
     3: {
       name: 'Stage 3',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 6300000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 5610000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 4641000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 3000000000,
       },
     },
     4: {
       name: 'Stage 4',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 42000000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 37200000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 21165000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 22500000000,
       },
     },
     5: {
       name: 'Stage 5',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 139500000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 109320000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 137000000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 200000000000,
       },
     },
     6: {
       name: 'Stage 6',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 4000000000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 4800000000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 6720000000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 12000000000000,
       },
     },
     7: {
       name: 'Stage 7',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 48000000000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 57600000000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 67200000000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 144000000000000,
       },
     },
     8: {
       name: 'Stage 8',
       1: {
         boss: bosses.scorpion,
-        health: 100000000000000,
+        health: 576000000000000,
       },
       2: {
         boss: bosses.harpy,
-        health: 100000000000000,
+        health: 691200000000000,
       },
       3: {
         boss: bosses.titan,
-        health: 100000000000000,
+        health: 967680000000000,
       },
       4: {
         boss: bosses.belial,
-        health: 100000000000000,
+        health: 1728000000000000,
       },
     },
     9: {
