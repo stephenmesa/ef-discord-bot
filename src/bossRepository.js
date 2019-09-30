@@ -482,152 +482,152 @@ const raids = {
       name: 'Stage 1',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 508809000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 559690000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 671628000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 873117000,
       },
     },
     2: {
       name: 'Stage 2',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 2794541000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 3073996000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 3688795000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 4795433000,
       },
     },
     3: {
       name: 'Stage 3',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 62504694000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 68755164000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 82506197000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 107258000000,
       },
     },
     4: {
       name: 'Stage 4',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 332521000000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 365773000000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 438928000000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 570606000000,
       },
     },
     5: {
       name: 'Stage 5',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 4112274756000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 4523502232000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 5428202678000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 7056663482000,
       },
     },
     6: {
       name: 'Stage 6',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 10000000000000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 10000000000000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 20000000000000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 50000000000000,
       },
     },
     7: {
       name: 'Stage 7',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 200000000000000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 200000000000000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 400000000000000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 1800000000000000,
       },
     },
     8: {
       name: 'Stage 8',
       1: {
         boss: bosses.taratoad,
-        health: 100000000000000,
+        health: 4000000000000000,
       },
       2: {
         boss: bosses.nerugal,
-        health: 100000000000000,
+        health: 4000000000000000,
       },
       3: {
         boss: bosses.gorgos,
-        health: 100000000000000,
+        health: 8000000000000000,
       },
       4: {
         boss: bosses.beelzebub,
-        health: 100000000000000,
+        health: 72000000000000000,
       },
     },
   },
