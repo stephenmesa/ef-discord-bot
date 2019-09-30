@@ -826,115 +826,115 @@ const raids = {
       name: 'Stage 1',
       1: {
         boss: bosses.urbos,
-        health: 100000000000000,
+        health: 6491000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 100000000000000,
+        health: 6526000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 100000000000000,
+        health: 7533000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 100000000000000,
+        health: 7577000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 100000000000000,
+        health: 10200000000,
       },
     },
     2: {
       name: 'Stage 2',
       1: {
         boss: bosses.urbos,
-        health: 100000000000000,
+        health: 28800000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 100000000000000,
+        health: 28900000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 100000000000000,
+        health: 38800000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 100000000000000,
+        health: 38800000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 100000000000000,
+        health: 60600000000,
       },
     },
     3: {
       name: 'Stage 3',
       1: {
         boss: bosses.urbos,
-        health: 100000000000000,
+        health: 128000000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 100000000000000,
+        health: 128000000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 100000000000000,
+        health: 199000000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 100000000000000,
+        health: 215000000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 100000000000000,
+        health: 362000000000,
       },
     },
     4: {
       name: 'Stage 4',
       1: {
         boss: bosses.urbos,
-        health: 100000000000000,
+        health: 565000000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 100000000000000,
+        health: 565000000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 100000000000000,
+        health: 883000000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 100000000000000,
+        health: 952000000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 100000000000000,
+        health: 1600000000000,
       },
     },
     5: {
       name: 'Stage 5',
       1: {
         boss: bosses.urbos,
-        health: 100000000000000,
+        health: 2510000000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 100000000000000,
+        health: 2700000000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 100000000000000,
+        health: 4540000000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 100000000000000,
+        health: 4900000000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 100000000000000,
+        health: 8240000000000,
       },
     },
   },
