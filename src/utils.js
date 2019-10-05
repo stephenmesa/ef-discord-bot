@@ -259,7 +259,7 @@ export const generateRaidProgressMessage = ({
           inline: true,
         }, {
           name: 'Health',
-          value: bossHealth,
+          value: `${bossHealth}`,
           inline: true,
         },
       ],
