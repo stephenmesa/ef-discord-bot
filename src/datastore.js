@@ -37,7 +37,7 @@ export const saveProgress = (kl, totalMedals, rate, percentage, userId, username
   return datastore
     .save(progress)
     .catch((err) => {
-      console.error('ERROR:', err);
+      console.error('Error saving progress datastore entity:', err);
     });
 };
 
@@ -170,6 +170,6 @@ export const saveRaidDamage = ({
   return datastore
     .save(raidProgress)
     .catch((err) => {
-      console.error('ERROR:', err);
+      console.error('Error saving raidProgress datastore entity:', err);
     });
 };
