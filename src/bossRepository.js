@@ -1,10 +1,10 @@
 const bosses = {
   scorpion: {
-    name: 'Scorpion',
-    imageFilename: 'famine-scorpion.png',
+    name: 'Famine Scorpion',
+    imageFilename: 'scorpion.png',
   },
   harpy: {
-    name: 'Harpy',
+    name: 'Desert Storm Harpy',
     imageFilename: 'harpy.png',
   },
   titan: {
@@ -12,23 +12,23 @@ const bosses = {
     imageFilename: 'titan.png',
   },
   belial: {
-    name: 'Belial',
+    name: 'Lord of the Desert, Belial',
     imageFilename: 'belial.png',
   },
   basilisk: {
-    name: 'Basilisk',
+    name: 'Volcano Basilisk',
     imageFilename: 'basilisk.png',
   },
   salim: {
-    name: 'Salim',
+    name: 'Fire Soul\'s Salim',
     imageFilename: 'salim.png',
   },
   ignis: {
-    name: 'Ignis',
+    name: 'Fire Demon\'s Ignis',
     imageFilename: 'ignis.png',
   },
   bahamut: {
-    name: 'Bahamut',
+    name: 'Fire Hell Lord\'s Bahamut',
     imageFilename: 'bahamut.png',
   },
   taratoad: {
@@ -48,43 +48,43 @@ const bosses = {
     imageFilename: 'beelzebub.png',
   },
   griffin: {
-    name: 'Hell griffin',
+    name: 'Hell Griffin',
     imageFilename: 'griffin.png',
   },
   boar: {
-    name: 'Zombie boar',
+    name: 'Zombie Giant Boar',
     imageFilename: 'boar.png',
   },
   wyvern: {
-    name: 'Twin Head Bone Wyvern',
+    name: 'Twinhead Bone Wyvern',
     imageFilename: 'wyvern.png',
   },
   deathDragon: {
     name: 'Ancient Death Dragon',
     imageFilename: 'death-dragon.png',
   },
-  amaimon: {
-    name: 'Hell Lord Amaimon',
+  mamon: {
+    name: 'Mamon the Hell Lord',
     imageFilename: 'mamon.png',
   },
-  urbos: {
-    name: 'Urbos',
+  urubos: {
+    name: 'Urubos the Leader of Frozen Forest',
     imageFilename: 'urubos.png',
   },
   fenril: {
-    name: 'King of the Ice Valley',
+    name: 'Fenril the King of Frozen Valley',
     imageFilename: 'fenril.png',
   },
   destroyer: {
-    name: 'The Destroyer',
-    imageFilename: 'destroyer-collossus.png',
+    name: 'Destroyer the Colossus of Frozen Mountain',
+    imageFilename: 'destroyer-colossus.png',
   },
   skashka: {
-    name: 'King of Snowstorm',
+    name: 'Skashka the Lord of Snow Storm',
     imageFilename: 'skashka.png',
   },
   leviathan: {
-    name: 'Leviathan',
+    name: 'Leviathan the Monarch of Cold',
     imageFilename: 'leviathan.png',
   },
   ancientDragonKnight: {
@@ -825,7 +825,7 @@ const raids = {
     1: {
       name: 'Stage 1',
       1: {
-        boss: bosses.urbos,
+        boss: bosses.urubos,
         health: 6491000000,
       },
       2: {
@@ -848,7 +848,7 @@ const raids = {
     2: {
       name: 'Stage 2',
       1: {
-        boss: bosses.urbos,
+        boss: bosses.urubos,
         health: 28800000000,
       },
       2: {
@@ -871,7 +871,7 @@ const raids = {
     3: {
       name: 'Stage 3',
       1: {
-        boss: bosses.urbos,
+        boss: bosses.urubos,
         health: 128000000000,
       },
       2: {
@@ -894,7 +894,7 @@ const raids = {
     4: {
       name: 'Stage 4',
       1: {
-        boss: bosses.urbos,
+        boss: bosses.urubos,
         health: 565000000000,
       },
       2: {
@@ -917,7 +917,7 @@ const raids = {
     5: {
       name: 'Stage 5',
       1: {
-        boss: bosses.urbos,
+        boss: bosses.urubos,
         health: 2510000000000,
       },
       2: {
