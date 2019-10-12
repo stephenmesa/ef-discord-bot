@@ -228,8 +228,8 @@ export const generateRaidProgressMessage = ({
   damage,
   resist,
 }) => {
-  const bossHealth = bossRepository.getBossHealth(raidStage);
-  const damagePercentage = Number((damage / bossHealth) * 100).toFixed(2);
+  const stageData = bossRepository.getStageData(raidStage);
+  const damagePercentage = Number((damage / stageData.health) * 100).toFixed(2);
   const messageData = {
     embed: {
       description: 'Thanks for recording your raid damage! This is the data I\'ve recorded',
@@ -242,12 +242,12 @@ export const generateRaidProgressMessage = ({
         text: 'NephBot created by @stephenmesa#1219',
       },
       title: 'Raid Progress',
-      color: bossRepository.getRaidColor(raidStage),
+      color: stageData.color,
       timestamp: timestamp.toISOString(),
       fields: [
         {
           name: 'Boss',
-          value: bossRepository.getRaidBossName(raidStage),
+          value: stageData.name,
           inline: true,
         }, {
           name: 'Resistance',
@@ -259,21 +259,19 @@ export const generateRaidProgressMessage = ({
           inline: true,
         }, {
           name: 'Health',
-          value: `${bossHealth}`,
+          value: `${stageData.health}`,
           inline: true,
         },
       ],
     },
   };
 
-  const bossImageFilename = bossRepository.getBossImageFilename(raidStage);
-
-  if (bossImageFilename) {
+  if (stageData.imageFilename) {
     messageData.embed.thumbnail = {
       url: 'attachment://boss.png',
     };
 
-    messageData.files = [new Discord.Attachment(bossImageFilename, 'boss.png')];
+    messageData.files = [new Discord.Attachment(stageData.imageFilename, 'boss.png')];
   }
 
   return messageData;

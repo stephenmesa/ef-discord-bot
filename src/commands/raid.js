@@ -35,11 +35,18 @@ export const validateAndGetRaidCommandArgs = (args) => {
     };
   }
 
-  const bossName = bossRepository.getRaidBossName(raidStage);
-  if (!bossName) {
+  const stageData = bossRepository.getStageData(raidStage);
+  if (!stageData) {
     return {
       code: 5,
       error: 'Invalid raid stage supplied, please ensure the stage exists',
+    };
+  }
+
+  if (damage > stageData.health) {
+    return {
+      code: 6,
+      error: `Damage cannot exceed health of boss. (${raidStage.raid}.${raidStage.stage} ${stageData.name} has ${stageData.health} health)`,
     };
   }
 

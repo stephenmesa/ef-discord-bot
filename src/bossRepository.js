@@ -940,7 +940,7 @@ const raids = {
   },
 };
 
-const getBoss = (raidStage) => {
+export const getStageData = (raidStage) => {
   if (raidStage) {
     const {
       raid,
@@ -955,87 +955,12 @@ const getBoss = (raidStage) => {
         if (stageLookup) {
           const bossLookup = stageLookup[boss];
           if (bossLookup) {
-            return bossLookup.boss;
-          }
-        }
-      }
-    }
-  }
-
-  return null;
-};
-
-export const getRaidBossName = (raidStage) => {
-  let name = null;
-
-  if (raidStage) {
-    const {
-      raid,
-      boss,
-      stage,
-    } = raidStage;
-
-    if (raid && boss && stage) {
-      const raidLookup = raids[raid];
-      if (raidLookup) {
-        const stageLookup = raidLookup[stage];
-        if (stageLookup) {
-          const bossLookup = stageLookup[boss];
-          if (bossLookup) {
-            const bossObj = bossLookup.boss;
-            if (bossObj) {
-              name = `${raid}.${stage} ${bossObj.name}`;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  return name;
-};
-
-export const getRaidColor = (raidStage) => {
-  let color = null;
-
-  if (raidStage) {
-    const {
-      raid,
-    } = raidStage;
-
-    if (raid) {
-      const raidLookup = raids[raid];
-      color = raidLookup.color;
-    }
-  }
-
-  return color;
-};
-
-export const getBossImageFilename = (raidStage) => {
-  const bossLookup = getBoss(raidStage);
-  if (bossLookup && bossLookup.imageFilename) {
-    return `./assets/bosses/${bossLookup.imageFilename}`;
-  }
-  return null;
-};
-
-export const getBossHealth = (raidStage) => {
-  if (raidStage) {
-    const {
-      raid,
-      boss,
-      stage,
-    } = raidStage;
-
-    if (raid && boss && stage) {
-      const raidLookup = raids[raid];
-      if (raidLookup) {
-        const stageLookup = raidLookup[stage];
-        if (stageLookup) {
-          const bossLookup = stageLookup[boss];
-          if (bossLookup) {
-            return bossLookup.health;
+            return {
+              health: bossLookup.health,
+              color: raidLookup.color,
+              name: bossLookup.boss.name,
+              imageFilename: bossLookup.boss.imageFilename,
+            };
           }
         }
       }
