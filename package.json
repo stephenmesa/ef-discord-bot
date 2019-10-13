@@ -1,11 +1,11 @@
 {
   "name": "ef-discord-bot",
-  "version": "1.14.4",
+  "version": "1.15.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest __tests__",
-    "test-watch": "npm run test -- --watch",
+    "test": "jest",
+    "test-watch": "npm run test -- --watchAll --runInBand",
     "start": "node --require dotenv/config lib/index.js",
     "build": "babel src -d lib",
     "lint": "eslint src/** __tests__/**"
@@ -25,12 +25,15 @@
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^24.9.0",
     "braces": ">=2.3.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.14.0",
-    "jest": "^24.8.0",
+    "jest": "^24.9.0",
     "js-yaml": ">=3.13.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

@@ -16,6 +16,7 @@ const datastore = new Datastore({
 });
 
 const kind = 'Progress';
+const raidProgressKind = 'RaidProgress';
 
 export const saveProgress = (kl, totalMedals, rate, percentage, userId, username, timestamp) => {
   const progressKey = datastore.key(kind);
@@ -36,7 +37,7 @@ export const saveProgress = (kl, totalMedals, rate, percentage, userId, username
   return datastore
     .save(progress)
     .catch((err) => {
-      console.error('ERROR:', err);
+      console.error('Error saving progress datastore entity:', err);
     });
 };
 
@@ -136,4 +137,39 @@ export const getSponsors = () => {
   const sponsorKind = 'Sponsor';
   const key = datastore.key([sponsorKind, Number(SPONSOR_ENTITY_ID)]);
   return datastore.get(key).then(data => data[0].Names);
+};
+
+export const saveRaidDamage = ({
+  kl,
+  raidStageString,
+  raidStage,
+  damage,
+  resist,
+  userId,
+  username,
+  timestamp,
+}) => {
+  const raidProgressKey = datastore.key(raidProgressKind);
+
+  const raidProgress = {
+    key: raidProgressKey,
+    data: {
+      kl,
+      raidStageString,
+      raidNumber: raidStage.raid,
+      stageNumber: raidStage.stage,
+      bossNumber: raidStage.boss,
+      damage,
+      resist,
+      userId,
+      username,
+      timestamp,
+    },
+  };
+
+  return datastore
+    .save(raidProgress)
+    .catch((err) => {
+      console.error('Error saving raidProgress datastore entity:', err);
+    });
 };

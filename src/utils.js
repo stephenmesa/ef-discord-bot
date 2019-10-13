@@ -1,5 +1,8 @@
 import _ from 'lodash';
 import { quantileRank } from 'simple-statistics';
+import Discord from 'discord.js';
+
+import * as bossRepository from './bossRepository';
 
 // Let's assume that it's impossible to achieve an SR rate above 100%
 // (usually it's below 10%, so this should be fairly conservative)
@@ -187,4 +190,89 @@ export const generateSrGradeMessage = (
       fields: klFields,
     },
   };
+};
+
+export const getUserDataFromMessage = message => ({
+  username: message.author.username,
+  userId: message.author.id,
+});
+
+export const parseRaidString = (raidString) => {
+  if (!raidString) {
+    return null;
+  }
+
+  if (typeof raidString !== 'string') {
+    return null;
+  }
+
+  const raidRegexp = /^(\d+)\.(\d+)\.(\d+)$/g;
+  const match = raidRegexp.exec(raidString);
+
+  if (!match) {
+    return null;
+  }
+
+  return {
+    raid: Number(match[1]),
+    stage: Number(match[2]),
+    boss: Number(match[3]),
+  };
+};
+
+export const generateRaidProgressMessage = ({
+  message,
+  timestamp,
+  kl,
+  raidStage,
+  damage,
+  resist,
+}) => {
+  const stageData = bossRepository.getStageData(raidStage);
+  const damagePercentage = Number((damage / stageData.health) * 100).toFixed(2);
+  const messageData = {
+    embed: {
+      description: 'Thanks for recording your raid damage! This is the data I\'ve recorded',
+      author: {
+        name: `${message.member.displayName} (KL${kl})`,
+        icon_url: message.author.avatar ? `https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png` : undefined,
+      },
+      footer: {
+        icon_url: 'https://cdn.discordapp.com/avatars/294466905073516554/07714791affb9af210756ce2565e6488.png',
+        text: 'NephBot created by @stephenmesa#1219',
+      },
+      title: 'Raid Progress',
+      color: stageData.color,
+      timestamp: timestamp.toISOString(),
+      fields: [
+        {
+          name: 'Boss',
+          value: stageData.name,
+          inline: true,
+        }, {
+          name: 'Resistance',
+          value: resist,
+          inline: true,
+        }, {
+          name: 'Damage',
+          value: `${damage} (${damagePercentage}%)`,
+          inline: true,
+        }, {
+          name: 'Health',
+          value: `${stageData.health}`,
+          inline: true,
+        },
+      ],
+    },
+  };
+
+  if (stageData.imageFilename) {
+    messageData.embed.thumbnail = {
+      url: 'attachment://boss.png',
+    };
+
+    messageData.files = [new Discord.Attachment(stageData.imageFilename, 'boss.png')];
+  }
+
+  return messageData;
 };

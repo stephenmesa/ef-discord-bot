@@ -414,3 +414,29 @@ describe('validatePercentage()', () => {
     });
   });
 });
+
+describe('parseRaidString', () => {
+  const testHelper = (inputString, expectedValue) => {
+    expect(utils.parseRaidString(inputString)).toEqual(expectedValue);
+  };
+
+  test('should return null when given invalid inputs', () => {
+    testHelper(null, null);
+    testHelper(undefined, null);
+    testHelper(1, null);
+    testHelper(() => {}, null);
+    testHelper('1', null);
+    testHelper('1.2', null);
+    testHelper('1.2.3.4', null);
+    testHelper('letters', null);
+    testHelper('x', null);
+    testHelper('1,2,3', null);
+    testHelper('-1.2.3', null);
+  });
+
+  test('should return parsed object when given valid inputs', () => {
+    testHelper('1.2.3', { raid: 1, stage: 2, boss: 3 });
+    testHelper('5.5.5', { raid: 5, stage: 5, boss: 5 });
+    testHelper('1.12.3', { raid: 1, stage: 12, boss: 3 });
+  });
+});
