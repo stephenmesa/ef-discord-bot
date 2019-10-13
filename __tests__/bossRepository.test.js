@@ -31,7 +31,7 @@ describe('getStageData()', () => {
         maxBoss: 5,
       }, {
         raid: 5,
-        maxStage: 5,
+        maxStage: 8,
         maxBoss: 5,
       },
     ];
@@ -100,6 +100,9 @@ describe('getStageData()', () => {
     testHelper({ raid: 5, stage: 3, boss: 6 }, false);
     testHelper({ raid: 5, stage: 4, boss: 6 }, false);
     testHelper({ raid: 5, stage: 5, boss: 6 }, false);
-    testHelper({ raid: 5, stage: 6, boss: 1 }, false);
+    testHelper({ raid: 5, stage: 6, boss: 6 }, false);
+    testHelper({ raid: 5, stage: 7, boss: 6 }, false);
+    testHelper({ raid: 5, stage: 8, boss: 6 }, false);
+    testHelper({ raid: 5, stage: 9, boss: 1 }, false);
   });
 });
