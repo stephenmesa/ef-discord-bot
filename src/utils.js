@@ -271,7 +271,7 @@ export const generateRaidProgressMessage = ({
       url: 'attachment://boss.png',
     };
 
-    messageData.files = [new Discord.Attachment(stageData.imageFilename, 'boss.png')];
+    messageData.files = [new Discord.Attachment(`assets/bosses/${stageData.imageFilename}`, 'boss.png')];
   }
 
   return messageData;
