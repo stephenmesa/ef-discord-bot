@@ -941,69 +941,69 @@ const raids = {
       name: 'Stage 6',
       1: {
         boss: bosses.urubos,
-        health: 11111,
+        health: 3246000000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 11111,
+        health: 3637000000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 11111,
+        health: 6115000000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 11111,
+        health: 6331000000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 1111,
+        health: 11100000000000,
       },
     },
     7: {
       name: 'Stage 7',
       1: {
         boss: bosses.urubos,
-        health: 11111,
+        health: 20170000000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 11111,
+        health: 25260000000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 11111,
+        health: 36420000000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 11111,
+        health: 41030000000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 1111,
+        health: 65010000000000,
       },
     },
     8: {
       name: 'Stage 8',
       1: {
         boss: bosses.urubos,
-        health: 11111,
+        health: 66500000000000,
       },
       2: {
         boss: bosses.fenril,
-        health: 11111,
+        health: 77030000000000,
       },
       3: {
         boss: bosses.destroyer,
-        health: 11111,
+        health: 140500000000000,
       },
       4: {
         boss: bosses.skashka,
-        health: 11111,
+        health: 163800000000000,
       },
       5: {
         boss: bosses.leviathan,
-        health: 1111,
+        health: 297700000000000,
       },
     },
   },
