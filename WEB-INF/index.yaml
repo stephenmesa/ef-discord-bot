@@ -11,3 +11,9 @@ indexes:
   - name: kl
   - name: timestamp
     direction: desc
+
+- kind: RaidProgress
+  properties:
+  - name: userId
+  - name: timestamp
+    direction: desc

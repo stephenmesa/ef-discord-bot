@@ -10,22 +10,54 @@ const MAX_HISTORY_COUNT = 512;
 const undoCommand = {
   name: 'undo',
   description: 'Undo your last recorded progress',
-  execute: (message) => {
+  args: 1,
+  usage: '<raid|sr>',
+  execute: (message, args) => {
+    const undoType = args[0].toLowerCase();
     const userId = message.author.id;
-    datastore.deleteLatestProgress(userId)
-      .then((result) => {
-        const deletedProgress = result.deletedEntry;
-        const hoursDiff = utils.getHoursSince(deletedProgress.timestamp);
-        message.reply(`Deleted previous record of ${deletedProgress.kl} KL and ${deletedProgress.totalMedals} total medals, recorded ${hoursDiff.toFixed(2).toString()} hours ago`);
-      })
-      .catch((err) => {
-        if (err.errorCode === 404) {
-          message.reply('Sorry, I couldn\'t find your most recent SR progress, it doesn\'t appear that you have any.');
-        } else {
-          console.error(err);
-          message.reply('Looks like stephenmesa has a terrible bug in his code. Go make fun of his programming abilities!');
-        }
-      });
+
+    if (args.length > 1) {
+      message.reply(`you provided too many arguments. The usage is \`${BOT_PREFIX}${undoCommand.name} ${undoCommand.usage}\``);
+      return;
+    }
+
+    switch (undoType) {
+      case 'sr':
+        datastore.deleteLatestSR(userId)
+          .then((result) => {
+            const deletedSR = result.deletedEntry;
+            const hoursDiff = utils.getHoursSince(deletedSR.timestamp);
+            message.reply(`Deleted previous SR record of ${deletedSR.kl} KL and ${deletedSR.totalMedals} total medals, recorded ${hoursDiff.toFixed(2).toString()} hours ago`);
+          })
+          .catch((err) => {
+            if (err.errorCode === 404) {
+              message.reply('Sorry, I couldn\'t find your most recent SR progress, it doesn\'t appear that you have any.');
+            } else {
+              console.error(err);
+              message.reply('Looks like stephenmesa has a terrible bug in his code for undoing SR records. Go make fun of his programming abilities!');
+            }
+          });
+        break;
+      case 'raid':
+        datastore.deleteLatestRaid(userId)
+          .then((result) => {
+            const deletedRaid = result.deletedEntry;
+            const hoursDiff = utils.getHoursSince(deletedRaid.timestamp);
+            message.reply(`Deleted previous raid record of ${deletedRaid.raidStageString} for ${deletedRaid.damage} damage, recorded ${hoursDiff.toFixed(2).toString()} hours ago`);
+          })
+          .catch((err) => {
+            if (err.errorCode === 404) {
+              message.reply('Sorry, I couldn\'t find your most recent raid progress, it doesn\'t appear that you have any.');
+            } else {
+              console.error(err);
+              message.reply('Looks like stephenmesa has a terrible bug in his code for undoing raid records. Go make fun of his programming abilities!');
+            }
+          });
+        break;
+      default:
+        message.reply('Must provide either `sr` or `raid` as the type of record to undo');
+        break;
+    }
   },
 };
 
