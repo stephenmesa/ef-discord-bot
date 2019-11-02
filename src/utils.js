@@ -227,6 +227,8 @@ export const generateRaidProgressMessage = ({
   raidStage,
   damage,
   resist,
+  firstOneShot,
+  personalRecord,
 }) => {
   const stageData = bossRepository.getStageData(raidStage);
   const damagePercentage = Number((damage / stageData.health) * 100).toFixed(2);
@@ -274,5 +276,25 @@ export const generateRaidProgressMessage = ({
     messageData.files = [new Discord.Attachment(`assets/bosses/${stageData.imageFilename}`, 'boss.png')];
   }
 
+  if (firstOneShot) {
+    messageData.embed.fields.push({
+      name: 'Achievement',
+      value: 'Congratulations on your first one-shot of this boss!',
+      inline: false,
+    });
+  } else if (personalRecord) {
+    messageData.embed.fields.push({
+      name: 'Achievement',
+      value: 'New personal record!',
+      inline: false,
+    });
+  }
+
   return messageData;
+};
+
+export const isRaidOneShot = (raidStageString, damage) => {
+  const stageData = bossRepository.getStageData(parseRaidString(raidStageString));
+
+  return stageData.health === damage;
 };

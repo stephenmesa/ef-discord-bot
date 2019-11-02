@@ -88,29 +88,41 @@ const raidCommand = {
       resist,
     } = parsedArgs;
 
-    // TODO: grab user's previous damage on same stage to compare against
-    // TODO: grab damage for similar KL on same stage
+    datastore.getRaidEntriesForStage(raidStage, userId).then((previousEntries) => {
+      // TODO: grab damage for similar KL on same stage
+      const isOneShot = utils.isRaidOneShot(raidStageString, damage);
+      const existingOneShotEntries = previousEntries.filter(entry => utils.isRaidOneShot(
+        entry.raidStageString,
+        entry.damage,
+      ));
+      const firstOneShot = isOneShot && existingOneShotEntries.length === 0;
 
-    const messageToSend = utils.generateRaidProgressMessage({
-      message,
-      timestamp,
-      kl,
-      raidStage,
-      damage,
-      resist,
-    });
+      const previousEntriesWithMoreDamage = previousEntries.filter(entry => entry.damage >= damage);
+      const personalRecord = firstOneShot || (previousEntriesWithMoreDamage.length === 0);
 
-    message.channel.send(messageToSend);
+      const messageToSend = utils.generateRaidProgressMessage({
+        message,
+        timestamp,
+        kl,
+        raidStage,
+        damage,
+        resist,
+        firstOneShot,
+        personalRecord,
+      });
 
-    datastore.saveRaidDamage({
-      kl,
-      raidStageString,
-      raidStage,
-      damage,
-      resist,
-      userId,
-      username,
-      timestamp,
+      message.channel.send(messageToSend);
+
+      datastore.saveRaidDamage({
+        kl,
+        raidStageString,
+        raidStage,
+        damage,
+        resist,
+        userId,
+        username,
+        timestamp,
+      });
     });
   },
 };
