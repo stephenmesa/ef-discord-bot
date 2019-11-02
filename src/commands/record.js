@@ -67,7 +67,7 @@ const historyCommand = {
   args: 1,
   usage: '<raid|sr>',
   execute: (message, args) => {
-    const undoType = args[0].toLowerCase();
+    const historyType = args[0].toLowerCase();
     const userId = message.author.id;
 
     if (args.length > 1) {
@@ -75,7 +75,7 @@ const historyCommand = {
       return;
     }
 
-    switch (undoType) {
+    switch (historyType) {
       case 'sr':
         datastore.getAllSREntries(userId, MAX_HISTORY_COUNT).then((entries) => {
           if (!entries || entries.length === 0) {
@@ -122,29 +122,54 @@ const historyCommand = {
 const deleteCommand = {
   name: 'delete',
   description: 'Delete a record from your progress',
-  usage: `<ID (use ${BOT_PREFIX}${historyCommand.name} to see IDs)>`,
-  args: 1,
+  usage: `<raid|sr> <ID (use ${BOT_PREFIX}${historyCommand.name} to see IDs)>`,
+  args: 2,
   execute: (message, args) => {
+    const deleteType = args[0].toLowerCase();
     const userId = message.author.id;
-    const id = args[0];
+    const id = args[1];
     if (Number.isNaN(id)) {
       message.reply('Invalid ID supplied, please only use numbers');
       return;
     }
-    datastore.deleteProgress(userId, id)
-      .then((result) => {
-        const deletedProgress = result.deletedEntry;
-        const hoursDiff = utils.getHoursSince(deletedProgress.timestamp);
-        message.reply(`Deleted previous record of ${deletedProgress.kl} KL and ${deletedProgress.totalMedals} total medals, recorded ${hoursDiff.toFixed(2).toString()} hours ago`);
-      })
-      .catch((err) => {
-        if (err.errorCode === 404) {
-          message.reply(`Sorry, I couldn't find a progress entry with the id of ${id}.`);
-        } else {
-          console.error(err);
-          message.reply('Looks like stephenmesa has yet another terrible bug in his code. Go make fun of his programming abilities!');
-        }
-      });
+
+    switch (deleteType) {
+      case 'sr':
+        datastore.deleteSREntry(userId, id)
+          .then((result) => {
+            const deletedEntry = result.deletedEntry;
+            const hoursDiff = utils.getHoursSince(deletedEntry.timestamp);
+            message.reply(`Deleted previous SR record of ${deletedEntry.kl} KL and ${deletedEntry.totalMedals} total medals, recorded ${hoursDiff.toFixed(2).toString()} hours ago`);
+          })
+          .catch((err) => {
+            if (err.errorCode === 404) {
+              message.reply(`Sorry, I couldn't find a SR progress entry with the id of ${id}.`);
+            } else {
+              console.error(err);
+              message.reply('Looks like stephenmesa has yet another terrible bug in his code. Go make fun of his programming abilities!');
+            }
+          });
+        break;
+      case 'raid':
+        datastore.deleteRaidEntry(userId, id)
+          .then((result) => {
+            const deletedEntry = result.deletedEntry;
+            const hoursDiff = utils.getHoursSince(deletedEntry.timestamp);
+            message.reply(`Deleted previous raid record for ${deletedEntry.raidStageString} at ${deletedEntry.kl} KL for ${deletedEntry.damage} damage, recorded ${hoursDiff.toFixed(2).toString()} hours ago`);
+          })
+          .catch((err) => {
+            if (err.errorCode === 404) {
+              message.reply(`Sorry, I couldn't find a raid entry with the id of ${id}.`);
+            } else {
+              console.error(err);
+              message.reply('Looks like stephenmesa has yet another terrible bug in his code. Go make fun of his programming abilities!');
+            }
+          });
+        break;
+      default:
+        message.reply('Must provide either `sr` or `raid` as the type of record to delete');
+        break;
+    }
   },
 };
 
