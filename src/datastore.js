@@ -41,14 +41,18 @@ export const saveProgress = (kl, totalMedals, rate, percentage, userId, username
     });
 };
 
-const getLatestProgressEntry = (userId) => {
-  const query = datastore.createQuery(kind)
+const getLatestEntry = entryKind => (userId) => {
+  const query = datastore.createQuery(entryKind)
     .filter('userId', '=', userId)
     .order('timestamp', { descending: true })
     .limit(1);
 
   return datastore.runQuery(query);
 };
+
+const getLatestSREntry = getLatestEntry(kind);
+
+const getLatestRaidEntry = getLatestEntry(raidProgressKind);
 
 export const getAllProgressEntries = (userId, limit = 25) => {
   const query = datastore.createQuery(kind)
@@ -91,22 +95,28 @@ export const getProgressEntry = (userId, id) => {
   return datastore.runQuery(query);
 };
 
-export const getLatestProgress = userId => getLatestProgressEntry(userId).then((results) => {
+export const getLatestProgress = userId => getLatestSREntry(userId).then((results) => {
   const latestProgress = results && results[0] && results[0][0];
   return latestProgress;
 });
 
-export const deleteLatestProgress = userId => getLatestProgressEntry(userId).then((results) => {
-  const progressEntry = results && results[0] && results[0][0];
-  const itemKey = progressEntry && progressEntry[datastore.KEY];
-  if (!itemKey) {
-    throw new CustomError(`No latest progress item found for userId: ${userId}`, 404);
-  }
+const deleteLatestEntry = getLatestEntryMethod => userId => getLatestEntryMethod(userId).then(
+  (results) => {
+    const entry = results && results[0] && results[0][0];
+    const itemKey = entry && entry[datastore.KEY];
+    if (!itemKey) {
+      throw new CustomError(`No latest progress item found for userId: ${userId}`, 404);
+    }
 
-  return datastore.delete(itemKey).then(() => ({
-    deletedEntry: progressEntry,
-  }));
-});
+    return datastore.delete(itemKey).then(() => ({
+      deletedEntry: entry,
+    }));
+  },
+);
+
+export const deleteLatestSR = deleteLatestEntry(getLatestSREntry);
+
+export const deleteLatestRaid = deleteLatestEntry(getLatestRaidEntry);
 
 export const deleteProgress = (userId, id) => getProgressEntry(userId, id).then((results) => {
   const progressEntry = results && results[0] && results[0][0];
