@@ -1,6 +1,6 @@
 {
   "name": "ef-discord-bot",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -10,7 +10,10 @@
     "build": "babel src -d lib",
     "lint": "eslint src/** __tests__/**"
   },
-  "author": "",
+  "author": "Stephen Mesa <stephen.mesa@gmail.com>",
+  "repository": {
+    "url": "https://github.com/stephenmesa/ef-discord-bot"
+  },
   "license": "ISC",
   "dependencies": {
     "@google-cloud/datastore": "^4.1.0",
