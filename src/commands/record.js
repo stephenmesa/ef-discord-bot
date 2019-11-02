@@ -64,24 +64,58 @@ const undoCommand = {
 const historyCommand = {
   name: 'history',
   description: 'View your progress history',
-  execute: (message) => {
+  args: 1,
+  usage: '<raid|sr>',
+  execute: (message, args) => {
+    const undoType = args[0].toLowerCase();
     const userId = message.author.id;
-    datastore.getAllProgressEntries(userId, MAX_HISTORY_COUNT).then((progress) => {
-      if (!progress || progress.length === 0) {
-        message.author.send(`Sorry, I don't have any progress recorded for you. Try using the '${BOT_PREFIX}record' command to record progress!`);
-        return;
-      }
-      csv.generateProgressCSV(progress)
-        .then((filename) => {
-          const re = new Discord.RichEmbed()
-            .attachFile(new Discord.Attachment(filename, 'progress.csv'))
-            .setDescription('Here\'s your progress to date!');
 
-          message.author.send(re).then(() => {
-            csv.deleteCSV(filename);
-          });
+    if (args.length > 1) {
+      message.reply(`you provided too many arguments. The usage is \`${BOT_PREFIX}${historyCommand.name} ${historyCommand.usage}\``);
+      return;
+    }
+
+    switch (undoType) {
+      case 'sr':
+        datastore.getAllSREntries(userId, MAX_HISTORY_COUNT).then((entries) => {
+          if (!entries || entries.length === 0) {
+            message.author.send(`Sorry, I don't have any SR entries recorded for you. Try using the '${BOT_PREFIX}sr' command to record SR entries!`);
+            return;
+          }
+          csv.generateSRCSV(entries)
+            .then((filename) => {
+              const re = new Discord.RichEmbed()
+                .attachFile(new Discord.Attachment(filename, 'sr-history.csv'))
+                .setDescription('Here\'s your SR entries to date!');
+
+              message.author.send(re).then(() => {
+                csv.deleteCSV(filename);
+              });
+            });
         });
-    });
+        break;
+      case 'raid':
+        datastore.getAllRaidEntries(userId, MAX_HISTORY_COUNT).then((entries) => {
+          if (!entries || entries.length === 0) {
+            message.author.send(`Sorry, I don't have any Raid entries recorded for you. Try using the '${BOT_PREFIX}raid' command to record raid entries!`);
+            return;
+          }
+          csv.generateRaidCSV(entries)
+            .then((filename) => {
+              const re = new Discord.RichEmbed()
+                .attachFile(new Discord.Attachment(filename, 'raid-history.csv'))
+                .setDescription('Here\'s your Raid entries to date!');
+
+              message.author.send(re).then(() => {
+                csv.deleteCSV(filename);
+              });
+            });
+        });
+        break;
+      default:
+        message.reply('Must provide either `sr` or `raid` as the type of record to retrieve history for');
+        break;
+    }
   },
 };
 
