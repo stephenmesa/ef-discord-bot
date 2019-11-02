@@ -54,8 +54,8 @@ const getLatestSREntry = getLatestEntry(kind);
 
 const getLatestRaidEntry = getLatestEntry(raidProgressKind);
 
-export const getAllProgressEntries = (userId, limit = 25) => {
-  const query = datastore.createQuery(kind)
+const getAllEntries = entryKind => (userId, limit = 25) => {
+  const query = datastore.createQuery(entryKind)
     .filter('userId', '=', userId)
     .order('timestamp', { descending: true })
     .limit(limit);
@@ -66,6 +66,10 @@ export const getAllProgressEntries = (userId, limit = 25) => {
       return { ...r, id };
     }));
 };
+
+export const getAllSREntries = getAllEntries(kind);
+
+export const getAllRaidEntries = getAllEntries(raidProgressKind);
 
 export const getRecentRecordCounts = () => {
   const yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
