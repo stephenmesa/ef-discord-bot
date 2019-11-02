@@ -90,14 +90,18 @@ export const getRecentRecordCounts = () => {
   return Promise.all([lastDayQuery, lastWeekQuery]);
 };
 
-export const getProgressEntry = (userId, id) => {
-  const key = datastore.key([kind, Number(id)]);
-  const query = datastore.createQuery(kind)
+const getEntry = entryKind => (userId, id) => {
+  const key = datastore.key([entryKind, Number(id)]);
+  const query = datastore.createQuery(entryKind)
     .filter('__key__', key)
     .filter('userId', '=', userId);
 
   return datastore.runQuery(query);
 };
+
+const getRaidEntry = getEntry(raidProgressKind);
+
+const getSREntry = getEntry(kind);
 
 export const getLatestProgress = userId => getLatestSREntry(userId).then((results) => {
   const latestProgress = results && results[0] && results[0][0];
@@ -122,7 +126,7 @@ export const deleteLatestSR = deleteLatestEntry(getLatestSREntry);
 
 export const deleteLatestRaid = deleteLatestEntry(getLatestRaidEntry);
 
-export const deleteProgress = (userId, id) => getProgressEntry(userId, id).then((results) => {
+const deleteEntry = getEntryMethod => (userId, id) => getEntryMethod(userId, id).then((results) => {
   const progressEntry = results && results[0] && results[0][0];
   const itemKey = progressEntry && progressEntry[datastore.KEY];
   if (!itemKey) {
@@ -133,6 +137,10 @@ export const deleteProgress = (userId, id) => getProgressEntry(userId, id).then(
     deletedEntry: progressEntry,
   }));
 });
+
+export const deleteSREntry = deleteEntry(getSREntry);
+
+export const deleteRaidEntry = deleteEntry(getRaidEntry);
 
 export const getAllProgressEntriesForKLRange = (minKL, maxKL, limit = 25) => {
   const query = datastore.createQuery(kind)
