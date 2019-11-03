@@ -71,6 +71,21 @@ export const getAllSREntries = getAllEntries(kind);
 
 export const getAllRaidEntries = getAllEntries(raidProgressKind);
 
+export const getRaidEntriesForStage = (raidStage, limit = 25) => {
+  const query = datastore.createQuery(raidProgressKind)
+    .filter('bossNumber', '=', raidStage.boss)
+    .filter('stageNumber', '=', raidStage.stage)
+    .filter('raidNumber', '=', raidStage.raid)
+    .order('timestamp', { descending: true })
+    .limit(limit);
+
+  return datastore.runQuery(query)
+    .then(results => results[0].map((r) => {
+      const id = _.get(r[datastore.KEY], 'id');
+      return { ...r, id };
+    }));
+};
+
 export const getRecentRecordCounts = () => {
   const yesterday = new Date(new Date().getTime() - (24 * 60 * 60 * 1000));
   const lastWeek = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));

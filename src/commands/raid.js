@@ -1,6 +1,7 @@
 import * as utils from '../utils';
 import * as datastore from '../datastore';
 import * as bossRepository from '../bossRepository';
+import { MAX_HISTORY_COUNT } from '../consts';
 
 export const validateAndGetRaidCommandArgs = (args) => {
   const kl = Number(args[0]);
@@ -88,29 +89,57 @@ const raidCommand = {
       resist,
     } = parsedArgs;
 
-    // TODO: grab user's previous damage on same stage to compare against
-    // TODO: grab damage for similar KL on same stage
+    datastore.getRaidEntriesForStage(raidStage, MAX_HISTORY_COUNT).then((previousEntries) => {
+      const isOneShot = utils.isRaidOneShot(raidStageString, damage);
 
-    const messageToSend = utils.generateRaidProgressMessage({
-      message,
-      timestamp,
-      kl,
-      raidStage,
-      damage,
-      resist,
-    });
+      const previousOneShotEntries = previousEntries.filter(entry => utils.isRaidOneShot(
+        entry.raidStageString,
+        entry.damage,
+      ));
 
-    message.channel.send(messageToSend);
+      const oneShotUserIds = previousOneShotEntries.reduce((unique, item) => (
+        unique.includes(item.userId) ? unique : [...unique, item.userId]
+      ), []);
 
-    datastore.saveRaidDamage({
-      kl,
-      raidStageString,
-      raidStage,
-      damage,
-      resist,
-      userId,
-      username,
-      timestamp,
+      const numberOfOneShots = oneShotUserIds.length;
+
+      const usersPreviousEntries = previousEntries.filter(entry => entry.userId === userId);
+
+      const usersExistingOneShotEntries = usersPreviousEntries.filter(entry => utils.isRaidOneShot(
+        entry.raidStageString,
+        entry.damage,
+      ));
+      const firstOneShotForUser = isOneShot && usersExistingOneShotEntries.length === 0;
+
+      const usersPreviousEntriesWithMoreDamage = usersPreviousEntries
+        .filter(entry => entry.damage >= damage);
+      const personalRecord = firstOneShotForUser
+        || (usersPreviousEntriesWithMoreDamage.length === 0);
+
+      const messageToSend = utils.generateRaidProgressMessage({
+        message,
+        timestamp,
+        kl,
+        raidStage,
+        damage,
+        resist,
+        firstOneShotForUser,
+        personalRecord,
+        numberOfOneShots,
+      });
+
+      message.channel.send(messageToSend);
+
+      datastore.saveRaidDamage({
+        kl,
+        raidStageString,
+        raidStage,
+        damage,
+        resist,
+        userId,
+        username,
+        timestamp,
+      });
     });
   },
 };

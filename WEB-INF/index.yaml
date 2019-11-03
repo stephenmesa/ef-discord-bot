@@ -17,3 +17,11 @@ indexes:
   - name: userId
   - name: timestamp
     direction: desc
+
+- kind: RaidProgress
+  properties:
+  - name: bossNumber
+  - name: raidNumber
+  - name: stageNumber
+  - name: timestamp
+    direction: desc
