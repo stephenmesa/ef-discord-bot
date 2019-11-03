@@ -3,9 +3,9 @@ import Discord from 'discord.js';
 import * as utils from '../utils';
 import * as datastore from '../datastore';
 import * as csv from '../csv';
+import { MAX_HISTORY_COUNT } from '../consts';
 
 const { BOT_PREFIX } = process.env;
-const MAX_HISTORY_COUNT = 512;
 
 const undoCommand = {
   name: 'undo',

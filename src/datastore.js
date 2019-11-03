@@ -71,9 +71,8 @@ export const getAllSREntries = getAllEntries(kind);
 
 export const getAllRaidEntries = getAllEntries(raidProgressKind);
 
-export const getRaidEntriesForStage = (raidStage, userId, limit = 25) => {
+export const getRaidEntriesForStage = (raidStage, limit = 25) => {
   const query = datastore.createQuery(raidProgressKind)
-    .filter('userId', '=', userId)
     .filter('bossNumber', '=', raidStage.boss)
     .filter('stageNumber', '=', raidStage.stage)
     .filter('raidNumber', '=', raidStage.raid)
