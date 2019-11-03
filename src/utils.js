@@ -227,10 +227,15 @@ export const generateRaidProgressMessage = ({
   raidStage,
   damage,
   resist,
-  firstOneShot,
+  firstOneShotForUser,
   personalRecord,
   numberOfOneShots,
 }) => {
+  console.log({
+    firstOneShotForUser,
+    personalRecord,
+    numberOfOneShots,
+  });
   const stageData = bossRepository.getStageData(raidStage);
   const damagePercentage = Number((damage / stageData.health) * 100).toFixed(2);
   const messageData = {
@@ -277,7 +282,7 @@ export const generateRaidProgressMessage = ({
     messageData.files = [new Discord.Attachment(`assets/bosses/${stageData.imageFilename}`, 'boss.png')];
   }
 
-  if (firstOneShot) {
+  if (firstOneShotForUser) {
     const achievementSubMessage = numberOfOneShots === 0 ? 'You\'re the first one I\'ve seen one-shot this boss'
       : `I've seen this boss one-shotted ${numberOfOneShots} time${numberOfOneShots === 1 ? '' : 's'} so far`;
     const achievementMessage = `Congratulations on your first one-shot of this boss! ${achievementSubMessage}`;
