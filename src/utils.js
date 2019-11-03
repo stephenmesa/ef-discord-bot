@@ -231,11 +231,6 @@ export const generateRaidProgressMessage = ({
   personalRecord,
   numberOfOneShots,
 }) => {
-  console.log({
-    firstOneShotForUser,
-    personalRecord,
-    numberOfOneShots,
-  });
   const stageData = bossRepository.getStageData(raidStage);
   const damagePercentage = Number((damage / stageData.health) * 100).toFixed(2);
   const messageData = {
