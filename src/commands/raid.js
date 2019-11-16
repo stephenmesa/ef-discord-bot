@@ -1,7 +1,10 @@
 import * as utils from '../utils';
 import * as datastore from '../datastore';
 import * as bossRepository from '../bossRepository';
-import { MAX_HISTORY_COUNT } from '../consts';
+import {
+  MAX_HISTORY_COUNT,
+  KL_COHORT_COEFFICIENT,
+} from '../consts';
 
 export const validateAndGetRaidCommandArgs = (args) => {
   const kl = Number(args[0]);
@@ -116,6 +119,12 @@ const raidCommand = {
       const personalRecord = firstOneShotForUser
         || (usersPreviousEntriesWithMoreDamage.length === 0);
 
+      const cohortEntries = previousEntries
+        .filter(entry => entry.userId !== userId
+          && Math.abs(entry.kl - kl) <= KL_COHORT_COEFFICIENT);
+
+      const raidGrade = utils.getRaidGrade({ damage, cohortEntries });
+
       const messageToSend = utils.generateRaidProgressMessage({
         message,
         timestamp,
@@ -126,6 +135,7 @@ const raidCommand = {
         firstOneShotForUser,
         personalRecord,
         numberOfOneShots,
+        raidGrade,
       });
 
       message.channel.send(messageToSend);
