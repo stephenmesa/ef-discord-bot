@@ -1,3 +1,5 @@
+import { advanceTo, clear } from 'jest-date-mock';
+
 import * as utils from '../src/utils';
 
 describe('parseGoldString()', () => {
@@ -438,5 +440,50 @@ describe('parseRaidString', () => {
     testHelper('1.2.3', { raid: 1, stage: 2, boss: 3 });
     testHelper('5.5.5', { raid: 5, stage: 5, boss: 5 });
     testHelper('1.12.3', { raid: 1, stage: 12, boss: 3 });
+  });
+});
+
+describe('getMSUntilReset', () => {
+  const testHelper = (now, expectedValue) => {
+    expect(utils.getMSUntilReset(now)).toEqual(expectedValue);
+  };
+
+  const getMilliFromSeconds = seconds => seconds * 1000;
+  const getMilliFromMinutes = minutes => getMilliFromSeconds(minutes * 60);
+  const getMilliFromHours = hours => getMilliFromMinutes(hours * 60);
+
+  beforeAll(() => {
+    // Mock the test environment's current time to a known value
+    advanceTo(new Date('November 16, 2019 14:00:00 GMT-08:00'));
+  });
+
+  afterAll(() => {
+    // Clear the time mock
+    clear();
+  });
+
+  test('should return the time in hours', () => {
+    testHelper(new Date('November 16, 2019 14:00:00 GMT-08:00'), getMilliFromHours(2));
+    testHelper(new Date('November 16, 2019 15:00:00 GMT-08:00'), getMilliFromHours(1));
+    testHelper(new Date('November 16, 2019 01:00:00 GMT-08:00'), getMilliFromHours(15));
+  });
+
+  test('should return the time in minutes', () => {
+    testHelper(new Date('November 16, 2019 15:59:00 GMT-08:00'), getMilliFromMinutes(1));
+    testHelper(new Date('November 16, 2019 15:01:00 GMT-08:00'), getMilliFromMinutes(59));
+  });
+
+  test('should return the time in hours and minutes', () => {
+    testHelper(new Date('November 16, 2019 14:59:00 GMT-08:00'), getMilliFromHours(1) + getMilliFromMinutes(1));
+    testHelper(new Date('November 16, 2019 09:09:00 GMT-08:00'), getMilliFromHours(6) + getMilliFromMinutes(51));
+  });
+
+  test('should return the time in seconds', () => {
+    testHelper(new Date('November 16, 2019 15:59:59 GMT-08:00'), getMilliFromSeconds(1));
+    testHelper(new Date('November 16, 2019 15:59:01 GMT-08:00'), getMilliFromSeconds(59));
+  });
+
+  test('should return the time in hours, minutes, and seconds', () => {
+    testHelper(new Date('November 16, 2019 14:58:59 GMT-08:00'), getMilliFromHours(1) + getMilliFromMinutes(1) + getMilliFromSeconds(1));
   });
 });

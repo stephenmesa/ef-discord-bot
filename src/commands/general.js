@@ -1,6 +1,7 @@
 import Discord from 'discord.js';
 import _ from 'lodash';
 
+import * as utils from '../utils';
 import { getRecentRecordCounts, getSponsors } from '../datastore';
 import * as txt from '../txt';
 
@@ -122,10 +123,28 @@ If you would like to send a donation, please use ${DONATION_URL}
   },
 };
 
+const resetCommand = {
+  name: 'reset',
+  description: 'Display the remaining time until the next reset',
+  execute: (message) => {
+    let remainingMS = utils.getMSUntilReset(new Date());
+    const hours = Math.floor(remainingMS / (1000 * 60 * 60));
+    remainingMS -= hours * 1000 * 60 * 60;
+    const minutes = Math.floor(remainingMS / (1000 * 60));
+    remainingMS -= minutes * 1000 * 60;
+    const seconds = Math.floor(remainingMS / 1000);
+    const remainingHours = hours ? `${hours} hour${hours > 1 ? 's' : ''}` : '';
+    const remainingMinutes = minutes ? `${minutes} minute${minutes > 1 ? 's' : ''}` : '';
+    const remainingSeconds = seconds ? `${seconds} second${seconds > 1 ? 's' : ''}` : '';
+    message.channel.send(`${[remainingHours, remainingMinutes, remainingSeconds].join(' ')} remaining until next reset`);
+  },
+};
+
 export default [
   pingCommand,
   helpCommand,
   statsCommand,
   sponsorsCommand,
   donateCommand,
+  resetCommand,
 ];

@@ -1,6 +1,6 @@
 {
   "name": "ef-discord-bot",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -34,9 +34,13 @@
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.14.0",
     "jest": "^24.9.0",
+    "jest-date-mock": "^1.0.7",
     "js-yaml": ">=3.13.1"
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "setupFiles": [
+      "jest-date-mock"
+    ]
   }
 }
