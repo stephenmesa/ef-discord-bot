@@ -8,6 +8,8 @@
     "globals": {
         "test": true,
         "describe": true,
-        "expect": true
+        "expect": true,
+        "beforeAll": true,
+        "afterAll": true
     }
 }

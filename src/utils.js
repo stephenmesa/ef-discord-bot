@@ -321,3 +321,11 @@ export const isRaidOneShot = (raidStageString, damage) => {
 
   return stageData.health === damage;
 };
+
+export const getMSUntilReset = (now) => {
+  const midnightUTC = new Date();
+  midnightUTC.setUTCHours(0, 0, 0, 0);
+  midnightUTC.setDate(midnightUTC.getDate() + 1);
+
+  return midnightUTC - now;
+};
