@@ -220,6 +220,20 @@ export const parseRaidString = (raidString) => {
   };
 };
 
+export const getRaidGrade = ({
+  damage,
+  cohortEntries,
+}) => {
+  let grade = null;
+  if (Array.isArray(cohortEntries) && cohortEntries.length > 0) {
+    const cohortDamages = cohortEntries.map(entry => entry.damage);
+    const scoreDecimal = quantileRank(cohortDamages, damage);
+    grade = Math.round(scoreDecimal * 100);
+  }
+
+  return grade;
+};
+
 export const generateRaidProgressMessage = ({
   message,
   timestamp,
@@ -230,6 +244,7 @@ export const generateRaidProgressMessage = ({
   firstOneShotForUser,
   personalRecord,
   numberOfOneShots,
+  raidGrade,
 }) => {
   const stageData = bossRepository.getStageData(raidStage);
   const damagePercentage = Number((damage / stageData.health) * 100).toFixed(2);
@@ -263,6 +278,10 @@ export const generateRaidProgressMessage = ({
         }, {
           name: 'Health',
           value: `${stageData.health}`,
+          inline: true,
+        }, {
+          name: 'Grade',
+          value: raidGrade !== null ? `${raidGrade}/100` : 'Not enough data to calculate grade',
           inline: true,
         },
       ],
