@@ -13,13 +13,14 @@ steps:
   args:
   - '-c'
   - |
-    docker pull gcr.io/$PROJECT_ID/ef-discord-bot:latest || exit 0
+    docker pull us.gcr.io/$PROJECT_ID/ef-discord-bot:latest || exit 0
 - name: 'gcr.io/cloud-builders/docker'
   args: [
             'build',
-            '-t', 'gcr.io/$PROJECT_ID/ef-discord-bot',
-            '--cache-from', 'gcr.io/$PROJECT_ID/ef-discord-bot:latest',
+            '-t', 'us.gcr.io/$PROJECT_ID/ef-discord-bot',
+            '-t', 'us.gcr.io/$PROJECT_ID/ef-discord-bot:${COMMIT_SHA}',
+            '--cache-from', 'us.gcr.io/$PROJECT_ID/ef-discord-bot:latest',
             '.'
         ]
 images:
-- 'gcr.io/$PROJECT_ID/ef-discord-bot:latest'
+- 'us.gcr.io/$PROJECT_ID/ef-discord-bot:latest'
