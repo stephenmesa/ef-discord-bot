@@ -18,9 +18,13 @@ steps:
   args: [
             'build',
             '-t', 'us.gcr.io/$PROJECT_ID/ef-discord-bot',
-            '-t', '${COMMIT_SHA}',
+            '-t', 'us.gcr.io/$PROJECT_ID/ef-discord-bot:$COMMIT_SHA',
             '--cache-from', 'us.gcr.io/$PROJECT_ID/ef-discord-bot:latest',
             '.'
+        ]
+- name: 'gcr.io/cloud-builders/docker'
+  args: [
+            'push', 'us.gcr.io/$PROJECT_ID/ef-discord-bot:$COMMIT_SHA'
         ]
 images:
 - 'us.gcr.io/$PROJECT_ID/ef-discord-bot:latest'
