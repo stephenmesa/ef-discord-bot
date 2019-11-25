@@ -3,7 +3,7 @@ steps:
   args: ['install']
   id: 'npm-install'
 - name: 'gcr.io/cloud-builders/npm'
-  args: ['lint']
+  args: ['run', 'lint']
   waitFor: ['npm-install']
 - name: 'gcr.io/cloud-builders/npm'
   args: ['test']
