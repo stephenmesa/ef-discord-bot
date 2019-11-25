@@ -1,4 +1,13 @@
 steps:
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['install']
+  id: 'npm-install'
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['lint']
+  waitFor: ['npm-install']
+- name: 'gcr.io/cloud-builders/npm'
+  args: ['test']
+  waitFor: ['npm-install']
 - name: 'gcr.io/cloud-builders/docker'
   entrypoint: 'bash'
   args:
