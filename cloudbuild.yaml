@@ -18,7 +18,6 @@ steps:
   args: [
             'build',
             '-t', 'us.gcr.io/$PROJECT_ID/ef-discord-bot',
-            '-t', 'us.gcr.io/$PROJECT_ID/ef-discord-bot:$COMMIT_SHA',
             '--cache-from', 'us.gcr.io/$PROJECT_ID/ef-discord-bot:latest',
             '.'
         ]
