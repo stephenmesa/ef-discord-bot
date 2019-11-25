@@ -1,12 +1,13 @@
 FROM node:10.16.0-alpine
 
-LABEL maintainer="stephen.mesa@gmail.com"
+WORKDIR /usr/src/app
 
-RUN mkdir -p /usr/src/ef-discord-bot
-WORKDIR /usr/src/ef-discord-bot
-ADD . /usr/src/ef-discord-bot
-RUN npm install --n
-RUN npm rebuild
+COPY package*.json ./
+
+RUN npm ci
+
+COPY . .
+
 RUN npm run build
 
 CMD ["npm", "start"]
