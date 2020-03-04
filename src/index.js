@@ -18,7 +18,9 @@ if (!discordToken) {
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   const version = process.env.npm_package_version;
-  client.user.setActivity(`Sponsored by Celestial (${version})`, { type: 'WATCHING' })
+  // Either use the provided bot status override or default to Celestial
+  const botStatus = process.env.BOT_STATUS || `Sponsored by Celestial (${version})`;
+  client.user.setActivity(botStatus, { type: 'WATCHING' })
     .catch(console.error);
 });
 
