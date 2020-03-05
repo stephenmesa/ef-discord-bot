@@ -1,4 +1,9 @@
-FROM node:10.16.0-alpine
+FROM node:10.19-jessie-slim
+
+RUN apt-get update && apt-get install -y \
+  imagemagick \
+  librsvg2-dev \
+  librsvg2-bin
 
 WORKDIR /usr/src/app
 

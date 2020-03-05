@@ -17,9 +17,11 @@
   "license": "ISC",
   "dependencies": {
     "@google-cloud/datastore": "^4.1.0",
-    "@google-cloud/pubsub": "^0.29.1",
+    "anychart": "8.3.0",
+    "anychart-nodejs": "1.3.8",
     "discord.js": "^11.3.2",
     "dotenv": "^6.0.0",
+    "jsdom": "^16.2.0",
     "lodash": "^4.17.15",
     "simple-statistics": "^6.1.1",
     "uuid": "^3.3.2"
