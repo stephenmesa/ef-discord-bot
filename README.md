@@ -27,6 +27,4 @@ DONATION_URL: The url to be displayed in the `!donate` command
 
 SPONSOR_ENTITY_ID: The id of the entity in Datastore that represents the string that lists all of the sponsers
 
-PUBSUB_PROJECTID: The project id of the Google PubSub that the bot will publish messages to
-
 BOT_STATUS: An optional status to set on the bot on startup. If not provided, defaults to "Sponsored by Celestial (version number)"
