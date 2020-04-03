@@ -138,7 +138,7 @@ const raidCommand = {
         raidGrade,
       });
 
-      message.channel.send(messageToSend);
+      message.channel.send(messageToSend).catch(utils.handleSendMessageError(message));
 
       datastore.saveRaidDamage({
         kl,

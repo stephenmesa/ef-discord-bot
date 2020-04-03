@@ -280,7 +280,7 @@ const recordCommand = {
             description,
             assessment,
           );
-          message.channel.send(messageToSend);
+          message.channel.send(messageToSend).catch(utils.handleSendMessageError(message));
 
           datastore.saveProgress(kl, totalStr, rateStr, percentage, userId, username, timestamp);
         });
@@ -320,7 +320,7 @@ const gradeCommand = {
             percentage,
           );
 
-          message.channel.send(messageToSend);
+          message.channel.send(messageToSend).catch(utils.handleSendMessageError(message));
         });
     });
   },

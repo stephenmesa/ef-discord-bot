@@ -17,7 +17,7 @@ const sendGraphMessage = ({
     .setDescription(`Here's your recent progress on ${chartType} gain!`);
   message.channel.send(re).then(() => {
     chart.deleteChart(chartFilename);
-  });
+  }).catch(utils.handleSendMessageError(message));
 };
 
 const graphCommand = {

@@ -329,3 +329,21 @@ export const getMSUntilReset = (now) => {
 
   return midnightUTC - now;
 };
+
+export const handleSendMessageError = message => (error) => {
+  if (error.name === 'DiscordAPIError' && error.message === 'Missing Permissions') {
+    const channelName = _.get(message, 'channel.name');
+    const guildName = _.get(message, 'channel.guild.name');
+    console.error(`Permissions error when trying to send a message to #${channelName} on server: ${guildName}`);
+
+    // Try to send a distress beacon to the channel to help inform their admins to
+    // adjust the permissions of the bot
+    message.channel.send('I do not have the appropriate permissions to send the message I was going to send. Please confirm I have the right permissions! (I need to be able to send messages, embed links, and attach files)')
+      .catch(() => {
+        // Don't bother doing anything
+        // the bot doesn't even have permissions to send a text message!
+      });
+  } else {
+    console.error('Unexpected error encountered when trying to send a message', error);
+  }
+};
