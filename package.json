@@ -22,7 +22,7 @@
     "discord.js": "^11.3.2",
     "dotenv": "^6.0.0",
     "jsdom": "^16.2.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "simple-statistics": "^6.1.1",
     "uuid": "^3.3.2"
   },
