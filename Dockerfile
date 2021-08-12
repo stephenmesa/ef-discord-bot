@@ -1,15 +1,21 @@
-FROM node:10.19-jessie-slim
+FROM node:16-alpine
 
-RUN apt-get update && apt-get install -y \
-  imagemagick \
-  librsvg2-dev \
-  librsvg2-bin
+RUN apk add \
+        imagemagick \
+        librsvg
+
+RUN apk --no-cache --virtual build-dependencies add \
+        python3 \
+        make \
+        g++
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
 RUN npm ci
+
+RUN apk del build-dependencies
 
 COPY . .
 
