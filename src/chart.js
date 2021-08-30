@@ -1,6 +1,7 @@
 import fs from 'fs';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
+import sharp from 'sharp';
 
 import { anychart, anychartExport } from './bootstrapAnychart';
 import * as utils from './utils';
@@ -10,13 +11,17 @@ if (!fs.existsSync(tempDir)) {
   fs.mkdirSync(tempDir);
 }
 
-const exportChartToFilename = (chart, filename) => new Promise((resolve, reject) => anychartExport.exportTo(chart, 'png')
-  .then(async (pngBuffer) => {
-    fs.writeFile(filename, pngBuffer, (fsWriteError) => {
+const exportChartToFilename = (chart, filename) => new Promise((resolve, reject) => anychartExport.exportTo(chart, 'svg')
+  .then(async (svgBuffer) => {
+    // TODO: Figure out how to read directly from the stream
+    fs.writeFile('temp.svg', svgBuffer, (fsWriteError) => {
       if (fsWriteError) {
         reject(fsWriteError);
       } else {
-        resolve(filename);
+        sharp('temp.svg')
+          .toFile(filename)
+          .then(() => resolve(filename))
+          .catch(err => reject(err));
       }
     });
   }));
