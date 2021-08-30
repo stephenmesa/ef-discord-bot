@@ -11,17 +11,32 @@ if (!fs.existsSync(tempDir)) {
   fs.mkdirSync(tempDir);
 }
 
+export const deleteChart = (filename) => {
+  fs.unlink(filename, (err) => {
+    if (err) {
+      console.error(`failed to delete chart: ${err}`);
+    }
+  });
+};
+
 const exportChartToFilename = (chart, filename) => new Promise((resolve, reject) => anychartExport.exportTo(chart, 'svg')
   .then(async (svgBuffer) => {
     // TODO: Figure out how to read directly from the stream
-    fs.writeFile('temp.svg', svgBuffer, (fsWriteError) => {
+    const svgFilename = `${tempDir}/medals-${uuidv4()}.svg`;
+    fs.writeFile(svgFilename, svgBuffer, (fsWriteError) => {
       if (fsWriteError) {
         reject(fsWriteError);
       } else {
-        sharp('temp.svg')
+        sharp(svgFilename)
           .toFile(filename)
-          .then(() => resolve(filename))
-          .catch(err => reject(err));
+          .then(() => {
+            deleteChart(svgFilename);
+            return resolve(filename);
+          })
+          .catch((err) => {
+            deleteChart(svgFilename);
+            return reject(err);
+          });
       }
     });
   }));
@@ -207,12 +222,4 @@ export const generateKLAndMedalsChart = (rawData) => {
   const filename = `${tempDir}/kl-medals-${uuidv4()}.png`;
 
   return exportChartToFilename(chart, filename);
-};
-
-export const deleteChart = (filename) => {
-  fs.unlink(filename, (err) => {
-    if (err) {
-      console.error(`failed to delete chart: ${err}`);
-    }
-  });
 };
