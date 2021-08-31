@@ -1,6 +1,7 @@
 import fs from 'fs';
 import uuidv4 from 'uuid/v4';
 import _ from 'lodash';
+import sharp from 'sharp';
 
 import { anychart, anychartExport } from './bootstrapAnychart';
 import * as utils from './utils';
@@ -10,13 +11,32 @@ if (!fs.existsSync(tempDir)) {
   fs.mkdirSync(tempDir);
 }
 
-const exportChartToFilename = (chart, filename) => new Promise((resolve, reject) => anychartExport.exportTo(chart, 'png')
-  .then(async (pngBuffer) => {
-    fs.writeFile(filename, pngBuffer, (fsWriteError) => {
+export const deleteChart = (filename) => {
+  fs.unlink(filename, (err) => {
+    if (err) {
+      console.error(`failed to delete chart: ${err}`);
+    }
+  });
+};
+
+const exportChartToFilename = (chart, filename) => new Promise((resolve, reject) => anychartExport.exportTo(chart, 'svg')
+  .then(async (svgBuffer) => {
+    // TODO: Figure out how to read directly from the stream
+    const svgFilename = `${tempDir}/medals-${uuidv4()}.svg`;
+    fs.writeFile(svgFilename, svgBuffer, (fsWriteError) => {
       if (fsWriteError) {
         reject(fsWriteError);
       } else {
-        resolve(filename);
+        sharp(svgFilename)
+          .toFile(filename)
+          .then(() => {
+            deleteChart(svgFilename);
+            return resolve(filename);
+          })
+          .catch((err) => {
+            deleteChart(svgFilename);
+            return reject(err);
+          });
       }
     });
   }));
@@ -202,12 +222,4 @@ export const generateKLAndMedalsChart = (rawData) => {
   const filename = `${tempDir}/kl-medals-${uuidv4()}.png`;
 
   return exportChartToFilename(chart, filename);
-};
-
-export const deleteChart = (filename) => {
-  fs.unlink(filename, (err) => {
-    if (err) {
-      console.error(`failed to delete chart: ${err}`);
-    }
-  });
 };

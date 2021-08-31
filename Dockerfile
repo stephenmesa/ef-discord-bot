@@ -1,15 +1,14 @@
-FROM node:10.19-jessie-slim
-
-RUN apt-get update && apt-get install -y \
-  imagemagick \
-  librsvg2-dev \
-  librsvg2-bin
+FROM node:16-alpine
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm ci
+RUN apk --no-cache add --virtual native-deps \
+  g++ gcc libgcc libstdc++ linux-headers make python3 && \
+  npm install --quiet node-gyp -g &&\
+  npm install --quiet && \
+  apk del native-deps
 
 COPY . .
 
